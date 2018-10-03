@@ -1,0 +1,72 @@
+{% unless template contains 'password' %}
+
+  {% assign enabled = settings.popup--enabled %}
+  {% assign show-image = settings.popup--show-image %}
+  {% assign newsletter-title = settings.popup--newsletter-title | escape %}
+  {% assign social-enabled = settings.popup--social-enabled %}
+  {% assign social-title = settings.popup--social-title | escape %}
+  {% assign days = settings.popup--days-range %}
+
+  {% if enabled %}
+    <div
+      class="popup"
+      data-js-class="Popup"
+      data-show-again-after="{{ settings.popup--days-range }}"
+      data-mode="{{ settings.popup--mode }}"
+      data-popup--image="{{ show-image }}"
+    >
+      <div class="popup--container popup--closed">
+        <div class="popup--wrapper">
+
+          {% if settings.popup--show-image %}
+            <div class="popup--left-column">
+              {% if settings.popup--image %}
+                <div class="popup--image">
+                  {%
+                    include "framework--image",
+                    image: settings.popup--image
+                  %}
+                </div>
+              {% else %}
+                {%
+                  include "framework--placeholder",
+                  type: "image",
+                  aspect_ratio: 0.75
+                  custom_classes: "full-height popup--image"
+                %}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="popup--center-column">
+            {% if newsletter-title.size > 0 %}
+              <h3 class="popup--newsletter-title">{{ newsletter-title }}</h3>
+            {% endif %}
+
+            <div class="popup--newsletter-form">
+              {% include 'partial--mailing-list' with 'popup' %}
+            </div>
+          </div>
+
+          {% if social-enabled %}
+            <div class="popup--right-column">
+              {% if newsletter-title.size > 0 %}
+                <h3 class="popup--social-title">{{ social-title }}</h3>
+              {% endif %}
+
+                <div class="popup--social-icons">
+                  {% include 'partial--social-media' with 'modal' %}
+                </div>
+            </div>
+          {% endif %}
+
+          <button aria-hidden="true" class="popup--close">
+            {% include 'snippet-symbol' with 'cross' %}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  {% endif %}
+
+{% endunless %}

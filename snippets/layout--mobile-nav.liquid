@@ -1,0 +1,15 @@
+<div class="mobile-nav" data-js-class="MobileNav">
+
+  {% include 'framework--search', view: "sidebar" %}
+
+  <div class="mobile-nav--menu"></div>
+
+  {% if shop.customer_accounts_enabled %}
+    <div class="mobile-nav--login">
+      {% include 'layout--login' with 'modal' %}
+    </div>
+  {% endif %}
+
+  <div class="mobile-nav--contact-button"></div>
+
+</div>

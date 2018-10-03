@@ -1,0 +1,37 @@
+{% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+  {% assign found_a_collection = false %}
+  {% for c in product.collections %}
+    {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' %}
+      {% assign found_a_collection = true %}
+      {% assign collection = c %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if collection.products.size > 1 %}
+
+  <div class="similar-products">
+
+    <h3 class="similar-products--title"><a href="{{ collection.url }}">{{ collection.title }}</a></h3>
+
+    <div class="similar-products--list">
+      {% assign current_product_handle = product.handle %}
+      {% for product in collection.products limit: 5 %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+        {% if product.handle == current_product_handle %}
+          {% continue %}
+        {% endif %}
+
+        <div class="similar-products--item">
+          {% include 'partial--product', view: 'list' %}
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="similar-products--view-more">
+      <a href="{{ collection.url }}">{{ 'collections.view_more_from' | t }}</a>
+    </div>
+
+  </div>
+{% endif %}

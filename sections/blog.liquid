@@ -1,0 +1,308 @@
+{% assign blog_handle = blog.handle %}
+{% assign current_blog = blogs[blog_handle] %}
+{% assign placeholders_active = true %}
+
+{% if current_blog.articles.size > 0 %}
+  {% assign placeholders_active = false %}
+{% endif %}
+
+{% assign tag = section.settings.tag | escape %}
+{% assign downcased_tag = tag | downcase %}
+{% assign capitalized_tag = tag | capitalize %}
+{% assign total_count_with_tags = 0 %}
+
+{% comment %} Get total count of tagged articles {% endcomment %}
+{% for article in current_blog.articles %}
+  {% for article_tag in article.tags  %}
+    {% assign downcased_article_tag = article_tag | downcase %}
+    {% if downcased_article_tag == downcased_tag %}
+      {% assign total_count_with_tags = total_count_with_tags | plus: 1 %}
+      {% continue %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% assign show_featured_section = true %}
+
+{% if section.settings.tag == blank or total_count_with_tags == 0 %}
+  {% assign show_featured_section = false %}
+{% endif %}
+
+{% capture blog__title %}
+  <h2 class="blog--title">
+    {% if show_featured_section %}
+      {{ capitalized_tag }}
+    {% else %}
+      {{ blog.title }}
+    {% endif %}
+  </h2>
+{% endcapture %}
+
+{% capture blog__rss_link %}
+  <a class="blog--rss" href="{{ shop.url }}{{ blog.url }}.atom">
+    <span>{{ 'blog.rss' | t }}</span>
+    {% include 'snippet-symbol' with 'rss' %}
+  </a>
+{% endcapture %}
+
+{% capture blog__slider %}
+  <div class="blog--slider">
+    <div
+      class="fw--slider"
+      data-js-class="FrameworkSlider"
+      data-navigation="true"
+      data-pagination="true"
+      data-pagination-numbers="true"
+    >
+
+      {% if placeholders_active %}
+        {% for i in (1..3) %}
+          {% include "partial--article", type: "title-below", onboarding: true %}
+        {% endfor %}
+      {% else %}
+
+        {% comment %} Tag included {% endcomment %}
+        {% if tag.size > 0 %}
+          {% assign counter = 0 %}
+          {% for article in current_blog.articles %}
+
+            {% for article_tag in article.tags  %}
+              {% assign downcased_article_tag = article_tag | downcase %}
+              {% if downcased_article_tag == downcased_tag %}
+                {% assign counter = counter | plus: 1 %}
+                {% include "partial--article", view: 'title-below' %}
+              {% endif %}
+            {% endfor %}
+
+          {% endfor %}
+
+        {% comment %} Tag not included {% endcomment %}
+        {% else %}
+          {% for article in current_blog.articles %}
+            {% include "partial--article", view: 'title-below' %}
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+    </div> <!-- .fw--slider -->
+  </div> <!-- .blog--slider -->
+
+{% endcapture %}
+
+<div
+  class="blog"
+  data-js-class="Blog"
+  data-section-id="{{ section.id }}"
+  data-section-type="blog"
+  data-show-featured-section="{{ show_featured_section }}"
+>
+  <header class="blog--header">
+    {{ blog__title }}
+    {{ blog__rss_link }}
+  </header>
+
+  {% if show_featured_section %}
+
+    <div class="blog--featured-section">
+      <div class="blog--featured-articles">
+
+        {% comment %} With placeholders {% endcomment %}
+        {% if placeholders_active %}
+          {% for i in (1..3) %}
+            {% if forloop.first %}
+              {% include "partial--article", view: "featured", onboarding: true %}
+            {% else %}
+              {% include "partial--article", view: "title-aside", onboarding: true %}
+            {% endif %}
+          {% endfor %}
+
+        {% else %}
+          {% assign counter = 0 %}
+
+          {% comment %} Tag included {% endcomment %}
+          {% if tag.size > 0 %}
+
+            {% comment %} title-aside view {% endcomment %}
+            {% if total_count_with_tags == 2 %}
+
+              {% for article in current_blog.articles %}
+                {% for article_tag in article.tags  %}
+                  {% assign downcased_article_tag = article_tag | downcase %}
+                  {% if downcased_article_tag == downcased_tag %}
+                    {% include "partial--article", view: "title-aside" %}
+                    {% continue %}
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+
+            {% comment %} Allow featured view {% endcomment %}
+            {% else %}
+
+              {% for article in current_blog.articles %}
+                {% for article_tag in article.tags  %}
+                  {% assign downcased_article_tag = article_tag | downcase %}
+                  {% if downcased_article_tag == downcased_tag and counter < 3 %}
+                    {% assign counter = counter | plus: 1 %}
+                    {% if counter == 1 %}
+                      {% include "partial--article", view: 'featured' %}
+                    {% else %}
+                      {% include "partial--article", view: 'title-aside' %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+
+            {% endif %}
+
+          {% comment %} Tag not included {% endcomment %}
+          {% else %}
+
+            {% comment %} title-aside view {% endcomment %}
+            {% if current_blog.articles.size == 2 %}
+
+              {% for article in blog.articles %}
+                {% include "partial--article", view: "title-aside" %}
+              {% endfor %}
+
+            {% comment %} Allow featured view {% endcomment %}
+            {% else %}
+
+              {% for article in current_blog.articles limit: 3 %}
+                {% if forloop.first %}
+                  {% include "partial--article", view: "featured" %}
+                {% else %}
+                  {% include "partial--article", view: "title-aside" %}
+                {% endif %}
+              {% endfor %}
+
+            {% endif %}
+
+          {% endif %}
+        {% endif %}
+
+      </div>
+
+      {% if current_blog.articles.size > 0 %}
+        {{ blog__slider }}
+      {% endif %}
+
+    </div> <!-- .blog--featured-section -->
+
+  {% endif %}
+
+
+  {% if blog.all_tags.size > 0 and section.settings.show-filter %}
+    <nav class="blog--filters" id="blog-filters">
+      <div class="blog--filter" id="blog--filter">
+        <span class="blog--filter-title">{{ 'blog.filter' | t }}</span>
+
+        <ul class="blog--filter-tags">
+          <li class="blog--filter-tag">
+            <a
+              class="{% if current_tags == blank %}blog--filter-tag--selected{% endif %}"
+              href="/blogs/{{ blog.handle}}#blog-filters">{{ 'blog.all' | t }}
+            </a>
+          </li>
+
+          {% for tag in blog.all_tags %}
+            {% assign current_tag = tag | downcase %}
+            {% unless current_tag == downcased_tag %}
+              <li class="blog--filter-tag">
+                <a
+                  class="{% if current_tags contains tag %}blog--filter-tag--selected{% endif %}"
+                  href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}#blog-filters">{{ tag }}
+                </a>
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      </div> <!-- .blog--filter -->
+    </nav> <!-- .blog--all-filters -->
+  {% endif %}
+
+
+  <div class="blog--filtered-articles" id="filtered-articles">
+    {% if section.settings.show-filter or show_featured_section %}
+      <h3 class="blog--blog-tag-title">
+        {% for tag in blog.all_tags %}
+          {% if current_tags == blank %}
+            {{ 'blog.all' | t }}
+            {% break %}
+          {% else %}
+            {% if current_tags contains tag %}
+              {{ tag }}
+              {% break %}
+            {% endif %}
+            {% assign blog_tag_title = current_tags %}
+          {% endif %}
+        {% endfor %}
+      </h3>
+    {% endif %}
+
+    {% paginate blog.articles by 24 %}
+
+    {% if blog.tags.size > 0 and section.settings.show-filter %}
+      <select class="blog--filter--select">
+        <option value="/blogs/{{ blog.handle }}#filtered-articles">{{ 'blog.filter' | t | upcase }}</option>
+        {% for tag in blog.all_tags %}
+          {% unless tag == section.settings.tag %}
+            <option value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}#filtered-articles" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+          {% endunless %}
+        {% endfor %}
+      </select>
+    {% endif %}
+
+    <div class="blog--articles">
+
+      {% if blog.articles.size > 0 %}
+        <div class="blog--article--row">
+
+        {% for article in blog.articles %}
+
+          {% assign modulo = forloop.index0 | modulo: 3 %}
+
+          {% unless forloop.first %}
+            {% if modulo == 0 %}
+              </div><div class="blog--article--row">
+            {% endif %}
+          {% endunless %}
+
+          <div class="blog--article">
+            {% include "partial--article" with "title-below" %}
+          </div>
+
+        {% endfor %}
+
+        </div>
+      {% endif %}
+
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <div class="blog--pagination">
+        {% include 'framework--pagination' %}
+      </div>
+    {% endif %}
+
+  </div> <!-- .blog--filtered-articles -->
+
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Featured articles tag"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-filter",
+      "label": "Enable tag filter bar",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,138 @@
+{% if section.settings.background-image != blank %}
+  {% assign has-placeholder = false %}
+{% else %}
+  {% assign has-placeholder = true %}
+{% endif %}
+
+{% unless has-placeholder %}
+  <style>
+    @media only screen and (max-width: 767px) {
+      {% assign bg = section.settings.background-image | img_url: '1024x1024' | format: 'jpg' %}
+      .banner--background-image {
+        background-image: url('{{ bg }}');
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      {% assign bg = section.settings.background-image | img_url: '2048x2048' | format: 'jpg' %}
+      .banner--background-image {
+        background-image: url('{{ bg }}');
+      }
+    }
+  </style>
+{% endunless %}
+
+<div
+  class="banner"
+  data-js-class="IndexBanner"
+  data-section-id="{{ section.id }}"
+  data-section-type="index_banner"
+  data-banner--has-placeholder="{{ has-placeholder }}"
+  data-banner--foreground-position="{{ section.settings.foreground-position }}"
+  data-banner--foreground-text-color="{{ section.settings.foreground-text-color }}"
+  data-banner--enabled="{{ section.settings.enabled }}"
+>
+
+  {% if section.settings.enabled %}
+    <div class="banner--container" >
+      {% if section.settings.background-image %}
+        <div class="banner--background-image"></div>
+      {% else %}
+        <div class="placeholder-wrapper">
+          {%
+            include "framework--placeholder",
+            type: "lifestyle",
+            aspect_ratio: 1.8,
+            placeholder_index: 1
+          %}
+        </div>
+      {% endif %}
+
+      {% assign foreground-text = section.settings.foreground-text | strip_html %}
+
+      {% if foreground-text.size > 0 or section.settings.background-image %}
+        <div class="banner--foreground-container">
+          {% if section.settings.foreground-type == 'text' and foreground-text.size > 0 %}
+            <div class="banner--foreground-text banner--foreground-object">
+              {{ section.settings.foreground-text }}
+            </div>
+          {% elsif section.settings.foreground-type == 'image' and section.settings.foreground-image != blank %}
+            <div class="banner--foreground-image banner--foreground-object">
+              {% include "framework--image", image: section.settings.foreground-image, max_height: 400 %}
+            </div>
+          {% endif %}
+        </div> <!-- .banner--foreground-container -->
+      {% endif %}
+    </div> <!-- .banner--container -->
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable banner",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background-image",
+      "label": "Image",
+      "info": "1400 x 800px recommended"
+    },
+    {
+      "type": "header",
+      "content": "Foreground"
+    },
+    {
+      "type": "radio",
+      "id": "foreground-type",
+      "options": [
+        { "value": "image", "label": "Image"},
+        { "value": "text", "label": "Text"}
+      ],
+      "default": "text",
+      "label": "Type"
+    },
+    {
+      "type": "select",
+      "id": "foreground-position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "image_picker",
+      "id": "foreground-image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "foreground-text",
+      "label": "Text",
+      "default": "<p>Add your text here</p>"
+    }
+  ]
+}
+{% endschema %}

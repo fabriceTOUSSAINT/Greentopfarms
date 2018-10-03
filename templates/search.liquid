@@ -1,0 +1,43 @@
+{% paginate search.results by 36 %}
+
+  <div class="search spacing--4x spacing--small-1x" data-search--view="page">
+
+    <header class="spacing--4">
+      <form  action="/search" method="get" role="search">
+        <input type="hidden" name="type" value="product" />
+        <div class="search--icon">
+          {% include 'snippet-symbol' with 'search' %}
+        </div>
+        <input
+          class="search--textbox"
+          name="q"
+          type="text"
+          placeholder="{{ 'general.search.placeholder_bar' | t }}"
+          value="{{ search.terms }}"
+        >
+      </form>
+
+      <div class="feedback">
+        {% if search.terms.size > 0 and search.results.size == 0 %}
+          <p class="spacing--3y text--italic">{{ 'general.search.no_results' | t }}</p>
+        {% endif %}
+      </div>
+    </header>
+
+    <section class="fw--blocks spacing--4 clear-after--medium-3 clear-after--large-4">
+      {% for product in search.results %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+        <div class="width--medium-4 width--large-3">
+          {% include 'partial--product', view: 'grid' %}
+        </div>
+      {% endfor %}
+    </section>
+
+    {% if paginate.pages > 1 %}
+      <div class="width--12 text-align--center">
+        {% include 'framework--pagination' %}
+      </div>
+      <div class="spacing--3y"></div>
+    {% endif %}
+  </div>
+{% endpaginate %}

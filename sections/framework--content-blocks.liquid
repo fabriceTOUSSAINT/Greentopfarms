@@ -1,0 +1,442 @@
+{% assign js_class = "FrameworkContentBlocks" %}
+
+<div
+  class="content-blocks--root"
+  data-js-class="{{ js_class }}"
+  data-section-id="{{ section.id }}"
+  data-full-width="{{ section.settings.full-width }}"
+  data-mobile-width="{{ section.settings.mobile-width }}"
+  data-vertical-alignment="{{ section.settings.vertical-alignment }}"
+  style="
+    {% if section.settings.background-color != blank %}
+      background-color: {{ section.settings.background-color }};
+    {% endif %}
+  "
+>
+
+  {% if section.settings.title != blank or section.settings.subtitle.size != blank %}
+    <div class="content-blocks--header">
+      {% if section.settings.title != blank %}
+        <h2 class="content-blocks--title">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <h3 class="content-blocks--subtitle">{{ section.settings.subtitle | escape }}</h3>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div
+    class="content-blocks--container"
+    style="padding: {{ section.settings.spacing | divide: 2 }}px;"
+  >
+
+    {% for block in section.blocks %}
+
+      {% assign width = 100.0 | divided_by: section.settings.width %}
+      {% if block.settings.enable-custom-width %}
+        {% assign width = block.settings.width %}
+      {% endif %}
+
+      {% case block.type %}
+        {% when 'image' %}
+
+          {% assign link = block.settings.link-url %}
+
+          <div
+            class="content-blocks--item"
+            data-type="{{ block.type }}"
+            data-width="{{ block.settings.width }}"
+            data-text-position="{{ block.settings.text-position }}"
+            data-text-overlap="{{ block.settings.text-overlap }}"
+            data-transparent-overlap="{{ block.settings.transparent-overlap }}"
+            data-alternative-color="{{ block.settings.alternative-color }}"
+            data-text-size="{{ block.settings.text-size }}"
+            style="
+              width: {{ width }}%;
+              padding: {{ section.settings.spacing | divided_by: 2 }}px;
+            "
+            {{ block.shopify_attributes }}
+          >
+            {% if link != blank %}<a href="{{ link }}">{% endif %}
+            <div class="content-blocks--item--container">
+              {% if block.settings.image %}
+                <div class="content-blocks--item--image">
+                  {%
+                    include "framework--image",
+                    img: block.settings.image,
+                    medium_width: 2048
+                  %}
+                </div>
+              {% endif %}
+
+              {% if block.settings.title != blank or block.settings.subtitle != blank %}
+                <div class="content-blocks--item--overlay-background"></div>
+                <div class="content-blocks--item--text">
+                  {% if block.settings.title != blank %}
+                    <h4 class="content-blocks--item-title">
+                      {{ block.settings.title | escape }}
+                    </h4>
+                  {% endif %}
+
+                  {% if block.settings.subtitle != blank %}
+                    <p class="content-blocks--item--subtitle">
+                      {{ block.settings.subtitle | escape }}
+                    </p>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              </div>
+            {% if link != blank %}</a>{% endif %}
+          </div>
+
+        {% when 'text' %}
+          <div
+            class="content-blocks--item"
+            data-type="{{ block.type }}"
+            data-content-block--width="{{ block.settings.width }}"
+            style="width: {{ width }}%;"
+            {{ block.shopify_attributes }}
+          >
+            <div class="content-blocks--item--text">
+              {% if block.settings.title != blank %}
+                <h3 class="content-blocks--item--title">
+                  {{ block.settings.title | escape }}
+                </h3>
+              {% endif %}
+
+              {% if  block.settings.content != blank %}
+                <div class="content-blocks--item--content">
+                  {{ block.settings.content }}
+                </div>
+              {% endif %}
+
+              {% if block.settings.link-text != blank %}
+                <a class="content-blocks--item--call-to-action" href="{{ section.settings.link-url }}">
+                  {{ block.settings.link-text }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+
+        {% when 'video' %}
+          <div
+            class="content-blocks--item"
+            data-type="{{ block.type }}"
+            data-content-block--width="{{ block.settings.width }}"
+            style="width: {{ width }}%;"
+            {{ block.shopify_attributes }}
+          >
+
+            {% if block.settings.video_url.size > 0 %}
+              <div class="responsive-video--root">
+                {% if block.settings.video_url.type == "youtube" %}
+                  <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}"
+                    frameborder="0"
+                    allowfullscreen
+                  >
+                  </iframe>
+                {% elsif block.settings.video_url.type == "vimeo" %}
+                  <iframe
+                    width="560"
+                    height="315"
+                    src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}"
+                    frameborder="0"
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    allowfullscreen
+                  >
+                  </iframe>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+     {% endcase %}
+
+    {% endfor %}
+  </div>
+
+  {% if section.settings.link-text != blank %}
+    <div class="content-blocks--footer">
+      <a class="content-blocks--call-to-action" href="{{ section.settings.link-url }}">
+        {{ section.settings.link-text }}
+      </a>
+    </div>
+  {% endif %}
+
+
+</div>
+
+{% schema %}
+{
+  "name": "Content blocks",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "background-color",
+      "label": "Background Color",
+      "type": "color"
+    },
+    {
+      "id": "full-width",
+      "label": "Full width",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "spacing",
+      "label": "Spacing between blocks",
+      "type": "range",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "id": "width",
+      "label": "Blocks per row",
+      "type": "range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "id": "vertical-alignment",
+      "label": "Vertical alignment",
+      "type": "select",
+      "options": [
+        { "label": "Top", "value": "top" },
+        { "label": "Center", "value": "center" },
+        { "label": "Bottom", "value": "bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "id": "mobile-width",
+      "label": "Blocks per row for small devices",
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "1"},
+        { "value": "2", "label": "2"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "link-text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "link-url",
+      "label": "Link to"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image with optional text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Add a title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Add a subtitle"
+        },
+        {
+          "type": "url",
+          "id": "link-url",
+          "label": "Link to"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "enable-custom-width",
+          "label": "Enable custom width",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "width",
+          "label": "Custom width",
+          "type": "range",
+          "min": 25,
+          "max": 100,
+          "step": 25,
+          "unit": "%",
+          "default": 25
+        },
+        {
+          "id": "text-size",
+          "label": "Text size",
+          "type": "range",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "id": "text-position",
+          "label": "Text Position",
+          "type": "select",
+          "options": [
+            { "label": "Top", "value": "top" },
+            { "label": "Bottom", "value": "bottom" },
+            { "label": "Left", "value": "left" },
+            { "label": "Center", "value": "center" },
+            { "label": "Right", "value": "right" }
+          ],
+          "default": "center"
+        },
+        {
+          "id": "text-overlap",
+          "label": "Overlap text",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "transparent-overlap",
+          "label": "Transparent overlap background",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "alternative-color",
+          "label": "Use alternative text color",
+          "type": "checkbox",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+        "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Add a title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your content</p>"
+        },
+        {
+          "type": "header",
+          "content": "Call to action"
+        },
+        {
+          "type": "text",
+          "id": "link-text",
+          "label": "Text",
+          "default": "Link to content"
+        },
+        {
+          "type": "url",
+          "id": "link-url",
+          "label": "Link to"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "enable-custom-width",
+          "label": "Enable custom width",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "width",
+          "label": "Custom width",
+          "type": "range",
+          "min": 25,
+          "max": 100,
+          "step": 25,
+          "unit": "%",
+          "default": 25
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "id": "video_url",
+          "label": "Video",
+          "type": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "enable-custom-width",
+          "label": "Enable custom width",
+          "type": "checkbox",
+          "default": false
+        },
+        {
+          "id": "width",
+          "label": "Custom width",
+          "type": "range",
+          "min": 25,
+          "max": 100,
+          "step": 25,
+          "unit": "%",
+          "default": 25
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Content blocks",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
