@@ -7,7 +7,7 @@
         <form action="/cart" method="post" novalidate="" class="">
           <div class="content fw--blocks spacing--2y">
             {% for item in cart.items %}
-{%- include 'bold-cart-item' with item -%}
+              {%- include 'bold-cart-item' with item -%}
               <div class="variant-id width--12 {% if forloop.last %}last-variant{% endif %}" data-variant-id="{{ item.variant_id }}">
 
                 <div class="width--12 width--medium-4 width--large-6 block">
@@ -20,7 +20,7 @@
                     <a href="{{ item.url }}">{{ item.title }}</a>
 
                     {% assign property_size = item.properties | size %}
-{{ bold_recurring_desc }}
+                    {{ bold_recurring_desc }}
                     <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_properties" style="display:none !important;"></span>{% if property_size > 0 %}
 
 {%- comment -%}
@@ -74,7 +74,7 @@
                           <br>
                         {% endunless %}
                       {% endfor %}
-{%- endcomment -%}
+                 {% endcomment %}
 {{ bold_item_properties }}
                     {% endif %}
                   </span>
@@ -111,28 +111,40 @@
               </div>
             </div>
             <div class="spacer spacing--3y show-for-small-medium"></div>
+
+
+              <div class="width--12">
+
+                <div class="width--12 width--medium-12 width--large-12 block text-align--center text-align--large-left">
+                  <span class="block width--large-8"></span>
+                  <p class="block width--12 width--large-4 spacing--3y font--size-4 show--small show--large cart-attribute__fiel">
+                    <label required for="delivery-radius">* Check if you're in our delivery radius</label>
+                    <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
+                    <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check
+                    </button>
+                  </p>
+                </div>
+
+            </div>
           </div>
 
           <div class="fw--blocks">
-             {% comment %} <div class="order-attributes width--large-12 text-align--center text-align--large-righy">
 
-              <p class="cart-attribute__field  width--12  width--large-6">
-                <label for="delivery-time">Delivery Time</label>
-                <input required class="required" id="delivery-time" type="text" name="attributes[Delivery Time]" value="{{ cart.attributes["Delivery Time"] }}">
-              </p>
-              <p class="cart-attribute__field width--12  width--large-6">
+
+            <div class="order-attributes width--large-12 text-align--center text-align--large-righy">
+
+
+              {% comment %} <p class="cart-attribute__field width--12  width--large-6">
                 <label for="delivery-time">Delivery Date</label>
                  <input required class="required" id="delivery-date" type="date" name="attributes[Delivery Date]" value="{{ cart.attributes["Delivery Date"] }}">
-              </p>
-            </div> {% endcomment %}
-
+              </p> {% endcomment %}
+            </div>
             <div class="order-notes width--large-6 text-align--center">
               {% if settings.cart--show-note %}
                 <p class="text-align--center text-align--large-left">{{ 'cart.order_notes' | t }}</p>
                 <textarea name="note">{{ note }}</textarea>
                 <div class="spacer spacing--4y show-for-small-medium"></div>
               {% endif %}
-
             </div>
 
 
@@ -141,12 +153,13 @@
               <div class="spacer spacing--2y"></div>
 
               <div class="fw--blocks spacing--3 compact--3x list text-align--center text-align--large-right">
-                <div><a class="continue-shopping text--underline text--uppercase" href="{{ shop.url }}/collections/all">{{ 'cart.continue' | t }}</a></div>
+                <div><a class="continue-shopping text--underline text--uppercase " href="{{ shop.url }}/collections/all">{{ 'cart.continue' | t }}</a></div>
                 {{ bold_ro_cart }}
-<div><button class="checkout font--accent button" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></div>
+<div><button class="checkout font--accent button disabled--zipcode" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></div>
+
                 {% if show_paypal and additional_checkout_buttons %}
                   <br />
-                  <div class="additional-checkout-buttons">
+                  <div class="additional-checkout-buttons disabled--zipcode">
                     {{ content_for_additional_checkout_buttons }}
                   </div>
                 {% endif %}
@@ -165,6 +178,36 @@
   </div>
 </div>
 
+<script>
+  // Check if zipcode is in radius
+  const nyc_zipcodes = [10453, 10457, 10460, 10458, 10467, 10468, 10451, 10452, 10456, 10454, 10455, 10459, 10474, 10463, 10471, 10466, 10469, 10470, 10475, 10461, 10462, 10464, 10465, 10472, 10473, 11212, 11213, 11216, 11233, 11238, 11209, 11214, 11228, 11204, 11218, 11219, 11230, 11234, 11236, 11239, 11223, 11224, 11229, 11235, 11201, 11205, 11215, 11217, 11231, 11203, 11210, 11225, 11226, 11207, 11208, 11211, 11222, 11220, 11232, 11206, 11221, 11237, 10026, 10027, 10030, 10037, 10039, 10001, 10011, 10018, 10019, 10020, 10036, 10029, 10035, 10010, 10016, 10017, 10022, 10012, 10013, 10014, 10004, 10005, 10006, 10007, 10038, 10280, 10002, 10003, 10009, 10021, 10028, 10044, 10065, 10075, 10128, 10023, 10024, 10025, 10031, 10032, 10033, 10034, 10040, 11361, 11362, 11363, 11364, 11354, 11355, 11356, 11357, 11358, 11359, 11360, 11365, 11366, 11367, 11412, 11423, 11432, 11433, 11434, 11435, 11436, 11101, 11102, 11103, 11104, 11105, 11106, 11374, 11375, 11379, 11385, 11691, 11692, 11693, 11694, 11695, 11697, 11004, 11005, 11411, 11413, 11422, 11426, 11427, 11428, 11429, 11414, 11415, 11416, 11417, 11418, 11419, 11420, 11421, 11368, 11369, 11370, 11372, 11373, 11377, 11378];
+
+const zipcode_btn = document.getElementById('zipcode');
+
+// Listen to button click, to check user submission if zipcode is in NYC
+zipcode_btn.addEventListener("click", (event) => {
+  const zipcodeEl = document.getElementById('delivery-radius');
+  const zipcodeEntered = parseInt(zipcodeEl.value);
+  const inRadius = zipcodeEntered ? nyc_zipcodes.includes(zipcodeEntered) : false;
+  const checkoutBtns = document.querySelectorAll('.disabled--zipcode');
+
+  if (inRadius) {
+    checkoutBtns.forEach((button) => {
+      button.classList.add('successful--zipcode');
+    });
+  } else {
+    checkoutBtns.forEach((button) => {
+      button.classList.remove('successful--zipcode');
+    });
+
+    if (window.confirm('Sorry you are out of our delivery radius. Select "OK" to head to our contact us to see what we can do. ')) {
+      window.location.href='/pages/our-approach';
+    };
+  }
+});
+
+
+</script>
 
 
 

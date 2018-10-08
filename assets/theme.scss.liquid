@@ -10575,3 +10575,33 @@ body .sdd-download-file {
 input[name="properties[Time]"]{
   content:'12:00 AM';
 }
+
+
+/* ========
+custom
+========= */
+.zipcode {
+  float: right;
+}
+
+button.disabled--zipcode,
+.disabled--zipcode .paypal-button {
+    cursor: not-allowed;
+    background-color: #8080802e;
+    color: #838282;
+    pointer-events: none;
+    opacity: .4;
+}
+
+button.successful--zipcode,
+.successful--zipcode .paypal-button {
+    cursor: pointer;
+    background-color: #131d60;
+    color: white;
+    pointer-events: all;
+    opacity: 1;
+}
+
+.delivery-radius {
+  font-size: 15px;
+}
