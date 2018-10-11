@@ -241,8 +241,15 @@ To use this file:
             {% continue %}
           {% endif %}
           {% assign option_title = p.first %}
-          <div class='bold_option_line'><span class="bold_option_title">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}</span><span class="bold_option_seperator">: </span>
-
+          <div class='bold_option_line {{p.first}}--property-line'>
+          {% comment %} Create data attributes to use to check if order time is too late for delivery time {% endcomment %}
+            {% if p.first == 'Delivery Time' or p.first == 'Delivery Date'  or p.first == 'tags'%}
+              {% assign pValue = p.first | replace: ' ', '-' %}
+              <span class="bold_option_title js-delivery-{{pValue}}" data-delivery-{{pValue}}="{{p.last}}">{{ pValue | replace: '__', '' | replace: '&amp;', '&' }}</span>
+            {% else %}
+              <span class="bold_option_title">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}</span>
+            {% endif %}
+            <span class="bold_option_seperator">: </span>
           {% comment %} DISPLAY UPLOAD LINKS AS LINKS, EVERYTHING ELSE AS TEXT{% endcomment %}
           {% if p.last contains '/uploads/' %}
           	<span class="bold_option_value"><a class="lightbox" href="{{ p.last }}">Uploaded File</a></span>

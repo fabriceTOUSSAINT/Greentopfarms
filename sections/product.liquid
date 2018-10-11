@@ -32,6 +32,7 @@
   </select>
 {% endcapture %}
 
+
 {% capture price_meta %}
   <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
   {% if product.available %}
@@ -170,8 +171,14 @@
                 <small>Some copy here about delivery dates</small>
                 <input required class="required" id="delivery-date" type="date" name="properties[Delivery Date]">
               </p>
-<div class="bold_options" data-product-id="{{ product.id }}"></div>
 
+              <p class="line-item-property__field tags--property-line">
+                {% assign tags =  product.tags | join: ',' %}
+                <input id="delivery-time" type="text" name="properties[tags]" value="{{ tags }}">
+              </p>
+
+<div class="bold_options" data-product-id="{{ product.id }}"></div>
+          <h3 class="product-page--variants-header">{{product.options.first}}</h3>
                 <div class="product-page--variants">
                   {{ variants }}
                 </div>
@@ -216,6 +223,7 @@
                 {% endif %}
 
 {{ bold_ro_widget }}
+
                 <button class="product-page--add-to-cart {{ cart_button_class }}" type="submit" name="add">
                   <span class="text">{{ 'products.add_to_cart' | t }}</span>
                   <span class="fw--loading_animation tiny" data-js-class="FrameworkLoadingAnimation">

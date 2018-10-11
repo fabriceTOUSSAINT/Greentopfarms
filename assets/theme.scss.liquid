@@ -10583,9 +10583,22 @@ custom
 .zipcode {
   float: right;
 }
+.order-cut-off-btn .contact-modal--button {
+  float: right;
+  color: #fff !important;
+  background-color: #131d60;
+}
 
-button.disabled--zipcode,
-.disabled--zipcode .paypal-button {
+.delivery-time-btn {
+    background-color: #fa5454;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: 600;
+    padding: 15px;
+}
+
+button.disabled--checkout,
+.disabled--checkout .paypal-button {
     cursor: not-allowed;
     background-color: #8080802e;
     color: #838282;
@@ -10593,8 +10606,8 @@ button.disabled--zipcode,
     opacity: .4;
 }
 
-button.successful--zipcode,
-.successful--zipcode .paypal-button {
+button.successful--checkout,
+.successful--checkout .paypal-button {
     cursor: pointer;
     background-color: #131d60;
     color: white;
@@ -10604,4 +10617,25 @@ button.successful--zipcode,
 
 .delivery-radius {
   font-size: 15px;
+}
+
+.hide-element,
+.tags--property-line {
+  display: none !important;
+}
+
+.product-page--variants-header {
+  padding: 0 0 5px 0;
+}
+
+.passed-cutoff {
+    background: #ff414c;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.passed-cutoff:before {
+  content: '*';
+  padding-right: 5px;
 }

@@ -92,6 +92,18 @@
     "color--header--cart": "#ffffff",
     "bg-color--header--cart": "#333333",
     "color--footer": "#505050",
+    "contact--enabled": true,
+    "menu": "main-menu",
+    "logo": "shopify:\/\/shop_images\/Primary-Stacked.png",
+    "inverted-logo": "",
+    "logo-height-range": 75,
+    "enable-search": true,
+    "contact--enabled": true,
+    "contact--text": "Give us a holler!",
+    "contact--type": "modal",
+    "contact--url": "",
+    "store--address": "Green Top Farms\n43-66 11th Street\nLong Island City, NY\n11101",
+    "store--hours": "",
     "sections": {
       "index--banner": {
         "type": "index--banner",
@@ -112,6 +124,22 @@
           "icon": "shopify:\/\/shop_images\/MOONSHINE.jpg",
           "text": "Add your announcement message",
           "link": ""
+        }
+      },
+      "cart": {
+        "type": "cart",
+        "settings":{
+          "menu": "main-menu",
+          "logo": "shopify:\/\/shop_images\/Primary-Stacked.png",
+          "inverted-logo": "",
+          "logo-height-range": 75,
+          "enable-search": true,
+          "contact--enabled": true,
+          "contact--text": "Give us a holler!",
+          "contact--type": "modal",
+          "contact--url": "",
+          "store--address": "Green Top Farms\n43-66 11th Street\nLong Island City, NY\n11101",
+          "store--hours": ""
         }
       },
       "header": {
