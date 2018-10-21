@@ -10639,3 +10639,66 @@ button.successful--checkout,
   content: '*';
   padding-right: 5px;
 }
+
+
+
+
+
+/* =========================================
+          Pages (About Us)
+  ========================================= */
+
+.page__about--section {
+  position: relative;
+  display: block;
+  margin: 40px 0;
+}
+
+.wide-wall {
+  max-width: 1400px;
+}
+
+.page__about--section-image-copy {
+    position: absolute;
+    width: 100%;
+    display: block;
+    color: #fff;
+    margin: 0 auto;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20% 15%;
+}
+
+.page__about--section-image-wrapper::before {
+  content: '';
+  background-color: rgba(0,0,0,.4);
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.page__about--section-image {
+  margin: 0 !important;
+}
+
+.page-about-us-custom {
+  {% comment %} background-color: {{ settings.bg-color--panel }}; {% endcomment %}
+}
+
+.page__about--section-copy-wrapper {
+    text-align: center;
+    padding: 40px 80px;
+}
+
+.page__about--section-image-copy .contact-modal--button {
+    background: white;
+    border: none !important;
+    color: black !important;
+}
+
+.page__about--image {
+    max-height: 250px;
+}

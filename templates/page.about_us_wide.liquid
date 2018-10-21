@@ -1,0 +1,80 @@
+{% assign about-image1 = 'GTF_Kitchen_1480_-7481.JPG' | file_url %}
+{% assign about-image2 = 'GTF_Kitchen_1480_-4784.JPG' | file_url %}
+{% assign about-image3 = 'GTF_HP_zerowaste_01.jpg' | file_url %}
+{% assign about-image_logo = 'Primary-Stacked_2x_f1b4279d-420c-4ccd-b3aa-9510ae32662c.png' | file_url %}
+
+<div class="spacing--4x page-about-us-custom" data-js-class="Page">
+  <article>
+    <div class="spacer spacing--5y"></div>
+    <h1 class="page-title font--heading text-align--center">{{ page.title }}</h1>
+    <div class="spacer spacing--4y"></div>
+    <div class="page-wrapper wide rte-content content wide-wall">
+
+<script>console.log({{ settings.bg-color--panel | json }})</script>
+    <div class='page__about--section'>
+      <div class='page__about--section-image-wrapper'>
+        <img class='page__about--section-image' src="{{ about-image1 }}" alt="{{ about-image1.alt }}">
+        <div class='page__about--section-image-copy'>
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+
+    <div class='page__about--section'>
+      <div class='page__about--section-copy-wrapper'>
+        <img class='page__about--image' src="{{ about-image_logo }}" alt="{{ about-image_logo.alt }}">
+        <h2>Some Header</h2>
+        <p>{{ page.content }}</p>
+      </div>
+    </div>
+
+    <div class='page__about--section'>
+      <div class='page__about--section-image-wrapper'>
+        <img class='page__about--section-image' src="{{ about-image2 }}" alt="{{ about-image2.alt }}">
+        <div class='page__about--section-image-copy'>
+          <p>{{ page.content }}</p>
+          <div class="page__about--section-image-copy-cta modal--link">
+            {% include 'partial--contact-modal' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='page__about--section'>
+      <div class='page__about--section-copy-wrapper'>
+        <img class='page__about--image' src="{{ about-image_logo }}" alt="{{ about-image_logo.alt }}">
+        <h2>Some Header</h2>
+        <p>{{ page.content }}</p>
+      </div>
+    </div>
+
+    <div class='page__about--section'>
+      <div class='page__about--section-image-wrapper'>
+        <img class='page__about--section-image' src="{{ about-image3 }}" alt="{{ about-image3.alt }}">
+        <div class='page__about--section-image-copy'>
+          <p>{{ page.content }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class='page__about--section'>
+      <div class='page__about--section-cta-wrapper'>
+        <h2>Some Header</h2>
+        <p>{{ page.content }}</p>
+        <div class="block width--medium-3 modal--link">
+            {% include 'partial--contact-modal' %}
+        </div>
+      </div>
+    </div>
+
+
+      {% comment %} logo above {% endcomment %}
+      {% comment %} About us content {{page.content}} {% endcomment %}
+
+      {% comment %} sub hero Image {% endcomment %}
+
+    </div>
+    <div class="spacer spacing--5y"></div>
+  </article>
+</div>
+
