@@ -172,9 +172,10 @@
                 <input required class="required" id="delivery-date" type="date" name="properties[Delivery Date]">
               </p>
 
+              {% comment %} Add tags to properites, but will be hidden on front end, used for triggering checkout cutoff logic {% endcomment %}
               <p class="line-item-property__field tags--property-line">
                 {% assign tags =  product.tags | join: ',' %}
-                <input id="delivery-time" type="text" name="properties[tags]" value="{{ tags }}">
+                <input type="text" name="properties[tags]" value="{{ tags }}">
               </p>
 
 <div class="bold_options" data-product-id="{{ product.id }}"></div>

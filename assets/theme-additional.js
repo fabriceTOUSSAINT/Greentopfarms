@@ -38,8 +38,8 @@ $(document).ready(function(){
 			});
 
 		// Calculate amount of hours until scheduled delivery time to determine if within order cutoff time
-		const individualCutoff = 8; // 8am;
-		const caterCutoff =0; // 12pm
+		const individualCutoff = 108; // 8am;
+		const caterCutoff = 100; // 12pm
 		let missedCheckoutTime = false;
 
 		const mainContent = document.querySelector('.layout--main-content  .content');

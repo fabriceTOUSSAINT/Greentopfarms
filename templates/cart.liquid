@@ -128,7 +128,9 @@
                 <div class='js-delivery-time-btn delivery-time-btn hide-element width--12 width--medium-12 width--large-12 block text-align--center text-align--large-left'>
                   <p class="block width--medium-9 text-align--center text-align--large-left">You are passed our order cut off! Catering is 12pm the day prior and Individual deliveries are 8am the day of, but please send us a note to see if we can still make it happen </p>
                   <div class="block width--medium-3 modal--link order-cut-off-btn">
-                      {% include 'partial--contact-modal' %}
+                      {% if section.settings.contact--enabled %}
+                          {% include 'partial--contact-modal' %}
+                      {% endif %}
                   </div>
                 </div>
 
@@ -186,7 +188,6 @@
 
   </div>
 </div>
-
 
 
 

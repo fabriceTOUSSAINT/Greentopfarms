@@ -98,7 +98,6 @@
     "inverted-logo": "",
     "logo-height-range": 75,
     "enable-search": true,
-    "contact--enabled": true,
     "contact--text": "Give us a holler!",
     "contact--type": "modal",
     "contact--url": "",
