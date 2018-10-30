@@ -1,4 +1,3 @@
-{%- include 'bold-ro' -%}
 {%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 {% capture product_meta %}
   <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
@@ -157,33 +156,41 @@
 
 
           <div class="product-page--cart-form">
+
             {% form 'product', product %}
-           {% if product.title contains 'Feast' %} <label for="quantity">Headcount</label>{% endif %}
-              <input type="number" name="quantity" {% if product.title contains 'Feast' %}value="10" min="10"{% else %} value="1" {% endif %}>
 
-              <p class="line-item-property__field">
-                <label for="delivery-time">Delivery Time</label>
-                <small>Some copy here about delivery times</small>
-                <input required class="required" id="delivery-time" type="text" name="properties[Delivery Time]">
-              </p>
-              <p class="line-item-property__field">
-                <label for="delivery-time">Delivery Date</label>
-                <small>Some copy here about delivery dates</small>
-                <input required class="required" id="delivery-date" type="date" name="properties[Delivery Date]">
-              </p>
+          {% if product.options.first and product.options.first != "Title" %}
+            <p class="line-item-property__field">
+              <h3 class="product-page--variants-header">{{product.options.first}}</h3>
+              <div class="product-page--variants">
+                {{ variants }}
+              </div>
+            </p>
+            {% endif %}
 
-              {% comment %} Add tags to properites, but will be hidden on front end, used for triggering checkout cutoff logic {% endcomment %}
-              <p class="line-item-property__field tags--property-line">
-                {% assign tags =  product.tags | join: ',' %}
-                <input type="text" name="properties[tags]" value="{{ tags }}">
-              </p>
+            {% if product.title contains 'Feast' %} <label for="quantity">Headcount</label>{% endif %}
 
-<div class="bold_options" data-product-id="{{ product.id }}"></div>
-          <h3 class="product-page--variants-header">{{product.options.first}}</h3>
-                <div class="product-page--variants">
-                  {{ variants }}
-                </div>
-              <div  class="product-page--price-n-button-wrapper">
+            <input type="number" name="quantity" {% if product.title contains 'Feast' %}value="10" min="10"{% else %} value="1" {% endif %}>
+
+            <p class="line-item-property__field">
+              <label for="delivery-time">Delivery Time</label>
+              <input required class="required" id="delivery-time" type="time" min="8:00" max="15:00" pattern="[0-9]{2}:[0-9]{2}" name="properties[Delivery Time]">
+
+              {% comment %} <input required class="required" id="delivery-time" type="text" name="properties[Delivery Time]"> {% endcomment %}
+            </p>
+            <p class="line-item-property__field">
+              <label for="delivery-time">Delivery Date</label>
+              <input required class="required" id="delivery-date" type="date" name="properties[Delivery Date]">
+            </p>
+
+            {% comment %} Add tags to properites, but will be hidden on front end, used for triggering checkout cutoff logic {% endcomment %}
+            <p class="line-item-property__field tags--property-line">
+              {% assign tags =  product.tags | join: ',' %}
+              <input type="text" name="properties[tags]" value="{{ tags }}">
+            </p>
+
+          <div class="bold_options" data-product-id="{{ product.id }}"></div>
+          <div  class="product-page--price-n-button-wrapper">
 
                 {% if product.price > 0 %}
                   <div
@@ -223,14 +230,12 @@
                   {% assign cart_button_class = 'button--secondary' %}
                 {% endif %}
 
-{{ bold_ro_widget }}
 
                 <button class="product-page--add-to-cart {{ cart_button_class }}" type="submit" name="add">
                   <span class="text">{{ 'products.add_to_cart' | t }}</span>
                   <span class="fw--loading_animation tiny" data-js-class="FrameworkLoadingAnimation">
                   </span>
                 </button>
-<!-- bold-ro-liquid --><div class="bold_add_to_orders" style="display: inline-block;"></div><!-- bold-ro-liquid -->
 
               </div>
 
