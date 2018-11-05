@@ -31,9 +31,15 @@ $(document).ready(function(){
 				disableCheckout(!inRadius);
 
 				if (!inRadius) {
+					zipcodeEl.classList.add('delivery-radius-fail');
+					zipcodeEl.classList.remove('delivery-radius-success');
+
 					if (window.confirm('Sorry you are out of our delivery radius. Select "OK" to head to our contact us to see what we can do. ')) {
 						window.location.href='/pages/our-approach';
 					};
+				} else {
+					zipcodeEl.classList.remove('delivery-radius-fail');
+					zipcodeEl.classList.add('delivery-radius-success');
 				}
 			});
 

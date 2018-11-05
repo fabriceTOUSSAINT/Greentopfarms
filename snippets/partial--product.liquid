@@ -75,6 +75,14 @@
               {% endif %}
               <span class="product--price">{{ price }}</span>
             {% endif %}
+            <script>console.log({{product | json}})</script>
+
+            {% if product.tags contains HalfTray %}
+              <span class="product--price-sub-head">per half tray</span>
+            {% endif %}
+            {% if product.tags contains Tray %}
+              <span class="product--price-sub-head">per tray</span>
+            {% endif %}
           </span>
 
           <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
@@ -103,6 +111,15 @@
               {% endif %}
               <span class="product--price">{{ price }}</span>
             {% endif %}
+
+            {% if product.tags contains 'HalfTray' %}
+              <span class="product--price-sub-head">per half tray</span>
+            {% endif %}
+            {% if product.tags contains 'Tray' %}
+              <span class="product--price-sub-head">per tray</span>
+            {% endif %}
+                        <script>console.log({{product.tags | json}})</script>
+
           </div>
           <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
         </div> <!-- .product--details--title-row -->

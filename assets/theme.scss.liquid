@@ -5048,7 +5048,7 @@ ul.x-menu--level-3--container {
   }
 }
 
-[data-product--view="grid"] .product--price-wrapper {
+{% comment %} [data-product--view="grid"] .product--price-wrapper { {% endcomment %}
   padding-left: 10px;
   float: right;
   position: relative;
@@ -10582,7 +10582,9 @@ custom
 ========= */
 .zipcode {
   float: right;
+  transition: all .2s ease;
 }
+
 .order-cut-off-btn .contact-modal--button {
   float: right;
   color: #fff !important;
@@ -10619,12 +10621,35 @@ button.successful--checkout,
   font-size: 15px;
 }
 
+.delivery-radius-success + .zipcode.button:before {
+    content: "\2714";
+    width: 10px;
+    height: 10px;
+    padding-right: 20px;
+}
+
+.delivery-radius-success + .zipcode.button {
+    background: green;
+}
+
+.delivery-radius-fail + .zipcode.button:before {
+    content: "\2715";
+    width: 10px;
+    height: 10px;
+    padding-right: 20px;
+}
+
+.delivery-radius-fail + .zipcode.button {
+    background: red;
+}
+
 .hide-element,
 .tags--property-line {
   display: none !important;
 }
 
 .product-page--variants-header {
+  font-family: 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif;
   padding: 0 0 5px 0;
 }
 
@@ -10764,4 +10789,13 @@ header.collection--header {
 .bold_option_line.Date--property-line .bold_option_seperator,
 .bold_option_line.Date--property-line .bold_option_value {
   display: initial;
+}
+
+.product--price-sub-head {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0px;
+    font-style: oblique;
+    text-align: right;
+    line-height: 10px;
 }

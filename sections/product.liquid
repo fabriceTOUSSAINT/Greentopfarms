@@ -161,16 +161,26 @@
 
           {% if product.options.first and product.options.first != "Title" %}
             <p class="line-item-property__field">
-              <h3 class="product-page--variants-header">{{product.options.first}}</h3>
               <div class="product-page--variants">
+                <label for="variants" class="product-page--variants-header">{{product.options.first}}</label>
                 {{ variants }}
               </div>
             </p>
             {% endif %}
+            <script>console.log({{product | json}})</script>
 
-            {% if product.title contains 'Feast' %} <label for="quantity">Headcount</label>{% endif %}
 
-            <input type="number" name="quantity" {% if product.title contains 'Feast' %}value="10" min="10"{% else %} value="1" {% endif %}>
+
+
+
+            {% if product.tags contains 'Headcount' %} <label for="Headcount">Headcount</label>{% endif %}
+            {% if product.tags contains 'Individual' %} <label for="quantity">Quantity</label>{% endif %}
+            {% if product.tags contains 'HalfTray' %} <label for="HalfTray">Qty of Half Trays</label>{% endif %}
+            {% if product.tags contains 'Tray' %} <label for="Tray">Qty of Trays</label>{% endif %}
+
+            <input type="number" name="quantity" {% if product.tags contains 'Headcount' %}value="10" min="10"{% else %} value="1" {% endif %}>
+
+
 
             <p class="line-item-property__field">
               <label for="delivery-time">Delivery Time</label>

@@ -165,7 +165,7 @@
 
               <div class="fw--blocks spacing--3 compact--3x list text-align--center text-align--large-right">
                 <div><a class="continue-shopping text--underline text--uppercase " href="{{ shop.url }}/collections/all">{{ 'cart.continue' | t }}</a></div>
-                {{ bold_ro_cart }}
+                {% comment %} {{ bold_ro_cart }} {% endcomment %}
 <div><button class="checkout font--accent button disabled--checkout" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></div>
 
                 {% if show_paypal and additional_checkout_buttons %}
