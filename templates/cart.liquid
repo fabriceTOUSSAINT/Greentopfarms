@@ -6,6 +6,7 @@
       <div>
         <form action="/cart" method="post" novalidate="" class="">
           <div class="content fw--blocks spacing--2y">
+          <script>console.log({{ cart | json }})</script>
             {% for item in cart.items %}
               {%- include 'bold-cart-item' with item -%}
               <div class="variant-id width--12 {% if forloop.last %}last-variant{% endif %}" data-variant-id="{{ item.variant_id }}">
@@ -156,6 +157,11 @@
               {% endif %}
             </div>
 
+            <h3 class="cart-donation">
+              <p>Donation or Tip: </p>
+              <input type="text" id="donate" />
+            </h3>
+
 
             <div class="width--large-6">
               <p class="text-align--center text-align--large-right">{{ 'cart.shipping_taxes_notification' | t }}</p>
@@ -166,6 +172,8 @@
               <div class="fw--blocks spacing--3 compact--3x list text-align--center text-align--large-right">
                 <div><a class="continue-shopping text--underline text--uppercase " href="{{ shop.url }}/collections/all">{{ 'cart.continue' | t }}</a></div>
                 {% comment %} {{ bold_ro_cart }} {% endcomment %}
+      <button class="checkout font--accent button button-jawn" type="submit" name="jawn">test button</button>
+
 <div><button class="checkout font--accent button disabled--checkout" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></div>
 
                 {% if show_paypal and additional_checkout_buttons %}

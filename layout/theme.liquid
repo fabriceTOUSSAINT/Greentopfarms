@@ -33,7 +33,6 @@
   {{ content_for_header }}
 {%- include 'bold-common' -%}
 {%- include 'bold-product' with product, hide_action: 'header' -%}
-{% comment %} {%- include 'bold-ro-init' -%} {% endcomment %}
 
 
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
@@ -169,7 +168,7 @@
   </script>
 
 
-
+  {% include 'donation-snippet' %}
 </body>
 </html>
 

@@ -220,7 +220,6 @@ To use this file:
     {{ custom_properties_display_check }}
   {% else %}
 	<div class="bold-properties bold-properties-{{ bold_item.properties[builder_id] }}  font--size-3">
-          <script>console.log({{bold_item.properties | json}})</script>
 
       {% for p in bold_item.properties %}
           {% assign underscore_hidden = false %}
@@ -244,7 +243,6 @@ To use this file:
           {% endif %}
           {% assign option_title = p.first %}
           <div class='bold_option_line {{p.first}}--property-line'>
-          <script>console.log({{p | json}})</script>
           {% comment %} Create data attributes to use to check if order time is too late for delivery time {% endcomment %}
             {% if p.first == 'Delivery Time' or p.first == 'Delivery Date'  or p.first == 'tags'%}
               {% assign pValue = p.first | replace: ' ', '-' %}

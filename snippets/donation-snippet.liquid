@@ -1,0 +1,42 @@
+<script type="text/javascript" charset="utf-8">
+//<![CDATA[
+// Including jQuery conditionnally.
+if (typeof jQuery === 'undefined') {
+    document.write({{ "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" | script_tag | json }});
+  document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
+}
+//]]>
+</script>
+
+<script>
+{% assign linklist = linklists['tips'] %}
+var id = {{ linklist.links.first.object.variants.first.id }};
+
+$(document).ready(function () {
+   $('button.button-jawn, input[name="goto_pp"], input[name="goto_gc"]').click(function(e) {
+    e.preventDefault();
+    var amount = $('#donate').val();
+
+    amount = amount * 100;
+    amount = parseInt(amount);
+
+    function addDonation(){
+        var params = {
+          type: 'POST',
+					url: '/cart/add.js',
+					data: 'quantity='+amount+'&id='+id,
+					dataType: 'json',
+					success: function(line_item) {
+						console.log("success!");
+            document.location.href = '/checkout';
+					},
+					error: function(e) {
+						console.log("fail", e);
+					}
+				};
+	    $.ajax(params);
+    }
+    addDonation();
+    });
+});
+</script>
