@@ -13,6 +13,13 @@ if (typeof jQuery === 'undefined') {
 var id = {{ linklist.links.first.object.variants.first.id }};
 
 $(document).ready(function () {
+
+  document.getElementById('donate').addEventListener('keypress', function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
+
    $('button.checkout, input[name="goto_pp"], input[name="goto_gc"]').click(function(e) {
     e.preventDefault();
     var amount = $('#donate').val();

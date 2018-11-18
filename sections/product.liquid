@@ -166,12 +166,6 @@
               </div>
             </p>
 
-            <script>console.log({{product  | json }})</script>
-
-
-
-
-
             {% if product.tags contains 'Headcount' %} <label for="Headcount">Headcount</label>{% endif %}
             {% if product.tags contains 'Individual' %} <label for="quantity">Quantity</label>{% endif %}
             {% if product.tags contains 'HalfTray' %} <label for="HalfTray">Qty of Half Trays</label>{% endif %}
@@ -197,7 +191,6 @@
             </p>
 
           <div class="bold_options" data-product-id="{{ product.id }}"></div>
-          <script>console.log({{product | json}})</script>
           <div  class="product-page--price-n-button-wrapper">
 
                 {% if product.price > 0 %}

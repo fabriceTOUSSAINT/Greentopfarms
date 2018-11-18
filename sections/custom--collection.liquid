@@ -9,8 +9,6 @@
   {% assign collection_tags_exist = true %}
 {% endif %}
 
-<script>console.warn('JAWN custom');</script>
-
 {% paginate collection.products by 24 %}
 
 <div
@@ -55,7 +53,7 @@
           {% for product in collections[collection.handle].products  %}
 {%- include 'bold-product' with product, hide_action: 'skip' -%}
             {% if product.tags contains tag %}
-            {% comment %} <script>console.log({{product.tags | json }})</script> {% endcomment %}
+
               {% assign tag_count = tag_count | plus: 1 %}
             {% endif %}
           {% endfor %}
@@ -119,19 +117,15 @@
 
     <div class="collection--right-column">
       <div class="collection--products fw--blocks">
-            <script>console.log({{current_tags | json }})</script>
 
         {% if current_tags.size > 0 %}
           {% for product in collection.products %}
-            {% comment %} <script>console.log({{product.tags | json }})</script> {% endcomment %}
+
 
             {%- include 'bold-product' with product, hide_action: 'skip' -%}
-            {% comment %} <script>console.warn({{product.tags.length | json }})</script>
-            <script>console.warn({{product.tags.size | json }})</script> {% endcomment %}
 
 
             {% for tag in product.tags %}
-            <script>console.log({{tag | json }})</script>
               {% if current_tags contains tag %}
                 <div class="collection--product">
                   {% include 'partial--product', view: 'list' %}
@@ -141,7 +135,6 @@
           {% endfor %}
         {% else %}
 
-            <script>console.log({{collection | json }})</script>
 
           {% for product in collection.products %}
             {% if forloop.index == 1  and product.tags and product.tags contains 'Featured' %}
@@ -163,7 +156,7 @@
               </div>
             {% endif %}
             {%- include 'bold-product' with product, hide_action: 'skip' -%}
-            {% comment %} <script>console.log({{forloop.index | json }})</script> {% endcomment %}
+
 
 
           {% endfor %}

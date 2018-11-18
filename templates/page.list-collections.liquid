@@ -22,16 +22,6 @@
   <div class="jawn grid-uniform{% if uses_minimal_framework %} row{% endif %} clearfix">
 
 {% assign jawn = linklists.all-collections.links | map: object %}
-<script>console.log({{jawn | json }})</script>
-
-{% comment %} <script>console.log({{linklists[page.handle].links | pprint }})</script>
-<script>console.log({{linklists[page.handle] | pprint }})</script>
-<script>console.log({{page | pprint }})</script>
-<script>console.log({{product | json }})</script> {% endcomment %}
-
-
-
-
 
     {% for link in linklists[page.handle].links %}
 

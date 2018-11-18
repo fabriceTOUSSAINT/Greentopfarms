@@ -10885,6 +10885,7 @@ header.collection--header {
 
 .collection-custom-featured .product--title {
   font-weight: 600;
+  padding-bottom: 8px;
 }
 
 .collection-custom-featured .product--details {
@@ -10897,13 +10898,14 @@ header.collection--header {
 
 .collection-custom-featured .product--excerpt {
   font-size: 13px;
+  padding-bottom: 5px;
 }
 
 .collection-description {
-    max-width: 1000px;
-    padding: 5px 15px 0 230px;
+    padding: 5px 50px 0 250px;
     order: 2;
     text-align: left;
+    width: 100%;
 }
 
 .collection-description h1,
@@ -10922,4 +10924,15 @@ header.collection--header {
 
 .page__about--section-image-copy img {
     max-width: 850px;
+}
+
+.tip-block.block:after {
+    content: "$";
+    position: absolute;
+    bottom: 24px;
+    left: 10px;
+}
+
+.tip-block.block input {
+  padding-left: 23px;
 }

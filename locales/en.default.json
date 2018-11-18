@@ -158,7 +158,7 @@
     "update_cart": "Update Cart",
     "subtotal": "Subtotal",
     "remove_item": "Remove this item",
-    "shipping_taxes_notification": "Delivery & taxes calculated at checkout",
+    "shipping_taxes_notification": "Delivery, tips & taxes calculated at checkout",
     "order_notes": "Leave a note with your order"
   },
   "blog": {

@@ -9,36 +9,39 @@
             {% for item in cart.items %}
               <div class="variant-id width--12 {% if forloop.last %}last-variant{% endif %}" data-variant-id="{{ item.variant_id }}">
 
-                <div class="width--12 width--medium-4 width--large-6 block">
-                  <span class="image block width--6 width--medium-12 width--large-4 spacing--3 text-align--center text-align--large-left">
+                <div class="width--12 block">
+                  <span class="image block width--6 width--medium-12 width--large-2 spacing--3 text-align--center text-align--large-left">
                     <a href="{{ item.url | within: collections.all }}">
                       {% include "framework--image", image: item.image %}
                     </a>
                   </span>
-                  <span class="title block width--12 width--large-8 spacing--3 font--size-4 show--small show--large">
-                    <a href="{{ item.url }}">{{ item.title }}</a>
+
+                  <span class="block width--12 width--large-7">
+                    <span class="title block width--12 width--large-8 spacing--3 font--size-4">
+                      <a href="{{ item.url }}">{{ item.title }}</a>
+                    </span>
+                      {% assign property_size = item.properties | size %}
+                      <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_properties" style="display:none !important;"></span>
+
+
+                      {% if property_size > 0 %}
+                        <div class='cart-item-properties block width--12 width--large-8 spacing--2'>
+                          {% for p in item.properties %}
+
+
+                              {% if p.first == 'Delivery Time' %}
+                                <div class="cart-item-properties-individual">
+                                  <span class="js-delivery-Delivery-Time" data-delivery-Delivery-Time="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%I:%M %p"}}</span>
+                                </div>
+                              {% elsif p.first == 'Delivery Date' %}
+                                <div class="cart-item-properties-individual">
+                                  <span class="js-delivery-Delivery-Date" data-delivery-Delivery-Date="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%A, %b %e, %Y"}}</span>
+                                </div>
+                              {% endif %}
+                          {% endfor%}
+                        </div>
+                      {% endif %}
                   </span>
-                    {% assign property_size = item.properties | size %}
-                    <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_properties" style="display:none !important;"></span>
-
-
-                    {% if property_size > 0 %}
-                      <div class='cart-item-properties block width--12 width--large-8 spacing--2 show--small show--large'>
-                        {% for p in item.properties %}
-
-
-                            {% if p.first == 'Delivery Time' %}
-                              <div class="cart-item-properties-individual">
-                                <span class="js-delivery-Delivery-Time" data-delivery-Delivery-Time="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%I:%M %p"}}</span>
-                              </div>
-                            {% elsif p.first == 'Delivery Date' %}
-                              <div class="cart-item-properties-individual">
-                                <span class="js-delivery-Delivery-Date" data-delivery-Delivery-Date="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%A, %b %e, %Y"}}</span>
-                              </div>
-                            {% endif %}
-                        {% endfor%}
-                      </div>
-                    {% endif %}
 
 {% comment %}
                     {% assign propertySize = item.properties | size %}
@@ -59,7 +62,7 @@
                   {% comment %} {% endfor%} {% endcomment %}
 
                   {% comment %} </span> {% endcomment %}
-
+        <span class="block width--large-3">
                   <span class="price spacing--3 font--size-3 money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display:none !important;"></span>{{ item.price | money }}</span>
                   <span class="quantity spacing--3">
                     <div class="input--number">
@@ -75,6 +78,7 @@
                       {% include 'snippet-symbol' with 'cross-circle' %}
                     </a>
                   </span>
+          </span>
                 </div>
               </div>
               <div class="spacer spacing--3y"></div>
@@ -99,13 +103,20 @@
                 <div class="width--12 width--medium-12 width--large-12 block text-align--center text-align--large-left">
                   <span class="block width--large-8"></span>
                   <div class="block width--12 width--large-4 spacing--3y font--size-4 show--small show--large cart-attribute__field">
-                    <label>Donation or Tip: </label>
-                    <input type="number" id="donate" step=0.01 />
 
+                  <span class="block tip-block">
+                    <label>Donation or Tip: </label>
+                    <input type="number" id="donate" min="1" step="any" />
+                  </span>
+
+                  <span class="block">
                     <label required for="delivery-radius">* Check if you're in our delivery radius</label>
                     <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
                     <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check
                     </button>
+                  </span>
+
+
 
                   </div>
                 </div>
