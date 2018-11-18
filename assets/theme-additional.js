@@ -44,61 +44,62 @@ $(document).ready(function(){
 			});
 
 		// Calculate amount of hours until scheduled delivery time to determine if within order cutoff time
-		const individualCutoff = 108; // 8am;
-		const caterCutoff = 100; // 12pm
+		const individualCutoff = 8; // 8am;
+		const caterCutoff = 12; // 12pm
 		let missedCheckoutTime = false;
-
 		const mainContent = document.querySelector('.layout--main-content  .content');
 		const cartItems = mainContent.querySelectorAll('.variant-id');
-		const todaysDate = new Date();
 
 		cartItems.forEach((item, index) => {
 			const dateEl = item.querySelector('.js-delivery-Delivery-Date');
 			const timeEl = item.querySelector('.js-delivery-Delivery-Time');
-			const tagEl = item.querySelector('.js-delivery-tags');
 
 			const date = dateEl.dataset.deliveryDeliveryDate;
 			const time = timeEl.dataset.deliveryDeliveryTime;
-			let tags = [];
-
-			if (tagEl) {
-				const tagString = tagEl.dataset.deliveryTags;
-				tags = tagString.split(',');
-			}
-
 
 			const deliveryTime = new Date(`${date} ${time}`).getTime();
-			const deliveryDate = new Date(date);
+			const deliveryDate = new Date(`${date} GMT-0500`).getDate();
 			const currentTime = new Date().getTime();
 			const currentHour = new Date().getHours();
+			const todaysDate = new Date().getDate();
+
+
 			const timeRemaining = parseInt((deliveryTime - currentTime) / 1000);
 			const hoursLeft = parseInt(timeRemaining / 3600);
-			const daysAwayFromDelivery = deliveryDate.getDate() - todaysDate.getDate();
+			const daysAwayFromDelivery = deliveryDate - todaysDate;
 
-			//TODO: figure out how to know
-			const isCater = tags.includes('Catering');
-			const isIndividual = tags.includes('Individual');
-			const caterDeliveryCutoff = daysAwayFromDelivery <= 1;
-			const individualDeliveryCutOff = daysAwayFromDelivery <= 0;
+			window.Shopify.getCart(function (result) {
+				const productTags = result.items[index].properties.tags.split(',');
+				const isCatering = productTags.includes('Catering');
+				const isIndividual = productTags.includes('Individual');
 
-			// catering
-			if (caterDeliveryCutoff && isCater && currentHour >= caterCutoff) {
-				dateEl.classList.add('passed-cutoff');
-				timeEl.classList.add('passed-cutoff');
-				missedCheckoutTime = true;
-			} else if (individualDeliveryCutOff <= 0 && isIndividual && currentHour >= individualCutoff) {
-				dateEl.classList.add('passed-cutoff');
-				timeEl.classList.add('passed-cutoff');
-				missedcheckoutTime = true;
-			}
+				const isCaterDeliveryCutoff = isCatering && (hoursLeft <= 24);
+				const isCaterTimeCutoff = (currentHour >= caterCutoff) || (deliveryTime <= currentHourTime);
+
+				const isIndividualDeliveryCutoff = isIndividual && (daysAwayFromDelivery <= 0);
+				const isIndividualTimeCutoff = (currentHour >= individualCutoff) || (deliveryTime <= currentHourTime);
+
+				// catering
+				if (isCaterDeliveryCutoff && isCaterTimeCutoff) {
+					dateEl.classList.add('past-cutoff');
+					timeEl.classList.add('past-cutoff');
+					missedCheckoutTime = true;
+				} else if (isIndividualDeliveryCutoff && isIndividualTimeCutoff) {
+					dateEl.classList.add('past-cutoff');
+					timeEl.classList.add('past-cutoff');
+					missedcheckoutTime = true;
+				}
+
+				if (missedCheckoutTime) {
+					const cutOffBtn = document.querySelector('.js-delivery-time-btn');
+					cutOffBtn.classList.remove('hide-element');
+					disableCheckout(true);
+				};
+
+			});
 		});
-
-		if (missedCheckoutTime) {
-			const cutOffBtn = document.querySelector('.js-delivery-time-btn');
-			cutOffBtn.classList.remove('hide-element');
-			disableCheckout(true);
-		};
 	}
+
 });
 
 function disableCheckout(toDisable) {

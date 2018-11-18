@@ -31,9 +31,8 @@
   {% include 'partial--webfont' %}
 
   {{ content_for_header }}
-{%- include 'bold-common' -%}
+  {%- include 'bold-common' -%}
 {%- include 'bold-product' with product, hide_action: 'header' -%}
-
 
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
 

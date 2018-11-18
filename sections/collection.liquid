@@ -23,6 +23,7 @@
   <header class="collection--header">
     <div class="collection--title">
       <h2>{{ collection.title }}</h2>
+      <script>console.log({{collection | json}})</script>
       {% unless collection.description == blank %}
         <h3>{{ collection.description }}</h3>
       {% endunless %}

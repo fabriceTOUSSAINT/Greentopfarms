@@ -1,14 +1,12 @@
-{%- include 'bold-cart' -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/af.js" type="text/javascript"></script>
+
 <div class="wrapper">
   <div class="panel">
     {% if cart.item_count > 0 %}
-
       <div>
         <form action="/cart" method="post" novalidate="" class="">
           <div class="content fw--blocks spacing--2y">
-          <script>console.log({{ cart | json }})</script>
             {% for item in cart.items %}
-              {%- include 'bold-cart-item' with item -%}
               <div class="variant-id width--12 {% if forloop.last %}last-variant{% endif %}" data-variant-id="{{ item.variant_id }}">
 
                 <div class="width--12 width--medium-4 width--large-6 block">
@@ -19,68 +17,50 @@
                   </span>
                   <span class="title block width--12 width--large-8 spacing--3 font--size-4 show--small show--large">
                     <a href="{{ item.url }}">{{ item.title }}</a>
-
-                    {% assign property_size = item.properties | size %}
-                    {{ bold_recurring_desc }}
-                    <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_properties" style="display:none !important;"></span>{% if property_size > 0 %}
-
-{%- comment -%}
-{% for p in item.properties %}
-				{%- if p.first.first == '_' -%}{%- continue -%}{%- endif -%}
-                        {% unless p.last == blank %}
-                          {{ p.first }}:
-
-                          {% comment %}
-                            Check if there was an uploaded file associated
-                          {% endcomment %}
-                          {% if p.last contains '/uploads/' %}
-                            <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
-                          {% else %}
-                            {{ p.last }}
-                          {% endif %}
-
-                          <br>
-                        {% endunless %}
-                      {% endfor %}
-{%- endcomment -%}
-{{ bold_item_properties }}
-                    {% endif %}
-
                   </span>
-                </div>
-
-                <div class="right-column width--12 width--medium-8 width--large-6 block spacing--3y text-align--center text-align--large-right">
-
-                  <span class="title block width--12 spacing--3 font--size-4 show--medium text-align--left">
-                    <a href="{{ item.url }}">{{ item.title }}</a>
-
                     {% assign property_size = item.properties | size %}
+                    <span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_properties" style="display:none !important;"></span>
+
+
                     {% if property_size > 0 %}
+                      <div class='cart-item-properties block width--12 width--large-8 spacing--2 show--small show--large'>
+                        {% for p in item.properties %}
 
-{%- comment -%}
-{% for p in item.properties %}
-				{%- if p.first.first == '_' -%}{%- continue -%}{%- endif -%}
-                        {% unless p.last == blank %}
-                          {{ p.first }}:
 
-                          {% comment %}
-                            Check if there was an uploaded file associated
-                          {% endcomment %}
-                          {% if p.last contains '/uploads/' %}
-                            <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
-                          {% else %}
-                            {{ p.last }}
-                          {% endif %}
-
-                          <br>
-                        {% endunless %}
-                      {% endfor %}
-                 {% endcomment %}
-{{ bold_item_properties }}
+                            {% if p.first == 'Delivery Time' %}
+                              <div class="cart-item-properties-individual">
+                                <span class="js-delivery-Delivery-Time" data-delivery-Delivery-Time="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%I:%M %p"}}</span>
+                              </div>
+                            {% elsif p.first == 'Delivery Date' %}
+                              <div class="cart-item-properties-individual">
+                                <span class="js-delivery-Delivery-Date" data-delivery-Delivery-Date="{{p.last}}">{{ p.first | replace: '__', '' | replace: '&amp;', '&' }}: {{ p.last | date: "%A, %b %e, %Y"}}</span>
+                              </div>
+                            {% endif %}
+                        {% endfor%}
+                      </div>
                     {% endif %}
-                  </span>
 
-                  <span class="price spacing--3 font--size-3 money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display:none !important;"></span>{{ bold_item_price | money }}</span>
+{% comment %}
+                    {% assign propertySize = item.properties | size %}
+                      {% if propertySize > 0 %}
+                          {% for p in item.properties %}
+                              {% assign first_character_in_key = p.first | truncate: 1, '' %}
+                              {% unless p.last == blank or first_character_in_key == '_' %}
+                                  {{ p.first }}:
+                                  {% if p.last contains '/uploads/' %}
+                                    <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                                  {% else %}
+                                      {{ p.last }}
+                                  {% endif %}
+                              {% endunless %}
+                          {% endfor %}
+                      {% endif %} {% endcomment %}
+
+                  {% comment %} {% endfor%} {% endcomment %}
+
+                  {% comment %} </span> {% endcomment %}
+
+                  <span class="price spacing--3 font--size-3 money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display:none !important;"></span>{{ item.price | money }}</span>
                   <span class="quantity spacing--3">
                     <div class="input--number">
                       <input type="text" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="1" pattern="[1-9]*" />
@@ -108,7 +88,7 @@
               <div class="width--12 width--large-8 block"></div>
               <div class="block spacing--3y width--12 width--large-4 font--size-3 text--bold text-align--large-right text--uppercase">
                 <span class="spacing--3">{{ 'cart.subtotal' | t }}</span>
-                <span class="total spacing--3 money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total" style="display:none !important;"></span>{{ bold_cart_total_price | money }}</span>
+                <span class="total spacing--3 money"><span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_total" style="display:none !important;"></span>{{ cart.total_price | money }}</span>
               </div>
             </div>
             <div class="spacer spacing--3y show-for-small-medium"></div>
@@ -118,16 +98,20 @@
 
                 <div class="width--12 width--medium-12 width--large-12 block text-align--center text-align--large-left">
                   <span class="block width--large-8"></span>
-                  <p class="block width--12 width--large-4 spacing--3y font--size-4 show--small show--large cart-attribute__fiel">
+                  <div class="block width--12 width--large-4 spacing--3y font--size-4 show--small show--large cart-attribute__field">
+                    <label>Donation or Tip: </label>
+                    <input type="number" id="donate" step=0.01 />
+
                     <label required for="delivery-radius">* Check if you're in our delivery radius</label>
                     <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
                     <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check
                     </button>
-                  </p>
+
+                  </div>
                 </div>
 
                 <div class='js-delivery-time-btn delivery-time-btn hide-element width--12 width--medium-12 width--large-12 block text-align--center text-align--large-left'>
-                  <p class="block width--medium-9 text-align--center text-align--large-left">You are passed our order cut off! Catering is 12pm the day prior and Individual deliveries are 8am the day of, but please send us a note to see if we can still make it happen </p>
+                  <p class="block width--medium-9 text-align--center text-align--large-left">You are past our order cut off! Catering is 12pm the day prior and Individual deliveries are 8am the day of, but please send us a note to see if we can still make it happen </p>
                   <div class="block width--medium-3 modal--link order-cut-off-btn">
                       {% if section.settings.contact--enabled %}
                           {% include 'partial--contact-modal' %}
@@ -156,11 +140,11 @@
                 <div class="spacer spacing--4y show-for-small-medium"></div>
               {% endif %}
             </div>
-
+{% comment %}
             <h3 class="cart-donation">
               <p>Donation or Tip: </p>
               <input type="text" id="donate" />
-            </h3>
+            </h3> {% endcomment %}
 
 
             <div class="width--large-6">
@@ -171,12 +155,11 @@
 
               <div class="fw--blocks spacing--3 compact--3x list text-align--center text-align--large-right">
                 <div><a class="continue-shopping text--underline text--uppercase " href="{{ shop.url }}/collections/all">{{ 'cart.continue' | t }}</a></div>
-                {% comment %} {{ bold_ro_cart }} {% endcomment %}
-      <button class="checkout font--accent button button-jawn" type="submit" name="jawn">test button</button>
+
 
 <div><button class="checkout font--accent button disabled--checkout" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button></div>
 
-                {% if show_paypal and additional_checkout_buttons %}
+                {% if additional_checkout_buttons %}
                   <br />
                   <div class="additional-checkout-buttons disabled--checkout">
                     {{ content_for_additional_checkout_buttons }}
