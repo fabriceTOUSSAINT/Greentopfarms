@@ -8,7 +8,6 @@
           <div class="content fw--blocks spacing--2y">
             {% for item in cart.items %}
               <div class="variant-id width--12 {% if forloop.last %}last-variant{% endif %}" data-variant-id="{{ item.variant_id }}">
-
                 <div class="width--12 block">
                   <span class="image block width--6 width--medium-12 width--large-2 spacing--3 text-align--center text-align--large-left">
                     <a href="{{ item.url | within: collections.all }}">

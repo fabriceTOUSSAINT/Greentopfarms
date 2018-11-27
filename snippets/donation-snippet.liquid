@@ -34,7 +34,6 @@ $(document).ready(function () {
 					data: 'quantity='+amount+'&id='+id,
 					dataType: 'json',
 					success: function(line_item) {
-						console.log("success!");
             document.location.href = '/checkout';
 					},
 					error: function(e) {

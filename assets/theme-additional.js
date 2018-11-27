@@ -21,8 +21,17 @@ $(document).ready(function(){
 
 			const zipcode_btn = document.getElementById('zipcode');
 
+			document.getElementById('delivery-radius').addEventListener('keypress', function(event) {
+        if (event.keyCode == 13) {
+						event.preventDefault();
+						checkZipCode(event);
+        }
+			});
+
 			// Listen to button click, to check user submission if zipcode is in NYC
-			zipcode_btn.addEventListener("click", (event) => {
+			zipcode_btn.addEventListener("click", (event) => checkZipCode(event));
+
+			const checkZipCode = (event) => {
 				const zipcodeEl = document.getElementById('delivery-radius');
 				const zipcodeEntered = parseInt(zipcodeEl.value);
 				const inRadius = zipcodeEntered ? nyc_zipcodes.includes(zipcodeEntered) : false;
@@ -41,7 +50,7 @@ $(document).ready(function(){
 					zipcodeEl.classList.remove('delivery-radius-fail');
 					zipcodeEl.classList.add('delivery-radius-success');
 				}
-			});
+			};
 
 		// Calculate amount of hours until scheduled delivery time to determine if within order cutoff time
 		const individualCutoff = 8; // 8am;
