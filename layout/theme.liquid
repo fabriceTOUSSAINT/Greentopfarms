@@ -31,10 +31,8 @@
   {% include 'partial--webfont' %}
 
   {{ content_for_header }}
-{%- include 'bold-common' -%}
+  {%- include 'bold-common' -%}
 {%- include 'bold-product' with product, hide_action: 'header' -%}
-{%- include 'bold-ro-init' -%}
-
 
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
 
@@ -86,6 +84,8 @@
 
   {{ "/services/javascripts/currencies.js" | script_tag }}
   {{ 'theme.min.js' | asset_url | script_tag }}
+  {{ 'theme-additional.js' | asset_url | script_tag }}
+
 </head>
 
 {% capture body_classes %}
@@ -151,7 +151,7 @@
         var dd = today.getDate()+1;
         var mm = today.getMonth()+1; //January is 0!
         var yyyy = today.getFullYear();
-        
+
         if ( parseInt(dd) < 10 ){
           dd = '0'+String(dd);
         }
@@ -167,7 +167,7 @@
   </script>
 
 
-
+  {% include 'donation-snippet' %}
 </body>
 </html>
 

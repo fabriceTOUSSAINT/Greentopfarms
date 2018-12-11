@@ -75,6 +75,13 @@
               {% endif %}
               <span class="product--price">{{ price }}</span>
             {% endif %}
+
+            {% if product.tags contains HalfTray %}
+              <span class="product--price-sub-head">per half tray</span>
+            {% endif %}
+            {% if product.tags contains Tray %}
+              <span class="product--price-sub-head">per tray</span>
+            {% endif %}
           </span>
 
           <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
@@ -102,6 +109,13 @@
                 <span class="product--from">{{ 'collections.from' | t }}</span>
               {% endif %}
               <span class="product--price">{{ price }}</span>
+            {% endif %}
+
+            {% if product.tags contains 'HalfTray' %}
+              <span class="product--price-sub-head">per half tray</span>
+            {% endif %}
+            {% if product.tags contains 'Tray' %}
+              <span class="product--price-sub-head">per tray</span>
             {% endif %}
           </div>
           <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
