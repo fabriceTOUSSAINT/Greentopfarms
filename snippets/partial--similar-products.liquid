@@ -16,7 +16,7 @@
 
     <div class="similar-products--list">
       {% assign current_product_handle = product.handle %}
-      {% for product in collection.products limit: 5 %}
+      {% for product in collection.products limit: 9 %}
 {%- include 'bold-product' with product, hide_action: 'skip' -%}
         {% if product.handle == current_product_handle %}
           {% continue %}

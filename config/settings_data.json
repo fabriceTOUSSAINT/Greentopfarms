@@ -5,7 +5,7 @@
     "color--accent": "#f7ede0",
     "bdr-color--page": "#282726",
     "bg-color--body": "#ffffff",
-    "color--body": "#282726",
+    "color--body": "#131d60",
     "color--alternative": "#ffffff",
     "color--link-underline": "#ed6a1e",
     "bg-color--panel": "#f7ede0",
@@ -55,22 +55,23 @@
     "recurring-orders-inherit-classes": false,
     "recurring-orders-additional-button-classes": "",
     "checkout_header_image": "",
-    "checkout_logo_image": "",
-    "checkout_logo_position": "left",
-    "checkout_logo_size": "medium",
+    "checkout_logo_image": "shopify:\/\/shop_images\/Primary-Arched_2x_77861d7c-1013-4b08-ab31-9b8aaf897bff.png",
+    "checkout_logo_position": "center",
+    "checkout_logo_size": "large",
     "checkout_body_background_image": "",
-    "checkout_body_background_color": "#fff",
+    "checkout_body_background_color": "#ffffff",
     "checkout_input_background_color_mode": "white",
     "checkout_sidebar_background_image": "",
     "checkout_sidebar_background_color": "#fafafa",
     "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
     "checkout_body_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
-    "checkout_accent_color": "#197bbd",
-    "checkout_button_color": "#197bbd",
-    "checkout_error_color": "#e32c2b",
-    "store--address": "391 Sutter St,\r\nSan Francisco",
+    "checkout_accent_color": "#1b245e",
+    "checkout_button_color": "#1b245e",
+    "checkout_error_color": "#ed6a1e",
+    "store--address": "41-28 37th Street\nLong Island City, NY\n11101",
     "store--map-api-key": "",
-    "store--hours": "<p><strong>Monday - Friday<\/strong><br>12pm - 8pm<br><br><strong>Saturday - Sunday<\/strong><br>12pm - 5pm<\/p>",
+    "store--hours": "",
+    "store--phone": "347-946-1584",
     "color--link": "#cdaa6a",
     "color--link--hover": "#ebebeb",
     "color--header--contact-button": "#cdaa6a",
@@ -92,6 +93,15 @@
     "color--header--cart": "#ffffff",
     "bg-color--header--cart": "#333333",
     "color--footer": "#505050",
+    "contact--enabled": true,
+    "menu": "main-menu",
+    "logo": "shopify:\/\/shop_images\/Primary-Stacked.png",
+    "inverted-logo": "",
+    "logo-height-range": 75,
+    "enable-search": true,
+    "contact--text": "Give us a holler!",
+    "contact--type": "modal",
+    "contact--url": "",
     "sections": {
       "index--banner": {
         "type": "index--banner",
@@ -108,9 +118,9 @@
         "type": "announcement",
         "settings": {
           "enabled": false,
-          "home-page-only": true,
-          "icon": "shopify:\/\/shop_images\/MOONSHINE.jpg",
-          "text": "Add your announcement message",
+          "home-page-only": false,
+          "icon": "",
+          "text": "Howdy! We're closed until Jan 2nd, 2019. Feel free to place an order for the New Year!",
           "link": ""
         }
       },
@@ -119,14 +129,14 @@
         "settings": {
           "menu": "main-menu",
           "logo": "shopify:\/\/shop_images\/Primary-Stacked.png",
-          "inverted-logo": "",
+          "inverted-logo": "shopify:\/\/shop_images\/Primary-Arched_2x_77861d7c-1013-4b08-ab31-9b8aaf897bff.png",
           "logo-height-range": 75,
           "enable-search": true,
           "contact--enabled": true,
-          "contact--text": "Give us a holler!",
+          "contact--text": "GIVE US A HOLLER!",
           "contact--type": "modal",
           "contact--url": "",
-          "store--address": "Green Top Farms\n43-66 11th Street\nLong Island City, NY\n11101",
+          "store--address": "",
           "store--hours": ""
         }
       },
@@ -188,7 +198,7 @@
               "image": "shopify:\/\/shop_images\/GTF_HP_OurFarm_01.jpg",
               "title": "",
               "subtitle": "",
-              "link-url": ""
+              "link-url": "shopify:\/\/pages\/our-approach"
             }
           },
           "1522436562612-3": {
@@ -197,7 +207,7 @@
               "image": "shopify:\/\/shop_images\/GTF_HP_zerowaste_01.jpg",
               "title": "",
               "subtitle": "",
-              "link-url": ""
+              "link-url": "shopify:\/\/pages\/our-approach"
             }
           }
         },
@@ -208,14 +218,14 @@
         "settings": {
           "background-color": "accent",
           "full-width": true,
-          "spacing": true,
+          "spacing": false,
           "alternative-color": false,
           "text-position": "center",
           "width": 2,
           "mobile-width": "2",
           "title": "",
           "subtitle": "",
-          "link-url": "",
+          "link-url": "shopify:\/\/pages\/our-approach",
           "link-text": ""
         }
       },
@@ -237,66 +247,12 @@
           "link-text": ""
         }
       },
-      "1522436578326": {
-        "type": "slideshow",
-        "blocks": {
-          "1522436578326-0": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/GTF_HP_FTT_01.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/catering",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          },
-          "1535318230449": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/GTF_HP_Farm_01.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/lunch",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          },
-          "1536682420836": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/GTF_HP_farmfresh_01.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/breakfast",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          }
-        },
-        "block_order": [
-          "1522436578326-0",
-          "1535318230449",
-          "1536682420836"
-        ],
-        "settings": {
-          "autoplay": false,
-          "transition_style": "default",
-          "rotate-frequency-range": 7
-        }
-      },
       "1522436583583": {
         "type": "framework--newsletter",
         "settings": {
           "background-color": "accent",
           "heading": "Letters from the Farm",
-          "subheading": "We're not overly chatty, but do feel it's important to keep in touch."
+          "subheading": "Tune in for updates & new menus"
         }
       },
       "1522436602128": {
@@ -544,7 +500,7 @@
         "settings": {
           "title": "Reconnect with your local farmers",
           "subtitle": "Green Top Farms is an urban farm & kitchen delivering catering and personal meals anywhere in NYC. Founded by a 5th generation farmer, we grow our greens hydroponically and source the balance of our rotating menus from family farms across Jersey, Long Island and New York State.",
-          "background-color": "#ffffe0",
+          "background-color": "#f7ede0",
           "full-width": false,
           "spacing": 10,
           "width": 4,
@@ -556,6 +512,7 @@
       },
       "1536686202317": {
         "type": "framework--content-blocks",
+        "disabled": true,
         "settings": {
           "title": "",
           "subtitle": "",
@@ -646,7 +603,7 @@
         "settings": {
           "title": "Good food ain't radical",
           "subtitle": "When food is centered around profit instead of soil quality, it lacks what our bodies need on a cellular level. That's why these days you can eat a whole bunch of calories but still have cravings and crashes. Often times these processed foods can make us sick. Good soil means nutritious produce and eating fresh means you're getting all those nutrients. We're trying to keep it pretty simple.",
-          "background-color": "#ffffe0",
+          "background-color": "#f7ede0",
           "full-width": false,
           "spacing": 10,
           "width": 4,
@@ -655,15 +612,101 @@
           "link-text": "",
           "link-url": ""
         }
+      },
+      "1541855037525": {
+        "type": "slideshow",
+        "blocks": {
+          "1541855037525-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/GTF_HP_farmfresh_01.jpg",
+              "slide-title": "",
+              "slide-tagline": "",
+              "slide-link-url": "shopify:\/\/collections\/breakfast",
+              "slide-link-title": "",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "left",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1541855037525-0"
+        ],
+        "settings": {
+          "autoplay": false,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
+      },
+      "1541855189524": {
+        "type": "slideshow",
+        "blocks": {
+          "1541855189524-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/GTF_HP_FTT_01.jpg",
+              "slide-title": "",
+              "slide-tagline": "",
+              "slide-link-url": "shopify:\/\/collections\/catering",
+              "slide-link-title": "",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "left",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1541855189524-0"
+        ],
+        "settings": {
+          "autoplay": true,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
+      },
+      "custom--collection": {
+        "type": "custom--collection",
+        "settings": {
+          "show-tag-filters": false
+        }
+      },
+      "1544919739675": {
+        "type": "slideshow",
+        "blocks": {
+          "1544919739675-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/GTF_HP_02.jpg",
+              "slide-title": "",
+              "slide-tagline": "",
+              "slide-link-url": "shopify:\/\/collections\/lunch",
+              "slide-link-title": "",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "left",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1544919739675-0"
+        ],
+        "settings": {
+          "autoplay": false,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
       }
     },
     "content_for_index": [
-      "1522436578326",
+      "1541855189524",
       "1536685600304",
       "1522436529877",
       "1522436609159",
-      "1536681571098",
+      "1544919739675",
       "1536682313144",
+      "1536681571098",
+      "1541855037525",
       "1522436562612",
       "1535320584307",
       "1536681332722",

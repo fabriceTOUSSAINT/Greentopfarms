@@ -82,7 +82,7 @@
             {% if product.tags contains Tray %}
               <span class="product--price-sub-head">per tray</span>
             {% endif %}
-            {% if product.tags contains Headcount %}
+             {% if product.tags contains Headcount %}
               <span class="product--price-sub-head">per person</span>
             {% endif %}
             {% if product.tags contains Jug %}
@@ -98,38 +98,15 @@
         {% endif %}
       </div>
 
-    {% when 'list' %}
-      <div class="product--image"><a href="{{ url }}">{{ image }}</a></div>
+  {% when 'featured' %}
+      {% comment %} <div class="product--image"><a href="{{ url }}">{{ image }}</a></div> {% endcomment %}
       <div class="product--details">
         {% if product-sold-out %}
           <div class="product--sold-out">{{ 'collections.sold_out_html' | t }}</div>
         {% endif %}
 
         <div class="product--details--title-row">
-          <div class="product--price-wrapper">
-            {% if compare-price %}
-              <span class="product--compare-price">{{ compare-price }}</span>
-              <span class="product--price">{{ price }}</span>
-            {% else %}
-              {% if product.price_varies %}
-                <span class="product--from">{{ 'collections.from' | t }}</span>
-              {% endif %}
-              <span class="product--price">{{ price }}</span>
-            {% endif %}
 
-            {% if product.tags contains 'HalfTray' %}
-              <span class="product--price-sub-head">per half tray</span>
-            {% endif %}
-            {% if product.tags contains 'Tray' %}
-              <span class="product--price-sub-head">per tray</span>
-            {% endif %}
-             {% if product.tags contains 'Headcount' %}
-              <span class="product--price-sub-head">per person</span>
-            {% endif %}
-            {% if product.tags contains 'Jug' %}
-              <span class="product--price-sub-head">per jug</span>
-            {% endif %}
-          </div>
           <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
         </div> <!-- .product--details--title-row -->
 
@@ -138,8 +115,33 @@
         {% endif %}
 
         {% if excerpt.size > 0 %}
-          <div class="product--excerpt">{{ excerpt }}</div>
+          <div class="product--excerpt">{{ product.description }}</div>
+
         {% endif %}
+        <div class="product--price-wrapper">
+          {% if compare-price %}
+            <span class="product--compare-price">{{ compare-price }}</span>
+            <span class="product--price">{{ price }}</span>
+          {% else %}
+            {% if product.price_varies %}
+              <span class="product--from">{{ 'collections.from' | t }}</span>
+            {% endif %}
+            <span class="product--price">{{ price }}</span>
+          {% endif %}
+
+          {% if product.tags contains 'HalfTray' %}
+            <span class="product--price-sub-head">per half tray</span>
+          {% endif %}
+          {% if product.tags contains 'Tray' %}
+            <span class="product--price-sub-head">per tray</span>
+          {% endif %}
+           {% if product.tags contains 'Headcount' %}
+              <span class="product--price-sub-head">per person</span>
+            {% endif %}
+          {% if product.tags contains 'Jug' %}
+              <span class="product--price-sub-head">per jug</span>
+            {% endif %}
+        </div>
 
         {% if settings.product--show-quick-add-buttons and product-sold-out == false %}
           {% include 'partial--quick-add' %}
@@ -148,4 +150,5 @@
       </div>
 
   {% endcase %}
+
 </div>

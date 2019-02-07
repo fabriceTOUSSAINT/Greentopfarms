@@ -1,11 +1,49 @@
-<div class="page-wrapper spacing--5 panel">
-	<div class="rte-content text-align--center">
-		<h1 class="page-title font--heading ">{{ 'general.404.page_title' | t }}</h1>
-		<div class="spacer spacing--2y"></div>
-	  <h3>{{ 'general.404.intro' | t }}</h3>
-	  <div class="spacer spacing--2y"></div>
-	  <p>{{ 'general.404.return_links_html' | t: home_page_link: home_page_link, products_link: products_link }}</p>
-	</div>
-</div>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
 
+body {
+  font-family: Open Sans;
+  font-size: 17px;
+}
 
+.container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.container img {vertical-align: middle;}
+
+.container .content {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.7); /* Black background with 0.5 opacity */
+  color: #f1f1f1;
+  width: 100%;
+  padding: 12px;
+}
+</style>
+</head>
+<body>
+ <div class="spacing--1y text-align--center">
+   
+
+<h2>404 Error</h2>
+  </div>
+<div class="container">
+  <a href="https://www.greentop.farm">
+  <img src="https://cdn.shopify.com/s/files/1/0028/1251/0265/files/MOONSHINE.jpg?11976619437062174673" alt="Moonshine 404" style="width:100%;">
+  <div class="content">
+    <h1>Y'all been drinkin?</h1>
+    <p>We think you better head <b>home</b> now.</p>
+  </div>
+  </a>
+    </div>
+</body>
+</html>

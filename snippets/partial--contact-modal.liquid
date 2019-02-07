@@ -11,20 +11,19 @@
   {% assign show-social = true  %}
 {% endif %}
 
-<div class="contact-modal">
+<div class="contact-modal {{settings.contact--type}}">
 
-  {% if section.settings.contact--type == 'modal' and view == 'mobile-nav' %}
+  {% if settings.contact--type == 'modal' and view == 'mobile-nav' %}
     <span class="mobile-nav--contact-modal-trigger">
       <a class="contact-modal--button" href="#">
-        {{ section.settings.contact--text | escape }}
+        {{ settings.contact--text | escape }}
       </a>
     </span>
-  {% elsif section.settings.contact--type == 'link' %}
-    <a class="contact-modal--button" href="{{ section.settings.contact--url }}">
-      {{ section.settings.contact--text | escape }}
+  {% elsif settings.contact--type == 'link' %}
+    <a class="contact-modal--button" href="{{ settings.contact--url }}">
+      {{ settings.contact--text | escape }}
     </a>
-  {% elsif section.settings.contact--type == 'modal' %}
-
+  {% elsif settings.contact--type == 'modal' %}
     <div
       class="modal"
       data-js-class="FrameworkModal"
@@ -33,7 +32,7 @@
     >
       <div class="modal--link">
         <a class="contact-modal--button" href="{{ store.url}}/pages/contact">
-          {{ section.settings.contact--text | escape }}
+          {{ settings.contact--text | escape }}
         </a>
       </div>
 
@@ -41,24 +40,24 @@
         <div class="contact-modal--content">
           <div class="contact-modal--wrapper">
             <div class="contact-modal--header">
-              {% if settings.contact-modal--alternative-text and section.settings.inverted-logo %}
+              {% if settings.contact-modal--alternative-text and settings.inverted-logo %}
                 {% include 'framework--logo', image_type: 'inverted' %}
               {% else %}
                 {% include 'framework--logo' %}
               {% endif %}
             </div>
 
-            {% unless section.settings.store--address == blank and section.settings.store--hours == blank %}
+            {% unless settings.store--address == blank and settings.store--hours == blank %}
               <div class="contact-modal--left-column">
-                {% unless section.settings.store--address == blank %}
+                {% unless settings.store--address == blank %}
                   <div class="contact-modal--address">
                     <h3 class="contact-modal--address-title">{{ 'home.map.address' | t }}</h3>
                     <div class="contact-modal--address-text">
-                      {{ section.settings.store--address | newline_to_br }}
+                      {{ settings.store--address | newline_to_br }}
                     </div>
                     <div class="contact-modal--address-link">
                       <a
-                        href="https://www.google.ca/maps/place/{{ section.settings.store--address | url_encode }}"
+                        href="https://www.google.ca/maps/place/{{ settings.store--address | url_encode }}"
                         target="_blank"
                       >
                         {{ 'home.map.open_in_maps' | t }}
@@ -67,10 +66,16 @@
                   </div>
                 {% endunless %}
 
-                {% unless section.settings.store--hours == blank %}
+                {% unless settings.store--hours == blank %}
                   <div class="contact-modal--hours">
                     <h3 class="contact-modal--hours-title">{{ 'home.map.hours' | t }}</h3>
-                    <div class="contact-modal--hours-text">{{ section.settings.store--hours }}</div>
+                    <div class="contact-modal--hours-text">{{ settings.store--hours }}</div>
+                  </div>
+                {% endunless %}
+                  {% unless settings.store--phone == blank %}
+                  <div class="contact-modal--phone">
+                    <h3 class="contact-modal--phone-title">{{ 'home.map.phone' | t }}</h3>
+                    <div class="contact-modal--phone-text">{{ settings.store--phone }}</div>
                   </div>
                 {% endunless %}
               </div>
