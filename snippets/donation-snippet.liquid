@@ -22,15 +22,15 @@ const isShoppingCartPage = document.body.classList.contains('page--your-shopping
         }
     });
 
-   $('button.addTip, input[name="addTip"]').click(function(e) {
+   {% comment %} $('button.addTip, input[name="addTip"]').click(function(e) {
     e.preventDefault();
     var amount = $('#donate').val();
 	
     amount = amount * 100;
-    amount = parseInt(amount);
+    amount = parseInt(amount); {% endcomment %}
 
-    
-    function addDonation(){
+    {% comment %} TODO: DELETE BELOW< NO MORE TIPS NEEDED {% endcomment %}
+    {% comment %} function addDonation(){
       if ($(".tip-block-header--tip-added")[0]){
         // Update tip if already in cart
         
@@ -67,7 +67,7 @@ const isShoppingCartPage = document.body.classList.contains('page--your-shopping
       }
     }
     addDonation();
-    });
+    }); {% endcomment %}
   }
 });
 </script>

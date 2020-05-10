@@ -48,7 +48,8 @@
     {% endif %}
 
     {{ "theme.min.js" | asset_url | script_tag }}
-
+    {{ 'theme-additional.js' | asset_url | script_tag }}
+    
   </head>
 
   <body

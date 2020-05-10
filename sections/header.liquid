@@ -49,7 +49,7 @@
     %}
   </div>
 
-  <div class="header--bg"></div>
+  <div class="header--bfuckyoug"></div>
   <div class="header--top-row">
 
     {% if locale_enable or currency_enable %}
@@ -67,6 +67,25 @@
       {% include 'snippet-store-title' %}
     </div>
 
+    {% if linklists[section.settings.menu].links.size > 0 %}
+      {% assign header_nav = section.settings.menu %}
+
+      {% assign menu_alignment = 'left' %}
+      {% if section.settings.header-menu-center %}
+        {% assign menu_alignment = 'center' %}
+      {% endif %}
+
+      <div class="header--menu">
+        {%
+          include 'framework--x-menu',
+          js_class: 'XMenu',
+          align: menu_alignment,
+          overlap_parent: 1,
+          handle: section.settings.menu
+        %}
+      </div>
+    {% endif %}
+
     {% if settings.search--show-in-header %}
       <a
         class="header--search"
@@ -78,6 +97,8 @@
         {% include 'framework--icons', icon: 'search' %}
       </a>
     {% endif %}
+
+
 
     {% if section.settings.header-account-show and shop.customer_accounts_enabled %}
       <a
@@ -91,9 +112,18 @@
       </a>
     {% endif %}
 
+    <div class="header--cart">
+      <div class="cart">
+        {% include 'snippet-cart', cart_icon: section.settings.cart--icon %}
+      </div>
+    </div>
+    
   </div>
 
-  <div class="header--bottom-row">
+  {% comment %} 
+  Hiding the bottom row code of the theme. 
+  {% endcomment %}
+  {% comment %} <div class="header--bottom-row">
 
     {% if linklists[section.settings.menu].links.size > 0 %}
       {% assign header_nav = section.settings.menu %}
@@ -120,7 +150,7 @@
       </div>
     </div>
 
-  </div>
+  </div> {% endcomment %}
 
   <div class="header--mobile">
     <div class="header--mobile--menu off-canvas--open" data-off-canvas--open="left-sidebar">

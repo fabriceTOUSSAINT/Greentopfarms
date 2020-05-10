@@ -4828,99 +4828,100 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
 
   })();
 
-  theme.classes.XMenu = (function(superClass) {
-    extend(XMenu, superClass);
+  // theme.classes.XMenu = (function(superClass) {
+  //   extend(XMenu, superClass);
 
-    function XMenu(root) {
-      var _this;
-      this.root = root;
-      this.slideDown = bind(this.slideDown, this);
-      this.hideHeader = bind(this.hideHeader, this);
-      this.showHeader = bind(this.showHeader, this);
-      this.headerListeners = bind(this.headerListeners, this);
-      this.isHeaderTransparent = bind(this.isHeaderTransparent, this);
-      _this = this;
-      _this.header = $('.header--root');
-      _this.header_bg = _this.header.find('.header--bg');
-      _this.header_timer = null;
-      _this.transparent_header = _this.isHeaderTransparent();
-      XMenu.__super__.constructor.apply(this, arguments);
-      _this.headerListeners();
-    }
+  //   function XMenu(root) {
+  //     var _this;
+  //     this.root = root;
+  //     this.slideDown = bind(this.slideDown, this);
+  //     this.hideHeader = bind(this.hideHeader, this);
+  //     this.showHeader = bind(this.showHeader, this);
+  //     this.headerListeners = bind(this.headerListeners, this);
+  //     this.isHeaderTransparent = bind(this.isHeaderTransparent, this);
+  //     _this = this;
+  //     _this.header = $('.header--root');
+  //     _this.header_bg = _this.header.find('.header--bg');
+  //     _this.header_timer = null;
+  //     _this.transparent_header = _this.isHeaderTransparent();
+  //     XMenu.__super__.constructor.apply(this, arguments);
+  //     _this.headerListeners();
+  //   }
 
-    XMenu.prototype.isHeaderTransparent = function() {
-      var _this;
-      _this = this;
-      if ($('.header--root').attr('data-header--menu-transparent') === 'true') {
-        return true;
-      } else {
-        return false;
-      }
-    };
+  //   XMenu.prototype.isHeaderTransparent = function() {
+  //     var _this;
+  //     _this = this;
+  //     if ($('.header--root').attr('data-header--menu-transparent') === 'true') {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   };
 
-    XMenu.prototype.headerListeners = function() {
-      var _this;
-      _this = this;
-      _this.parents_with_sub_menu.on('mouseenter', function(e) {
-        return clearTimeout(_this.header_timer);
-      });
-      _this.header.on('mouseenter touchstart', function(e) {
-        clearTimeout(_this.header_timer);
-        return _this.showHeader();
-      });
-      return _this.header.on('mouseleave', function(e) {
-        return _this.header_timer = setTimeout(function() {
-          return _this.hideHeader();
-        }, 500);
-      });
-    };
+  //   XMenu.prototype.headerListeners = function() {
+  //     var _this;
+  //     _this = this;
+  //     _this.parents_with_sub_menu.on('mouseenter', function(e) {
+  //       return clearTimeout(_this.header_timer);
+  //     });
+  //     _this.header.on('mouseenter touchstart', function(e) {
+  //       clearTimeout(_this.header_timer);
+  //       return _this.showHeader();
+  //     });
+  //     return _this.header.on('mouseleave', function(e) {
+  //       return _this.header_timer = setTimeout(function() {
+  //         return _this.hideHeader();
+  //       }, 500);
+  //     });
+  //   };
 
-    XMenu.prototype.showHeader = function() {
-      var _this;
-      _this = this;
-      if (parseInt(_this.header_bg.css('opacity')) !== 0) {
-        return;
-      }
-      return _this.header_bg.velocity({
-        opacity: [0.95]
-      }, {
-        duration: 400,
-        queue: false
-      });
-    };
+    // Removes opacity velocity on header
+    // XMenu.prototype.showHeader = function() {
+    //   var _this;
+    //   _this = this;
+    //   if (parseInt(_this.header_bg.css('opacity')) !== 0) {
+    //     return;
+    //   }
+    //   return _this.header_bg.velocity({
+    //     opacity: [0.95]
+    //   }, {
+    //     duration: 400,
+    //     queue: false
+    //   });
+    // };
 
-    XMenu.prototype.hideHeader = function() {
-      var _this;
-      _this = this;
-      if (_this.parents_with_sub_menu.filter('[data-main-menu--open="true"]').length > 0) {
-        return false;
-      }
-      _this.header_bg.velocity({
-        opacity: 0
-      }, {
-        duration: 400
-      });
-      return _this.slideUp();
-    };
+    // XMenu.prototype.hideHeader = function() {
+    //   var _this;
+    //   _this = this;
+    //   if (_this.parents_with_sub_menu.filter('[data-main-menu--open="true"]').length > 0) {
+    //     return false;
+    //   }
+    //   _this.header_bg.velocity({
+    //     opacity: 0
+    //   }, {
+    //     duration: 400
+    //   });
+    //   return _this.slideUp();
+    // };
 
-    XMenu.prototype.slideDown = function(link, delay) {
-      var _this, opacity;
-      if (delay == null) {
-        delay = false;
-      }
-      _this = this;
-      if (delay !== 'complete') {
-        opacity = Math.round(parseFloat(_this.header_bg.css('opacity')) * 100);
-        if (opacity < 90 && _this.transparent_header) {
-          delay = 400;
-        }
-      }
-      return XMenu.__super__.slideDown.call(this, link, delay);
-    };
+    // XMenu.prototype.slideDown = function(link, delay) {
+    //   var _this, opacity;
+    //   if (delay == null) {
+    //     delay = false;
+    //   }
+    //   _this = this;
+    //   if (delay !== 'complete') {
+    //     opacity = Math.round(parseFloat(_this.header_bg.css('opacity')) * 100);
+    //     if (opacity < 90 && _this.transparent_header) {
+    //       delay = 400;
+    //     }
+    //   }
+    //   return XMenu.__super__.slideDown.call(this, link, delay);
+    // };
 
-    return XMenu;
+  //   return XMenu;
 
-  })(theme.classes.FrameworkXMenu);
+  // })(theme.classes.FrameworkXMenu);
 
   theme.classes.Blog = (function(superClass) {
     extend(Blog, superClass);
