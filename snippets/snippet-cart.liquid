@@ -1,0 +1,22 @@
+{% if settings.cart--type == 'drawer' %}
+  <div class="cart--open-right off-canvas--open" data-off-canvas--open="right-sidebar">
+{% endif %}
+
+<a class="header--cart-link font--accent" href="{{ routes.cart_url }}">
+
+  {% if cart_icon == 'text' %}
+    {{ 'layout.header.cart' | t }}
+  {% elsif cart_icon == 'bag' %}
+    {% include 'framework--icons', icon: 'bag' %}
+  {% else %}
+    {% include 'framework--icons', icon: 'cart' %}
+  {% endif %}
+
+  <span class="number-wrapper" data-item-count="{{ cart.item_count }}">
+  (<span class="number cart--external--total-items">{{ cart.item_count }}</span>)
+  </span>
+</a>
+
+{% if settings.cart--type == 'drawer' %}
+  </div>
+{% endif %}

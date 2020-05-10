@@ -1,167 +1,109 @@
 <!doctype html>
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+  <html class="no-js" lang="{{ request.locale.iso_code }}">
+<!--<![endif]-->
 
-<head>
+  <head>
+    <!-- Blockshop Theme - Version 6.3.3 by Troop Themes - http://troopthemes.com/ -->
 
-  <!-- Local Theme - Version 2.0.1 by Troop Themes - http://troopthemes.com/ -->
-  {% include 'framework--version' %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    {% if page_description %}
+      <meta name="description" content="{{ page_description }}">
+    {% endif %}
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% include 'snippet-fb-open-graph-tags' %}
 
-  {% if settings.favicon != nil %}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
-  {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com">
 
-  {% if template == 'index' %}
-    <title>{{ page_title }}</title>
-  {% elsif template == 'password' %}
-    <title>{{ shop.name }}</title>
-  {% else %}
-    <title>{{ page_title }} | {{ shop.name }}</title>
-  {% endif %}
+    {% if settings.favicon != blank %}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+    {% endif %}
 
-  {% if page_description %}
-    <meta name="description" content="{{ page_description }}">
-  {% endif %}
+    {% if template == 'index' %}
+      <title>{{ page_title }}</title>
+    {% elsif template == 'password' %}
+      <title>{{ shop.name }}</title>
+    {% else %}
+      <title>{{ page_title }} | {{ shop.name }}</title>
+    {% endif %}
 
-  <link rel="canonical" href="{{ canonical_url }}">
-  {% include 'framework--social-meta-tags' %}
-  {% include 'partial--webfont' %}
+    {{ content_for_header }}
 
-  {{ content_for_header }}
-  {%- include 'bold-common' -%}
-{%- include 'bold-product' with product, hide_action: 'header' -%}
+    {% include 'framework--css-variables' %}
+    {% include 'partial--css-variables' %}
 
-  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+    {{ "theme.css" | asset_url | stylesheet_tag }}
+    {{ 'theme--customizations.css' | asset_url | stylesheet_tag }}
 
-  {% include 'custom-styles' %}
+    {% include 'partial--js-variables' %}
 
+    {{ 'lazysizes.min.js' | asset_url | script_tag }}
 
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    {% if template contains 'customers' %}
+      {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+      {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+    {% endif %}
 
-  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
-  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+    {{ "theme.min.js" | asset_url | script_tag }}
 
-  
+  </head>
 
-  {% if template contains 'customers' %}
-    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
-    {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
-  {% endif %}
-
-  {% assign currency_switcher_enabled = false %}
-  {% if settings.header--top-row--left-position == 'currency' or settings.header--top-row--right-position == 'currency' %}
-    {% assign currency_switcher_enabled = true %}
-  {% endif %}
-
-  <script>
-    var theme = {};
-    theme.settings = {};
-    theme.translations = {};
-    theme.classes = {};
-    theme.utils = {};
-    theme.partials = {};
-
-    theme.shop_url = '{{ shop.url }}';
-    theme.shop_currency = '{{ shop.currency }}';
-    theme.currency_switcher_enabled = {{ currency_switcher_enabled }};
-    theme.cart_type = '{{ settings.cart--type }}';
-
-
-    theme.translations.cart_subtotal = '{{ "cart.subtotal" | t }}';
-    theme.translations.products_sold_out_email_description = '{{ "products.sold_out.email_description" | t }}';
-    theme.translations.general_search_see_all_results = '{{ "general.search.see_all_results" | t }}';
-    theme.translations.mailing_list_success_message = '{{ "general.mailing_list.success_message" | t }}';
-    theme.translations.mailing_list_email_blank = '{{ "general.mailing_list.email_blank" | t }}';
-
-    theme.product_json = new Array();
-    theme.variant_id_list = new Array();
-
-    theme.product_modal = {};
-    theme.quick_add = {};
-
-    theme.map = {};
-  </script>
-
-  {{ "/services/javascripts/currencies.js" | script_tag }}
-  {{ 'theme.js' | asset_url | script_tag }}
-  
-      <script
-  src="https://code.jquery.com/ui/1.10.2/jquery-ui.min.js"
-  integrity="sha256-FgiaQnQazF/QCrF9qSvpRY6PACn9ZF8VnlgqfqD1LsE="
-  crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-  {{ 'theme-additional.js' | asset_url | script_tag }}
-
-</head>
-
-{% capture body_classes %}
-  template--{{ template | split: '.' | first | remove: '_' | replace: '/', '--' }}
-  page--{{ page_title | handle }}
-  {% if customer %} customer-logged-in{% endif %}
-  {% if settings.layout--show-page-border %} show-border{% endif %}
-  {% if settings.layout--show-page-border and
-        settings.bdr-color--page == settings.bg-color--announcement %}
-        announcement--adjust-padding{% endif %}
-  {% if settings.bg-color--body == settings.color--button %} colors--body-n-button-match{% endif %}
-  {% if settings.bg-color--body == settings.bg-color--panel %} colors--body-n-panel-match{% endif %}
-{% endcapture %}
-{% include 'framework--util--class-list' with body_classes %}
-{% assign body_classes = class_list %}
-
-<body class="{{ body_classes }}" {% if template contains 'customers' %}data-account-template="true"{% endif %}>
-  {% include 'icon-sprite.svg' %}
-
-  <div
-    class="off-canvas--viewport"
-    data-js-class="FrameworkOffCanvas"
-    data-off-canvas--state="closed"
+  <body
+    class="page-{{ page_title | handle }} {% if customer %}customer-logged-in {% endif %}template-{{ template | split: '.' | first | remove: '/' | remove: '_' }}"
+    data-theme-id="606"
+    data-theme-name="Blockshop"
+    data-theme-version="6.3.3"
   >
 
-    <div class="off-canvas--overlay"></div>
-    <div class="off-canvas--close">{% include 'framework--icon', icon: 'cross' %}</div>
-
-    <div class="off-canvas--left-sidebar">
-      {% include 'layout--mobile-nav' %}
-    </div>
-
-    <div class="off-canvas--main-content">
-      <div class="fullscreen-container">
-        {% if template contains 'index' %}
-          {% section 'index--banner' %}
-        {% endif %}
-
-        {% unless template contains 'password' %}
-          {% section 'announcement' %}
-          {% section 'header' %}
-        {% endunless %}
+    <div
+      class="off-canvas--viewport"
+      data-js-class="OffCanvas"
+      data-off-canvas--state="closed"
+    >
+      <div class="off-canvas--overlay"></div>
+      <div class="off-canvas--close">
+        {% include 'framework--icons', icon: 'cross' %}
       </div>
 
-      <main class="layout--main-content">
-        {{ content_for_layout }}
-      </main>
+      <div class="off-canvas--left-sidebar">
+        {% include 'partial--mobile-nav' %}
+      </div>
 
-      {% section 'footer' %}
+      <div class="off-canvas--right-sidebar">
+        {% if settings.cart--type == 'drawer' %}
+          {% include 'framework--cart', view: 'mobile' %}
+        {% endif %}
+      </div>
 
-      {% if settings.popup--enabled %}
-        {% include 'partial--popup' %}
-      {% endif %}
+      <div class="off-canvas--main-content">
+        {% section 'announcement' %}
+        {% section 'header' %}
 
-      {% include 'partial--feedback-bar' %}
+        <section class="main-content">
+          {{ content_for_layout }}
+        </section>
+
+        {% section 'framework--footer' %}
+
+        {% unless template == 'password' %}
+          <div class="popup-modal-close">&#x2715;</div>
+          <div class="popup-modal-mask"></div>
+        {% endunless %}
+
+        <!--<style> iframe#admin_bar_iframe { display: none !important; } </style>-->
+      </div>
+
+      {% include 'framework--feedback-bar' %}
+
+      {% include 'partial--popup' %}
 
     </div>
-  </div>
-  <script type="text/javascript">
-    $(document).ready(function(){
 
-    });
-  </script>
+    {% include 'framework--search', view: 'modal' %}
 
-
-  {% include 'donation-snippet' %}
-</body>
+    {% include 'framework--modal' %}
+  </body>
 </html>
-

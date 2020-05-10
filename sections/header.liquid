@@ -1,116 +1,186 @@
+{% assign locale_enable = false %}
+{% assign currency_enable = false %}
+
+{% if section.settings.show-currency-selector and shop.enabled_currencies.size > 1 %}
+  {% assign currency_enable = true %}
+{% endif %}
+
+{% if section.settings.show-locale-selector and shop.published_locales.size > 1 %}
+  {% assign locale_enable = true %}
+{% endif %}
+
+{% capture general_settings %}
+  {{ settings.color--alternative }}
+{% endcapture %}
+
+{% if section.settings.logo %}
+  <style>
+    header .logo-image {
+      max-height: {{ section.settings.logo-height }}px;
+    } .header--top-row {
+      height: {{ section.settings.logo-height | plus: -10 }}px;
+    }
+  </style>
+{% endif %}
+
 <header
-  class="header"
-  data-js-class="Header"
+  class="header--root"
   data-section-id="{{ section.id }}"
-  data-section-type="header"
+  data-section-type="header-section"
+  data-js-class="Header"
+  data-center-logo="{{ section.settings.header-logo-center }}"
+  data-center-menu="{{ section.settings.header-menu-center }}"
+  {% if template contains 'index' and section.settings.transparent-menu %}
+    data-header--menu-transparent="true"
+  {% else %}
+    data-header--menu-transparent="false"
+  {% endif %}
 >
+
   <div class="header--y-menu-for-off-canvas">
     {% include 'framework--y-menu', handle: section.settings.menu %}
   </div>
+  <div class="header--localization-for-off-canvas">
+    {%
+      include 'framework--localization',
+      position: 'footer',
+      locale_enable: locale_enable,
+      currency_enable: currency_enable
+    %}
+  </div>
 
-  {% if section.settings.contact--enabled %}
-    <div class="header--contact-button-for-off-canvas show-after-js">
-      {% include 'partial--contact-modal', view: 'mobile-nav' %}
+  <div class="header--bg"></div>
+  <div class="header--top-row">
+
+    {% if locale_enable or currency_enable %}
+      <div class="header--localization">
+        {%
+          include 'framework--localization',
+          position: 'header',
+          locale_enable: locale_enable,
+          currency_enable: currency_enable
+        %}
+      </div>
+    {% endif %}
+
+    <div class="header--logo">
+      {% include 'snippet-store-title' %}
     </div>
-  {% endif %}
 
-  <div class="header--container show-after-js">
-    <div class="header--left-side">
-      <div class="header--main-menu">
+    {% if settings.search--show-in-header %}
+      <a
+        class="header--search"
+        href="{{ routes.search_url }}"
+        role="img"
+        aria-label="{{ 'layout.header.search' | t }}"
+      >
+        {{ 'layout.header.search_toggle_link' | t }}
+        {% include 'framework--icons', icon: 'search' %}
+      </a>
+    {% endif %}
+
+    {% if section.settings.header-account-show and shop.customer_accounts_enabled %}
+      <a
+        class="header--account-icon"
+        href="{{ routes.account_url }}"
+        role="img"
+        aria-label="{{ 'layout.header.account' | t }}"
+      >
+        {{ 'layout.header.account_toggle_link' | t }}
+        {% include 'framework--icons', icon: 'account' %}
+      </a>
+    {% endif %}
+
+  </div>
+
+  <div class="header--bottom-row">
+
+    {% if linklists[section.settings.menu].links.size > 0 %}
+      {% assign header_nav = section.settings.menu %}
+
+      {% assign menu_alignment = 'left' %}
+      {% if section.settings.header-menu-center %}
+        {% assign menu_alignment = 'center' %}
+      {% endif %}
+
+      <div class="header--menu">
         {%
           include 'framework--x-menu',
-          overlap_parent: 2,
           js_class: 'XMenu',
+          align: menu_alignment,
+          overlap_parent: 1,
           handle: section.settings.menu
         %}
       </div>
-    </div>
-    <div class="header--center">
-      <div class="header--logo">
-        {% include 'framework--logo' %}
+    {% endif %}
+
+    <div class="header--cart">
+      <div class="cart">
+        {% include 'snippet-cart', cart_icon: section.settings.cart--icon %}
       </div>
     </div>
-    <div class="header--right-side">
-      {% if shop.customer_accounts_enabled %}
-        <div class="header--account">
-          {% include 'layout--login' %}
-        </div>
-      {% endif %}
 
-      {% if section.settings.enable-search %}
-        <div class="header--search">
-           {% include 'framework--search', view: 'modal' %}
-        </div>
-      {% endif %}
-
-      {% if section.settings.contact--enabled and section.settings.contact--text != blank %}
-        <div class="header--contact-modal">
-          {% include 'partial--contact-modal' %}
-        </div>
-      {% endif %}
-
-      <div class="header--cart">
-        {% include 'partial--cart' %}
-      </div>
-
-    </div>
   </div>
 
-  <noscript>
-    <div class="header--container" data-no-script="true">
-      <div class="header--left-side">
-        <div class="header--main-menu">
-          {%
-            include 'framework--x-menu',
-            overlap_parent: 2,
-            js_class: 'XMenu',
-            handle: section.settings.menu
-          %}
-        </div>
-      </div>
-      <div class="header--center">
-        <div class="header--logo">
-          {% include 'framework--logo' %}
-        </div>
-      </div>
-      <div class="header--right-side">
-
-        {% if shop.customer_accounts_enabled %}
-          <div class="header--account">
-            {% include 'layout--login' %}
-          </div>
-        {% endif %}
-
-        {% if section.settings.enable-search %}
-          <div class="header--search">
-             {% include 'framework--search', view: 'modal' %}
-          </div>
-        {% endif %}
-
-        {% if section.settings.contact--enabled and section.settings.contact--text != blank %}
-          <div class="header--contact-modal">
-            {% include 'partial--contact-modal' %}
-          </div>
-        {% endif %}
-
-        <div class="header-cart">
-          <a href="{{ shop.url}}/cart">{{ 'cart.title' | t }}</a>
-        </div>
-      </div>
+  <div class="header--mobile">
+    <div class="header--mobile--menu off-canvas--open" data-off-canvas--open="left-sidebar">
+      {% include 'framework--icons', icon: 'menu' %}
     </div>
-  </noscript>
-</header>
 
-<style>
-  .fw--logo img {
-    max-height: {{ section.settings.logo-height-range }}px;
-  }
-</style>
+    <div class="header--mobile--title">
+      {% include 'snippet-store-title' %}
+    </div>
+
+    <div class="header--mobile--cart font--accent">
+      {% include 'snippet-cart', cart_icon: section.settings.cart--icon %}
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="header-divider"></div>
+  </div>
+
+</header>
 
 {% schema %}
 {
   "name": "Header",
+  "class": "section--header",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "transparent-menu",
+      "label": "Transparent on home page",
+      "info": "Only recommended with a full width image in top section"
+    },
+    {
+      "type": "checkbox",
+      "id": "header-account-show",
+      "label": "Enable customer account links",
+      "default": true,
+      "info": "[You will also need to enable customer accounts in your store settings](http:\/\/docs.shopify.com\/manual\/your-store\/customers\/customer-accounts)"
+    },
+    {
+      "type": "select",
+      "id": "cart--icon",
+      "label": "Cart icon",
+      "options": [
+        { "label": "Text", "value": "text" },
+        { "label": "Bag", "value": "bag" },
+        { "label": "Cart", "value": "cart" }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "header-menu-center",
+      "label": "Center align"
+    },
     {
       "type": "link_list",
       "id": "menu",
@@ -118,75 +188,55 @@
       "default": "main-menu"
     },
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "inverted-logo",
-      "label": "Inverted logo",
-      "info": "Used in contact modal with dark backgrounds for better visibility."
-    },
-    {
-      "label": "Custom logo height",
-      "id": "logo-height-range",
-      "type": "range",
-      "min": 30,
-      "max": 80,
-      "step": 5,
-      "unit": "px",
-      "default": 40,
-      "info": "This is referring to the natural height and should be half the height of the image you uploaded to ensure it stays sharp on retina screens."
+      "type": "header",
+      "content": "Currency Selector",
+      "info": "To add a currency, go to your [payment settings](/admin/settings/payments)."
     },
     {
       "type": "checkbox",
-      "id": "enable-search",
-      "label": "Enable search",
+      "id": "show-currency-selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "To offer multiple currencies on your online store, you must first [edit your store's currency formatting](https://docs.shopify.com/support/settings/general/tell-my-script-where-to-find-money-formats)."
+    },
+    {
+      "type": "header",
+      "content": "Language Selector",
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-locale-selector",
+      "label": "Show language selector",
       "default": true
     },
     {
       "type": "header",
-      "content": "Contact button"
+      "content": "Logo"
     },
     {
       "type": "checkbox",
-      "id": "contact--enabled",
-      "label": "Enable",
-      "default": true
+      "id": "header-logo-center",
+      "label": "Center align"
     },
     {
-      "type": "text",
-      "id": "contact--text",
-      "label": "Text",
-      "default": "Contact"
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Image",
+      "info": "1600 x 200px max"
     },
     {
-      "type": "radio",
-      "id": "contact--type",
-      "options": [
-        { "value": "modal", "label": "Modal"},
-        { "value": "link", "label": "Link"}
-      ],
-      "label": "Type",
-      "default": "modal"
-    },
-    {
-      "type": "url",
-      "id": "contact--url",
-      "label": "Link to"
-    },
-    {
-      "id": "store--address",
-      "type": "textarea",
-      "label": "Address",
-      "default": "391 Sutter St,\r\nSan Francisco"
-    },
-    {
-      "type": "richtext",
-      "id": "store--hours",
-      "label": "Hours",
-      "default": "<p><strong>Monday - Friday</strong><br>12pm - 8pm<br><br><strong>Saturday - Sunday</strong><br>12pm - 5pm</p>"
+      "label": "Image Height",
+      "id": "logo-height",
+      "type": "range",
+      "min": 15,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "info": "This is referring to the natural height and should be half the height of the image you uploaded to ensure it stays sharp on retina screens."
     }
   ]
 }

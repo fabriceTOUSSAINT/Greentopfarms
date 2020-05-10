@@ -1,84 +1,61 @@
-{%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
-{% capture product_meta %}
-  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
-  <meta itemprop="name" content="{{ product.title }}" />
-  <meta itemprop="image" content="{{ product.featured_image.src | product_img_url: '600x600' }}" />
-{% endcapture %}
+{% comment %} Variables {% endcomment %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign featured_media = current_variant.featured_media | default: product.featured_media %}
+{% assign product_vendor_handle = product.vendor | handle %}
 
-{% assign description = product.description | strip_html %}
-{% assign paragraph_count = product.description | split: '<p>' %}
-{% assign show_excerpt = false %}
-{% if description.size > 200 or paragraph_count.size > 3 %}
-  {% assign show_excerpt = true %}
-  {% assign product_excerpt = product.metafields.global.description_tag %}
-  {% if product_excerpt == blank %}
-    {% assign product_excerpt = product.description | strip_html | truncate: 100 %}
-  {% endif %}
+{% assign loop_enabled = section.settings.loop-enabled %}
+{% assign load_3d = false %}
+{% assign youtube_exists = false %}
+
+{% if collections[product_vendor_handle].handle == product_vendor_handle %}
+  {% assign vendor_url = collections[product_vendor_handle].url %}
+{% else %}
+  {% assign vendor_url = product.vendor | url_for_vendor %}
 {% endif %}
 
-{% capture variants %}
-  <select name="id" id="product-page--select">
-    {% for variant in product.variants %}
-      <option
-        data-sku="{{ variant.sku }}"
-        {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}
-        {% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %}
-        value="{{ variant.id }}"
-      >
-        {{ variant.title }} - {{ variant.price | money }}
-      </option>
-    {% endfor %}
-  </select>
+{% capture media_focus_trigger_opening %}
+  <div
+    class="a11y--focus-trigger"
+    data-forward-to=".a11y--focus-trigger[data-position='after-product-details']"
+    data-back-to=".product-page--thumb[data-active='true']"
+  ></div>
 {% endcapture %}
 
-
-{% capture price_meta %}
-  <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
-  {% if product.available %}
-    <link itemprop="availability" href="http://schema.org/InStock" />
-  {% else %}
-    <link itemprop="availability" href="http://schema.org/OutOfStock" />
-  {% endif %}
-  {% assign price_meta = product.selected_or_first_available_variant.price | divided_by: 100.00 %}
-  <meta itemprop="price" content="{{ price_meta }}">
+{% capture media_focus_trigger_closing %}
+  <div
+    class="a11y--focus-trigger"
+    data-forward-to=".product-page--thumb[data-active='true']"
+  ></div>
 {% endcapture %}
 
 {% capture thumbnail_images %}
-  {% for image in product.images %}
-
-    {% assign active = false %}
-    {% if image.id == product.featured_image.id %}
-      {% assign active = true %}
+  {% for media in product.media %}
+    {% assign active_media = false %}
+    {% if featured_media == media %}
+      {% assign active_media = true %}
     {% endif %}
-
-    <div class="product-page--thumb" tabindex="0" data-image-id="{{ image.id }}" data-active="{{ active }}">
-      {%
-        include 'framework--image',
-        image: image,
-        widths: '90, 180'
-      %}
-    </div>
-  {% endfor %}
-{% endcapture %}
-
-{% capture product_images %}
-  {% for image in product.images %}
-    {% if section.settings.modal--enable %}
-      <a href="#" class="modal--link">
-    {% endif %}
-
-      {% assign active = false %}
-      {% if image.id == product.featured_image.id %}
-        {% assign active = true %}
-      {% endif %}
-
-      <div class="product-page--image" data-image-id="{{ image.id }}" data-active="{{ active }}">
-        {% include 'framework--image', image: image, max_height: 600 %}
+    <div class="product-page--thumb-container">
+      <div
+        class="product-page--thumb"
+        data-active="{{ active_media }}"
+        data-id="{{ media.id }}"
+        tabindex="0"
+      >
+        {%
+          include 'framework--image',
+          image: media.preview_image,
+          widths: '90, 180'
+        %}
       </div>
 
-    {% if section.settings.modal--enable %}
-      </a>
-    {% endif %}
+      {% if media.media_type == "model" %}
+        {% include 'framework--icons', icon: '3d-badge' %}
+      {% elsif media.media_type == "video" %}
+        {% include 'framework--icons', icon: 'play-badge' %}
+      {% elsif media.media_type == "external_video" %}
+        {% include 'framework--icons', icon: 'play-badge' %}
+      {% endif %}
+    </div>
   {% endfor %}
 {% endcapture %}
 
@@ -88,272 +65,582 @@
   data-js-class="ProductPage"
   data-section-id="{{ section.id }}"
   data-section-type="product_page"
-  data-modal-enabled="{{ section.settings.modal--enable }}"
-  data-show-thumbs-bottom="{% if product.images.size > 4 %}true{% else %}false{% endif %}"
-  data-product-page--show-variants="{% if product.variants.size > 1 %}true{% else %}false{% endif %}"
+  data-magnify="1.7"
+  data-zoom-enabled="{{ section.settings.image-zoom-enabled }}"
+  data-product-modal-enabled="{{ section.settings.product-modal-enabled }}"
+  data-size-chart-enabled="{{ section.settings.product-size-chart-enabled }}"
+  data-size-chart-option="{{ section.settings.product-size-chart-option }}"
+  data-cart-form-position="{{ section.settings.cart-form-position }}"
+  {% if section.settings.low-in-stock-amount > 0 %}
+    data-product-low-in-stock-amount="{{ section.settings.low-in-stock-amount }}"
+  {% endif %}
+  data-product-size-chart-enabled="{{ section.settings.product-size-chart-enabled }}"
+  data-js-class="ProductPage"
 >
-  <div class="product-page--main" itemscope itemtype="http://schema.org/Product">
-    {{ product_meta }}
-    <div class="product-page--main-container">
-      <div class="product-page--info-box">
-        <div class="product-page--info-box--container">
-          <button
-            class="product-page--close-description"
-            aria-label="{{ 'products.details_panel.close' | t }}"
-          >
-            {% include 'snippet-symbol' with 'cross' %}
-          </button>
 
-          <h2 class="product-page--title">{{ product.title }}</h2>
-          {% if section.settings.vendor-name--show %}
-            <div class="product-page--vendor">
-              <a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
-            </div>
-          {% endif %}
-
-          <div class="product-page--slider">
-            <div
-              class="fw--slider"
-              data-js-class="FrameworkSlider"
-              data-navigation="true"
-              data-pagination="false"
-              data-pagination-numbers="false"
-            >
-              {% for image in product.images %}
-                <div class="product-page--slider-image" data-image-id="{{ image.id }}">
-                  {%
-                    include "framework--image",
-                    image: image
-                  %}
-                </div>
-              {% endfor %}
-            </div>
+  <header>
+    <div class="row show--medium-large">
+      <div class="columns">
+        {% if section.settings.product-breadcrumbs-show %}
+          {% include 'framework--breadcrumbs' %}
+        {% endif %}
+      </div>
+    </div>
+    <div class="previous-next row">
+      {% if collection %}
+        {% if collection.previous_product or collection.next_product %}
+          <div class="font--accent columns large-3 small-6">
+            {% if collection.previous_product %}
+              <a
+                class="product-page--previous left"
+                title="{{ collection.previous_product.title }}"
+                href="{{ collection.previous_product.url }}"
+              >
+                {% include 'framework--icons', icon: 'arrow-left' %} {{ 'products.previous_item' | t }}
+              </a>
+            {% else %}
+              <div>&nbsp;</div>
+            {% endif %}
+            <div class="border-decoration show--large"></div>
           </div>
 
-          {% unless product.description == blank %}
-            <div class="product-page--excerpt">
-              {% if show_excerpt %}
-                {{ product_excerpt }}
-              {% else %}
-                {{ product.description }}
-              {% endif %}
-            </div>
-          {% endunless %}
-
-          {% if show_excerpt %}
-            <div
-              class="product-page--description-toggle"
-              aria-label="{{ 'products.details_panel.toggle' | t }}"
-            >
-              <span role="button" tabindex="0" class="product-page--more-details">
-                {{ 'products.details_panel.more' | t }}
-              </span>
-              <span role="button" tabindex="0" class="product-page--less-details">
-                {{ 'products.details_panel.less' | t }}
-              </span>
-            </div>
-          {% endif %}
-
-
-          <div class="product-page--cart-form">
-
-            {% form 'product', product %}
-
-            <p class="line-item-property__field">
-              <div class="product-page--variants">
-<!--                 <label for="variants" class="product-page--variants-header">{{product.options.first}}</label> -->
-                {{ variants }}
-              </div>
-            </p>
-
-            {% if product.tags contains 'Headcount' %} <label for="Headcount">Headcount</label>{% endif %}
-            {% if product.tags contains 'Individual' %} <label for="quantity">Quantity</label>{% endif %}
-            {% if product.tags contains 'HalfTray' %} <label for="HalfTray">Qty of Half Trays</label>{% endif %}
-            {% if product.tags contains 'Tray' %} <label for="Tray">Qty of Trays</label>{% endif %}
-
-            <input required class="required" type="number" name="quantity" {% if product.tags contains 'Headcount' %}value="10" min="10"{% else %} value="1" {% endif %}>
-
-            <p class="line-item-property__field">
-              <label for="delivery-time">Delivery Time</label>
-              <input required class="required" id="delivery-time" type="text" name="properties[Delivery Time]">
-
-              {% comment %} <input required class="required" id="delivery-time" type="text" name="properties[Delivery Time]"> {% endcomment %}
-            </p>
-            <p class="line-item-property__field">
-              <label for="delivery-time">Delivery Date</label>
-              <input required class="required dateJawn" id="delivery-date" type="text" name="properties[Delivery Date]">
-            </p>
-
-            {% comment %} Add tags to properites, but will be hidden on front end, used for triggering checkout cutoff logic {% endcomment %}
-            <p class="line-item-property__field tags--property-line">
-              {% assign tags =  product.tags | join: ',' %}
-              <input type="text" name="properties[tags]" value="{{ tags }}">
-            </p>
-
-          <div class="bold_options" data-product-id="{{ product.id }}"></div>
-          <div  class="product-page--price-n-button-wrapper">
-                {% if product.price > 0 %}
-                  <div
-                    class="product-page--price-wrapper"
-                    itemprop="offers"
-                    itemscope
-                    itemtype="http://schema.org/Offer"
-                  >
-                    {{ price_meta }}
-
-                    <div class="product-page--compare-price">
-                      {% if product.compare_at_price > product.price %}
-                        {{ product.compare_at_price | money }}
-                      {% endif %}
-                    </div>
-
-                    <div class="product-page--price">{{ product.price | money }}</div>
-                  </div>
-                {% endif %}
-
-                <div class="product-page--sold-out">
-                  <div class="product-page--sold-out--variant">
-                    {{ 'products.sold_out.variant' | t }}
-                  </div>
-                  <div class="product-page--unavailable-variant">
-                    {{ 'products.unavailable_variant' | t }}
-                  </div>
-                  {% if product.available == false %}
-                    <div class="product-page--sold-out--product">
-                      {{ 'products.sold_out.product' | t }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                {% assign cart_button_class = 'button' %}
-                {% if section.settings.smart_payment_button %}
-                  {% assign cart_button_class = 'button--secondary' %}
-                {% endif %}
-
-
-                <button class="product-page--add-to-cart {{ cart_button_class }}" type="submit" name="add">
-                  <span class="text">{{ 'products.add_to_cart' | t }}</span>
-                  <span class="fw--loading_animation tiny" data-js-class="FrameworkLoadingAnimation">
-                  </span>
-                </button>
-
-              </div>
-
-
-              {% if section.settings.smart_payment_button %}
-                <div class="product-page--smart-payment-buttons">
-                  {{ form | payment_button }}
-                </div>
-              {% endif %}
-            {% endform %}
-          </div>
-
-          <div class="product-page--description rte-content">
-            {{ product.description }}
-          </div>
-
-          {% if settings.social--sharing-products %}
-            <div class="product-page--social-media">
-              {% include 'partial--social-media' with 'product' %}
-            </div>
-          {% endif %}
-
-        </div>
-      </div> <!-- .product-page--info-box-wrapper -->
-
-      {% if product.images.size > 0 %}
-        <div class="product-page--images">
-
-          <div class="modal" data-js-class="FrameworkModal">
-            <div class="product-page--image-container">
-              {{ product_images }}
-            </div>
-            <div class="product-page--modal-images">
-              {% for image in product.images %}
-                <div class="modal--content">
-                  {%
-                    include "framework--image",
-                    image: image
-                  %}
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-
-        {% if product.images.size > 1 %}
-          <div class="product-page--thumbs">
-            {{ thumbnail_images }}
+          <div class="font--accent columns large-3 large-offset-6 small-6">
+            {% if collection.next_product %}
+              <a
+                class="product-page--next right"
+                href="{{ collection.next_product.url }}"
+                title="{{ collection.next_product.title }}"
+              >
+                {{ 'products.next_item' | t }}
+                {% include 'framework--icons', icon: 'arrow-right' %}
+              </a>
+            {% else %}
+              <div>&nbsp;</div>
+            {% endif %}
+            <div class="border-decoration show--large"></div>
           </div>
         {% endif %}
       {% endif %}
     </div>
-  </div> <!-- .product-page--main -->
+  </header>
 
-  {% if product.images.size > 1 %}
-    <div class="product-page--thumbs--mq-medium">
-      {{ thumbnail_images }}
-    </div>
-  {% endif %}
+  <article class="row" itemscope itemtype="http://schema.org/Product">
+    <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+    {% for media in product.media limit:3 %}
+      <meta property="og:image" content="http:{{ media | img_url: '1200x' }}">
+    {% endfor %}
 
-  {% if section.settings.related-collection--show %}
-    <div class="product-page--similar-products">
-      {% include 'partial--similar-products'  %}
+    <div class="product-page--main-content">
+
+      <div class="product-page--title-n-vendor">
+        <h1 class="product-page--title font--section-heading" itemprop="name">
+          {{ product.title }}
+        </h1>
+        {% if settings.brand-show %}
+          <div itemprop="brand">
+            <a class="font--light-accent" href="{{ product.vendor | url_for_vendor }}">
+              {{ product.vendor }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-page--cart-form-block">
+        <div
+          class="a11y--focus-trigger"
+          data-forward-to=".product-page--thumbs"
+          data-back-to=".product-page--thumbs-container"
+          data-mq="small"
+        ></div>
+        <div class="font--accent">
+          <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}" />
+
+            {% if product.available %}
+              <link itemprop="availability" href="http://schema.org/InStock" />
+            {% else %}
+              <link itemprop="availability" href="http://schema.org/OutOfStock" />
+            {% endif %}
+
+            {% assign price_meta = product.selected_or_first_available_variant.price | divided_by: 100.00 %}
+            <meta itemprop="price" content="{{ price_meta }}">
+
+            <p class="price--container">
+              {% assign variant = product.selected_or_first_available_variant %}
+              <span class="actual-price font--accent money">{{ variant.price | money }}</span>&nbsp;<span class="compare-price">{% if variant.price < variant.compare_at_price %}<span class="money font--light-accent">{{ variant.compare_at_price | money }}</span>{% endif %}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="product-page--cart-form">
+          {% form 'product', product %}
+
+           {% comment %}
+           <!-- Adding line items - https://docs.shopify.com/manual/configuration/store-customization/page-specific/product-page/get-customization-information-for-products -->
+           <div>
+              <label for="line-item-1">Line Item 1</label>
+              <input type="text" id="line-item-1" name="properties[line-item-1]">
+            </div>
+
+            <div>
+              <label for="line-item-2">Line Item 2</label>
+              <input type="text" id="line-item-2" name="properties[line-item-2]">
+            </div>
+            {% endcomment %}
+
+            <div class="font--accent variants {% unless product.variants.size > 1 %}hidden{% endunless %}">
+              <label for="variant-listbox-option-0" class="hidden">
+                {{ 'products.variants' | t }}
+              </label>
+              <select id="variant-listbox" name="id" class="medium">
+                {% for variant in product.variants %}
+                  <option
+                    data-sku="{{ variant.sku }}"
+                    {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}
+                    {% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}"
+                    {% if section.settings.low-in-stock-amount > 0 and
+                      variant.inventory_management == "shopify" and
+                      variant.inventory_policy == "deny"
+                    %}
+                      data-inventory-quantity="{{ variant.inventory_quantity }}"
+                    {% endif %}
+                  >
+                    {{ variant.title }} - {{ variant.price | money }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            {% include 'snippet-product-low-in-stock' %}
+            <div
+              class="quanity-cart-row clearfix"
+              data-smart-payment-button="{{ section.settings.smart_payment_button }}"
+            >
+              {% include 'snippet-quantity' %}
+
+              <div class="add-to-cart">
+                {% assign cart_button_class = 'font--button' %}
+                {% if section.settings.smart_payment_button %}
+                  {% assign cart_button_class = 'font--secondary-button' %}
+                {% endif %}
+                <button class="add {{ cart_button_class }}" type="submit" name="add" id="add">
+                  <span class="text">{{ 'products.add_to_cart' | t }}</span>
+                  <span class="fw--loading_animation tiny" data-js-class="FrameworkLoadingAnimation"></span>
+                </button>
+              </div>
+            </div>
+
+            {% if section.settings.smart_payment_button %}
+              <div class="font--button product-page--smart-payment-buttons">
+                {{ form | payment_button }}
+              </div>
+            {% endif %}
+          {% endform %}
+
+          <div
+            class="a11y--focus-trigger"
+            data-mq="small"
+            data-forward-to=".a11y--focus-trigger[data-position='after-product-details--small']"
+          ></div>
+        </div>
+
+        {% include 'snippet-product-unavailable' %}
+
+        {% if product.media.size > 1 %}
+          <div class="product-page--thumbs" data-position="cart-form-column">
+            <div class="product-page--thumbs-container">
+              {{ thumbnail_images }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-page--description font--paragraph">
+        <div itemprop="description" class="rte-content">
+          {{ product.description }}
+        </div>
+        <div
+          class="a11y--focus-trigger"
+          data-forward-to=".product-page--thumbs"
+          data-mq="medium"
+        ></div>
+      </div>
+
+      {% if product.media.size > 0 %}
+        <div class="product-page--media-root">
+          <div class="product-page--media-container">
+            <div class="modal--root" data-js-class="FrameworkModal">
+              {% for media in product.media %}
+                {% assign active_media = false %}
+                {% if featured_media == media %}
+                  {% assign active_media = true %}
+                {% endif %}
+
+                {% if section.settings.product-modal-enabled and media.media_type == 'image' %}
+                  <div class="modal--link">
+                {% endif %}
+
+                  <div
+                    class="product-page--media"
+                    data-active="{{ active_media }}"
+                    data-id="{{ media.id }}"
+                    data-media-type="{{ media.media_type }}"
+                  >
+                    {% case media.media_type %}
+                      {% when "image" %}
+                        {% include 'framework--image', image: media %}
+
+                      {% when "video" %}
+                        {{ media_focus_trigger_opening }}
+                        <div
+                          class="product-video--root"
+                          tabindex="0"
+                          data-js-class="ProductVideo"
+                          data-loop-enabled="{{ loop_enabled }}"
+                          data-type="plyr"
+                        >
+                          <div
+                            class="product-video--container"
+                            style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;"
+                          >
+                            {{ media | video_tag: image_size: "1024x" }}
+                          </div>
+                        </div>
+                        {{ media_focus_trigger_closing }}
+
+                      {% when "external_video" %}
+                        {% assign youtube_exists = true %}
+                        {{ media_focus_trigger_opening }}
+                        <div
+                          class="product-video--root"
+                          tabindex="0"
+                          data-js-class="ProductVideo"
+                          data-loop-enabled="{{ loop_enabled }}"
+                          data-type="youtube"
+                          data-video-id="{{ media.external_id }}"
+                        >
+                          <div
+                            class="product-video--container"
+                            style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;"
+                          >
+                            <div class="product-video" id="{{ media.id }}"></div>
+                          </div>
+                        </div>
+                        {{ media_focus_trigger_closing }}
+
+                      {% when "model" %}
+                        {% assign load_3d = true %}
+                        {{ media_focus_trigger_opening }}
+                        <div
+                          class="product-model--root"
+                          tabindex="0"
+                          data-js-class="ProductModel"
+                          style="padding-top: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%;"
+                        >
+                          {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true, image_size: "1024x" }}
+                        </div>
+                        {{ media_focus_trigger_closing }}
+
+                      {% else %}
+                        {{ media | media_tag }}
+
+                    {% endcase %}
+                  </div>
+
+                  {% if section.settings.image-zoom-enabled and media.media_type == 'image' %}
+                    <div
+                      class="product-page--zoom-image"
+                      data-id="{{ media.id }}"
+                      data-aspect-ratio="{{ media.aspect_ratio }}"
+                    >
+                      {%
+                        include "framework--image",
+                        image: media
+                      %}
+                    </div>
+                  {% endif %}
+
+                {% if section.settings.product-modal-enabled and media.media_type == 'image' %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+
+              {% if section.settings.product-modal-enabled %}
+                <div class="product-page--modal-media">
+                  {% for media in product.media %}
+                    {% if media.media_type == 'image' %}
+                      <div class="modal--content">
+                        {%
+                          include "framework--image",
+                          image: media.preview_image
+                        %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+
+          {% if product.media.size > 1 %}
+            {% if load_3d %}
+              {% assign first_3d_model = product.media | where: "media_type", "model" | first %}
+
+              <div class="product-page--button-container">
+                <button
+                  class="font--button"
+                  data-shopify-xr
+                  data-shopify-model3d-id="{{ first_3d_model.id }}"
+                  data-shopify-title={{ product.title }}
+                  style="display: none;"
+                >
+                  {% include 'framework--icons', icon: '3d-badge' %}
+                  {{ 'products.view_ar' | t }}
+                </button>
+              </div>
+            {% endif %}
+
+            <div class="product-page--thumbs" data-position="image-column">
+              <div
+                class="a11y--focus-trigger"
+                data-mq="small"
+                data-back-to="header"
+                data-forward-to=".product-page--thumbs-container"
+              ></div>
+
+              <div class="product-page--thumbs-container">
+                {{ thumbnail_images }}
+              </div>
+
+              <div
+                class="a11y--focus-trigger"
+                data-mq="small"
+                data-back-to=".product-page--thumbs-container"
+                data-forward-to=".product-page--cart-form-block"
+              ></div>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
     </div>
-  {% endif %}
+  </article>
 
 </div>
 
+<div
+  class="a11y--focus-trigger"
+  data-mq="medium-large"
+  data-position="after-product-details"
+  data-back-to=".product-page--description"
+></div>
+
+<div
+  class="a11y--focus-trigger"
+  data-mq="small"
+  data-position="after-product-details--small"
+  data-back-to=".product-page--cart-form-block"
+></div>
+
+{% if section.settings.product-share-this-show %}
+  <section class="row social-share">
+    <div class="columns">
+      {% include 'snippet-product-share' with 'product-template' %}
+    </div>
+  </section>
+{% endif %}
+
 <script>
-  theme.product = {};
-  theme.product.id = {{ product.id }};
-  theme.product_json = {%- include 'bold-product', output: 'json' -%};
+  // variables to pass to theme.js
+  var product_title = '{{ product.title | escape }}';
+  var product_variant_size = {{ product.variants.size }};
+  var product_options_size = {{ product.options.size }};
+  var product_options_size = 10;
+  var product_options_first = '{{ product.options.first | escape }}';
+  var product_json = {{ product | json }};
+  var product_language_was = '{{ 'products.was' | t | escape }}';
 
   var selectCallback = function(variant, selector) {
     theme.partials.ProductPage.variantSelected(variant, selector);
     // add your selectCallback code here...
-
   };
 
-  jQuery(function($) {
-    new Shopify.OptionSelectors('product-page--select', {
-      product: theme.product_json,
+  theme.products = {
+    size_chart: {
+      label: '{{ "products.size_chart" | t }}'
+    },
+    low_in_stock: {
+      one: '{{ "products.low_in_stock" | t: count: 1 }}',
+      other: '{{ "products.low_in_stock" | t: count: 2 }}'
+    }
+  };
+
+  $(function() {
+    new Shopify.OptionSelectors("variant-listbox", {
+      product: {{ product | json }},
       onVariantSelected: selectCallback,
       enableHistoryState: true
     });
   });
 
+  // AR
+  {% if load_3d %}
+    window.ShopifyXR = window.ShopifyXR || function() {
+      (ShopifyXR.q = ShopifyXR.q || []).push(arguments)
+    }
+
+    {% assign models = product.media | where: 'media_type', 'model' | json %}
+
+    ShopifyXR('setModels', {{ models }});
+  {% endif %}
+
+  {% if youtube_exists %}
+    // YouTube callback
+    function onYouTubeIframeAPIReady() {
+      $(function() {
+        $(window).trigger('theme.utils.youtubeAPIReady');
+      });
+    }
+  {% endif %}
 </script>
+
+{% if load_3d %}
+  <script
+    defer
+    src="https://cdn.shopify.com/shopifycloud/shopify-xr-js/assets/v1.0/shopify-xr.en.js"
+  ></script>
+{% endif %}
+
+{% if section.settings.product-size-chart-enabled %}
+  {% include 'snippet-size-chart' %}
+{% endif %}
 
 {% schema %}
 {
-  "name": "Product page",
+  "name": "Product pages",
+  "class": "section--products",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "product-breadcrumbs-show",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "smart_payment_button",
       "label": "Show dynamic checkout button",
       "info": "Lets customers check out directly using a familiar payment method. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "modal--enable",
-      "label": "Enable image zoom",
-      "default": true,
-      "info": "Opens when clicking featured product image"
-    },
-    {
-      "type": "checkbox",
-      "id": "related-collection--show",
-      "label": "Show related collection",
       "default": true
     },
     {
       "type": "checkbox",
-      "id": "vendor-name--show",
-      "label": "Show vendor name",
+      "id": "product-unavailable-form-show",
+      "label": "Show notification form when product is unavailable"
+    },
+    {
+      "label": "Show low in stock notice when quantity is",
+      "id": "low-in-stock-amount",
+      "type": "range",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "info": "Set to 0 to disable this feature. Updated for each variant."
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Learn more about [media types](https://help.shopify.com/en/manual/products/product-media)."
+    },
+    {
+      "type": "checkbox",
+      "id": "product-modal-enabled",
+      "label": "Enable modal popup",
+      "default": true,
+      "info": "Triggers when you click the selected media"
+    },
+    {
+      "type": "checkbox",
+      "id": "image-zoom-enabled",
+      "label": "Enable image zoom",
+      "default": true,
+      "info": "Triggers when you roll your mouse over an image"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop-enabled",
+      "label": "Enable video looping",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Positions"
+    },
+    {
+      "type": "paragraph",
+      "content": "Screens under 1280px wide will rearrange the columns automatically to prevent content from getting squished."
+    },
+    {
+      "id": "cart-form-position",
+      "label": "Cart form",
+      "type": "radio",
+      "options": [
+        { "value": "left", "label": "Left"},
+        { "value": "right", "label": "Right"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Size chart"
+    },
+    {
+      "type": "checkbox",
+      "id": "product-size-chart-enabled",
+      "label": "Enable",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "product-size-chart-option",
+      "label": "Link from option",
+      "default": "size"
+    },
+    {
+      "type": "page",
+      "id": "product-size-chart-page-content",
+      "label": "Page content"
+    },
+    {
+      "type": "header",
+      "content": "Social media panel"
+    },
+    {
+      "type": "checkbox",
+      "id": "product-share-this-show",
+      "label": "Show",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product-share-twitter",
+      "label": "Share on Twitter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product-share-facebook",
+      "label": "Share on Facebook",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product-share-pinterest",
+      "label": "Share on Pinterest",
+      "default": true
     }
   ]
 }

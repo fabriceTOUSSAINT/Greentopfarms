@@ -1,7 +1,8 @@
+{% comment %} Aspect ratio needs at least one decimal {% endcomment %}
 {% assign aspect_ratio = 1 %}
 {% assign placeholder = type %}
 {% if placeholder_index %}
-  {% capture placeholder %}{{type}}-{{placeholder_index}}{% endcapture %}
+  {% capture placeholder %}{{ type }}-{{ placeholder_index }}{% endcapture %}
 {% endif %}
 <div class="placeholder--root">
   <div
