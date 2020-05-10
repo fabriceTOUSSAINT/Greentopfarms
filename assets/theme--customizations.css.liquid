@@ -19,47 +19,299 @@
 
 /* Add your theme customizations below */
 @media screen and (min-width: 767px) {
-.header--menu {
-    margin: 0 -16px;
-    display: flex;
-    align-items: center;
-    height: 76px;
-}
-
-.header--top-row {
+  .header--menu {
+      margin: 0 -16px;
+      display: flex;
+      align-items: center;
       height: 76px;
-    align-items: center;
-}
+  }
 
-.header--cart {
-      position: initial;
-    display: flex;
-    order: 2;
-    justify-self: flex-end;
-    -webkit-box-flex: 0;
-    -ms-flex-positive: 0;
+  .header--top-row {
+        height: 76px;
+      align-items: center;
+  }
+
+  .header--cart {
+        position: initial;
+      display: flex;
+      order: 2;
+      justify-self: flex-end;
+      -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      -ms-flex-order: 2;
+      height: 40px;
+  }
+
+  .header--root {
+      background: rgba(255,255,255,.85);
+      height: 100px;
+      padding: 25px 50px;
+  }
+
+  .header--logo {
     flex-grow: 0;
-    -ms-flex-order: 2;
-    height: 40px;
-}
+  }
 
-.header--root {
+  .x-menu--level-1--link > a {
+      padding: 42px 16px;
+  }
+
+  .x-menu--bg {
     background: rgba(255,255,255,.85);
-    height: 100px;
-    padding: 25px 50px;
-}
-
-.header--logo {
-  flex-grow: 0;
-}
-
-.x-menu--level-1--link > a {
-     padding: 42px 16px;
-}
-
-.x-menu--bg {
-  background: rgba(255,255,255,.85);
-}
+  }
 
 
+  .header--root .x-menu {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .header--root .x-menu--level-1--container {
+    display: flex;
+        width: 100%;
+  }
+
+  .header--root li.x-menu--level-1--link.is-contact-button {
+      justify-self: auto;
+      display: flex;
+          align-self: center;
+      margin-left: auto;
+      margin-right: 20px;
+  }
+
+  .header--root li.x-menu--level-1--link.is-contact-button a {
+    border: 2px solid #131d60;
+    background: transparent; 
+    color: #131d60;
+    padding: 10px 25px;
+    transition: all ease .2s;
+  }
+
+  .header--root li.x-menu--level-1--link.is-contact-button a:hover {
+    background: #131d60 ;
+    color: #fff;
+  }
+
+  .x-menu--overlap-icon {
+    display: none;
+  }
+
 }
+
+
+
+{% comment %} 
+/* =========================================
+         CUSTOM ABOUTUS Pages (About Us)
+  ========================================= */
+   {% endcomment %}
+
+.page-about-us-custom .rte-content > *:not(:last-child),
+.page-about-us.template-page .main-content {
+  padding: 0px;
+
+}
+
+.page__about--section {
+  position: relative;
+  display: block;
+}
+
+.wide-wall {
+  max-width: none !important;
+  width: 100vw !important;
+}
+
+.page__about--section-image-copy {
+    position: absolute;
+    width: 100%;
+    display: block;
+    color: #fff;
+    margin: 0 auto;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.page__about--section-cta-wrapper {
+  padding: 20% 15%;
+}
+
+.page__about--section-image-wrapper-dark-bg::before {
+  content: '';
+  background-color: rgba(0,0,0,.4);
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.page__about--section-image {
+  margin: 0 !important;
+}
+
+.page-about-us-custom {
+  {% comment %} background-color: {{ settings.bg-color--panel }}; {% endcomment %}
+}
+
+.page__about--section-copy-wrapper {
+    text-align: center;
+    padding: 40px 80px;
+}
+
+.page__about--section-image-copy .contact-modal--button {
+    background: white;
+    border: none !important;
+    color: black !important;
+}
+
+.page__about--image {
+    max-height: 250px;
+}
+
+.bold_option_set .bold_option_radio {
+    font-size: 12px;
+    padding-bottom: 0px;
+    padding: 0 10px;
+}
+
+.cart-item-properties-individual:before {
+  content: '- ';
+}
+
+.bold_option_radio .bold_option_element {
+    display: none;
+}
+
+.collection--title:only-child {
+    width: 100%;
+    max-width: none;
+}
+
+header.collection--header img {
+    width: 100%;
+    object-fit: cover;
+    max-height: 550px;
+}
+
+header.collection--header {
+    margin-left: -15px;
+    width: 100vw;
+}
+
+
+.page--about-us .page-wrapper.wide-wall {
+  max-width: none !important;
+}
+
+.page__about--section-image-wrapper .page__about--section-image {
+    object-fit: cover;
+    width: 100%;
+    max-height: 800px;
+}
+
+.template--collection .collection--header .collection--image .image--container img {
+    max-height: none;
+    width: unset;
+    object-fit: initial;
+}
+
+.bold_option_line .bold_option_seperator,
+.bold_option_line .bold_option_value {
+  display: none;
+}
+
+.bold_option_line.Time--property-line .bold_option_seperator,
+.bold_option_line.Time--property-line .bold_option_value,
+.bold_option_line.Date--property-line .bold_option_seperator,
+.bold_option_line.Date--property-line .bold_option_value {
+  display: initial;
+}
+
+.product--price-sub-head {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0px;
+    font-style: oblique;
+    text-align: right;
+    line-height: 10px;
+}
+
+.cart-item-properties-individual {
+    font-size: 13px;
+    line-height: 17px;
+    padding: 0 10px;
+}
+
+
+
+/* center collections hero*/
+.collection--title h2 {
+    position: absolute;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    z-index: 1;
+}
+
+.collection--title {
+    padding: 0;
+}
+
+.collection--title:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+    position: absolute;
+    display: block;
+    top: 0;
+    max-height: 550px;
+}
+
+[data-product--view="list"] {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: flex-start;
+}
+
+.collection--title {
+    margin-bottom: 50px;
+    padding-bottom: 0px;
+}
+
+@media only screen and (min-width: 768px) {
+  header.collection--header {
+      margin-left: -50px;
+    flex-direction: column;
+  }
+
+  .collection--title {
+    width: 100vw;
+    left: 0;
+    max-width: none;
+  }
+
+  .collection--products {
+    align-items: flex-start;
+  }
+
+  .page__about--section-image-copy img {
+    max-width: 850px;
+  }
+
+  .page__about--section-image-copy {
+    padding: 20% 15%;
+  }
+}
+{% comment %} 
+/* =========================================
+         ENDDD CUSTOM ABOUTUS Pages (About Us)
+  ========================================= */
+   {% endcomment %}

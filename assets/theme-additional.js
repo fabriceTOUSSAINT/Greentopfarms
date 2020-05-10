@@ -385,23 +385,23 @@ $(document).ready(function ($) {
       const dateEl = item.querySelector(".js-delivery-Delivery-Date");
       const timeEl = item.querySelector(".js-delivery-Delivery-Time");
 
-	  // TODO: DEPRECATE, NO ITPS NEEDED
-    //   if (!dateEl || !timeEl) {
-    //     if (item.dataset.variantId == "17822881185849") {
-    //       // If item is a tip, add note
-    //       let tipValue = $("#updates_17822881185849").val();
-    //       tipValue = parseInt(tipValue) * 0.01;
-    //       $(".tip-block-header").addClass("tip-block-header--tip-added");
-    //       $(".tip-block-header").after(
-    //         "<span class='tip-block-header--tip-added-value'>Thank you for your tip of $" +
-    //           tipValue +
-    //           "</span>"
-    //       );
-    //     }
+      // TODO: DEPRECATE, NO ITPS NEEDED
+      //   if (!dateEl || !timeEl) {
+      //     if (item.dataset.variantId == "17822881185849") {
+      //       // If item is a tip, add note
+      //       let tipValue = $("#updates_17822881185849").val();
+      //       tipValue = parseInt(tipValue) * 0.01;
+      //       $(".tip-block-header").addClass("tip-block-header--tip-added");
+      //       $(".tip-block-header").after(
+      //         "<span class='tip-block-header--tip-added-value'>Thank you for your tip of $" +
+      //           tipValue +
+      //           "</span>"
+      //       );
+      //     }
 
-    //     // If item is neither a tip or has no date or time return
-    //     return;
-    //   }
+      //     // If item is neither a tip or has no date or time return
+      //     return;
+      //   }
 
       const date = dateEl.dataset.deliveryDeliveryDate;
       const time = timeEl.dataset.deliveryDeliveryTime;
