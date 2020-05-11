@@ -78,6 +78,9 @@
           data-js-class="ProductGrid"
         >
           {% for product in collection.products %}
+            {% comment %} BOLD SPECIFIC {% endcomment %}
+            {%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+            {% comment %} END BOLD SPECIFIC {% endcomment %}
             {% include 'partial--product' %}
           {% endfor %}
 

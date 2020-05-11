@@ -3,6 +3,8 @@
 {% assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency %}
 {% assign formatted_initial_value_stripped = formatted_initial_value | strip_html %}
 
+{% assign gift_card_image_GTF = 'Gift_Card_3.png' | file_url %}
+
 <!DOCTYPE html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
@@ -76,7 +78,7 @@
                 <div class="corner bottom-left"></div>
                 <div id="gift-card">
                   <img
-                    src="{{ 'gift-card/card.jpg' | shopify_asset_url }}"
+                    src="{{ gift_card_image_GTF }}"
                     alt="Gift card illustration"
                   >
                   {% assign initial_value_size = formatted_initial_value | size %}

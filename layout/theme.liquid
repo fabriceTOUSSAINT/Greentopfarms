@@ -32,6 +32,11 @@
 
     {{ content_for_header }}
 
+    {% comment %} BOLD PRODUCT {% endcomment %}
+    {% if template == 'product' and product.metafields.inventory.ShappifyHidden or product.type contains '_HIDDEN_' %}<meta name='robots' content='noindex'>{% endif %}
+    {%- render 'bold-common' -%}
+    {% comment %} END BOLD PRODUCT {% endcomment %}
+    
     {% include 'framework--css-variables' %}
     {% include 'partial--css-variables' %}
 

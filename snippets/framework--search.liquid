@@ -42,6 +42,9 @@
           <div class="search--articles">
             <div class="search--articles-container">
               {% for item in search.results %}
+                {% comment %} BOLD ONLY {% endcomment %}
+                {%- if item.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+                {% comment %} END BOLD ONLY {% endcomment %}
                 <div class="search--article hover-links">
                   <a href="{{ item.url }}">{{ item.title }}</a>
                 </div>

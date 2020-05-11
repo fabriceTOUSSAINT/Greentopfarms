@@ -98,9 +98,27 @@
     display: none;
   }
 
+#gift-card {
+  height: 305px;
 }
 
+}
+{% comment %} Hides bundle ingredients from displaying, meant for backend app {% endcomment %}
+.product-page--cart-form .bold_options_loaded .bold_option_radio,
+.cart--item-properties {
+  display: none;
+}
 
+.cart--item--title  > *:not(.font--block-heading) {
+  display: none;
+}
+{% comment %} End hiding above {% endcomment %}
+
+
+.identixweb-order-delivery__wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
 
 {% comment %} 
 /* =========================================
@@ -315,3 +333,81 @@ header.collection--header {
          ENDDD CUSTOM ABOUTUS Pages (About Us)
   ========================================= */
    {% endcomment %}
+
+   .page-your-shopping-cart .cart--only-show-on-drawer {
+    display: none;
+   }
+
+   .cart--only-show-on-non-drawer {
+     display: none;
+   }
+
+   .page-your-shopping-cart .cart--only-show-on-non-drawer {
+     display: block;
+   }
+
+
+
+.delivery-radius {
+  font-size: 15px;
+}
+
+.delivery-radius-success + .zipcode.button:before {
+    content: "\2714";
+    width: 10px;
+    height: 10px;
+    padding-right: 20px;
+}
+
+.delivery-radius-success + .zipcode.button {
+    background: green;
+}
+
+.delivery-radius-fail + .zipcode.button:before {
+    content: "\2715";
+    width: 10px;
+    height: 10px;
+    padding-right: 20px;
+}
+
+.delivery-radius-fail + .zipcode.button {
+    background: red;
+}
+
+
+.delivery-radius-wrapper {
+      display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    max-width: 300px;
+    margin-left: auto;
+    text-align: right;
+    padding: 30px 0px 20px;
+}
+
+.delivery-input-wrapper {
+  {% comment %} display: flex; {% endcomment %}
+}
+
+.zipcode {
+  margin-top: 15px;
+}
+
+button.disabled--checkout,
+.disabled--checkout .paypal-button {
+    cursor: not-allowed;
+    background-color: #8080802e;
+    color: #838282;
+    pointer-events: none;
+    opacity: .4;
+}
+
+
+button.successful--checkout,
+.successful--checkout .paypal-button {
+    cursor: pointer;
+    background-color: #131d60;
+    color: white;
+    pointer-events: all;
+    opacity: 1;
+}

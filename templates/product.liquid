@@ -1,3 +1,7 @@
+{% comment %} BOLD CODE {% endcomment %}
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- break -%}{%- endif -%}
+{% comment %}  END BOLD CODE {% endcomment %}
+
 {% section 'product' %}
 
 {% section 'framework--product-recommendations' %}

@@ -75,7 +75,7 @@
                 {% endunless %}
 
                 {% assign property_size = item.properties | size %}
-                {% if property_size > 0 %}
+<!--                 {% if property_size > 0 %}
                   {% for property in item.properties %}
                     {% unless property.last == blank %}
                       <br>
@@ -88,7 +88,7 @@
                       {% endif %}
                     {% endunless %}
                   {% endfor %}
-                {% endif %}
+                {% endif %} -->
               </div>
 
               <div class="cart--item--price font--accent">
@@ -165,7 +165,21 @@
               </div>
             </div>
           {% endfor %}
+
         </div>
+
+          <span class="delivery-radius-wrapper">
+            <label required for="delivery-radius">Check if you're in our delivery radius</label>
+            <span class="delivery-input-wrapper">
+                <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
+                <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check</button>
+            </span>
+
+          </span>
+
+          <div class="identixweb-order-delivery__wrapper">
+            <div class="identixweb-order-delivery"></div>
+          </div>
 
       {% when 'mobile' %}
         <div class="cart--body">
@@ -208,7 +222,7 @@
                 {% assign property_size = item.properties | size %}
                 {% if property_size > 0 %}
                   <div class="cart--item-properties">
-                  {% for p in item.properties %}
+<!--                   {% for p in item.properties %}
                     {% unless p.last == blank %}
                       <br>
                       {{ p.first }}:
@@ -218,7 +232,7 @@
                       {% else %}
                         {{ p.last }}
                       {% endif %}
-                    {% endunless %}
+                    {% endunless %} -->
                   {% endfor %}
                   </div>
                 {% endif %}
@@ -295,7 +309,7 @@
 
     <div class="cart--footer">
       {% if settings.cart--show-note %}
-        <div class="cart--notes jawn">
+        <div class="cart--notes">
           <label for="cart-note" class="cart--notes--heading">{{ order_notes_t }}</label>
           <textarea
             class="cart--notes--textarea"
@@ -325,6 +339,7 @@
             </ul>
           </div>
         {%- endif -%}
+        
         <!-- Final cart total -->
         <div class="cart--total">
           <div class="font--block-heading">{{ total_t }}</div>
@@ -337,6 +352,34 @@
           {{ shipping_taxes_t }}
         </div>
 
+
+        <div class="cart--nav cart--only-show-on-drawer">
+
+
+
+          <a class="cart--checkout-button font--button" href="/cart">
+            Select delivery date & checkout. 
+          </a>
+
+        </div>
+
+
+
+             {% comment %} <span class="delivery-radius-wrapper">
+            <label required for="delivery-radius">Check if you're in our delivery radius</label>
+            <span class="delivery-input-wrapper">
+                <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
+                <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check</button>
+            </span>
+
+          </span> {% endcomment %}
+
+          {% comment %} <div class="identixweb-order-delivery__wrapper">
+            <div class="identixweb-order-delivery"></div>
+          </div> {% endcomment %}
+
+          
+      <span class="cart--only-show-on-non-drawer">
         <div class="cart--nav">
           <div class="cart--continue-shopping font--block-link">
             <a href="{{ routes.all_products_collection_url }}">
@@ -344,17 +387,18 @@
             </a>
           </div>
 
-          <button class="cart--checkout-button font--button" type="submit" name="checkout">
+          <button class="cart--checkout-button font--button disabled--checkout" type="submit" name="checkout">
             {{ checkout_t }}
           </button>
         </div>
 
-      {% if additional_checkout_buttons %}
+      {% comment %} {% if additional_checkout_buttons %}
         <div class="cart--additional-buttons additional-checkout-buttons
           {% if view == 'mobile' %} additional-checkout-buttons--vertical {% endif %}">
           {{ content_for_additional_checkout_buttons }}
         </div>
-      {% endif %}
+      {% endif %}  {% endcomment %}
+      </span>
 
       </div>
     </div>
