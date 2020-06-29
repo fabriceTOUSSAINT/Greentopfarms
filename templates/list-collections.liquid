@@ -15,6 +15,9 @@
       {% if linklists.all-collections.links.size > 0 %}
         {% assign collection_list = linklists.all-collections.links %}
         {% for link in collection_list %}
+          {%- comment %}<locksmith:3d40>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:3d40>{% endcomment -%}
           {% assign collection = link.object %}
           {% unless
             collection.handle == 'all' or
@@ -27,6 +30,9 @@
 
       {% elsif collections.size > 0 %}
         {% for collection in collections %}
+          {%- comment %}<locksmith:a7f7>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:a7f7>{% endcomment -%}
           {% unless
             collection.handle == 'all' or
             collection.handle == 'all-products' or

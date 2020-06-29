@@ -1,25 +1,25 @@
 {
   "current": {
-    "color--accent": "#f7ede0",
-    "color-text": "#ffffff",
-    "color--alternative": "#f7ede0",
+    "color--accent": "#6e2405",
+    "color-text": "#000000",
+    "color--alternative": "#ffffff",
     "color-page-bg": "#ffffff",
-    "color-panel-bg": "#f7f7f7",
+    "color-panel-bg": "rgba(0,0,0,0)",
     "color-border": "#ebebeb",
     "color-error": "#ed6a1e",
     "color-button": "#ffffff",
-    "color-button-bg": "#131d60",
-    "color-header-bg": "#f7f7f7",
-    "color-header": "#131d60",
-    "color-header-cart": "#131d60",
+    "color-button-bg": "#ed6a1e",
+    "color-header-bg": "rgba(0,0,0,0)",
+    "color-header": "#000000",
+    "color-header-cart": "#000000",
     "bg-color--footer": "#f7f7f7",
-    "color--footer": "#131d60",
-    "color-slider-caption": "#131d60",
+    "color--footer": "#000000",
+    "color-slider-caption": "#000000",
     "color-slider-caption-bg": "#ffffff",
     "color-slider-button": "#ffffff",
-    "color-slider-button-bg": "#131d60",
-    "color-slider-nav": "#131d60",
-    "color-grid-sale": "#ffffff",
+    "color-slider-button-bg": "#ed6a1e",
+    "color-slider-nav": "#000000",
+    "color-grid-sale": "#6e2405",
     "color-grid-sale-bg": "#131d60",
     "color-grid-sold-out": "#ffffff",
     "color-grid-sold-out-bg": "#cccccc",
@@ -35,19 +35,19 @@
     "search--show-in-header": true,
     "search--show-articles": true,
     "search--show-pages": true,
-    "social--facebook--url": "",
+    "social--facebook--url": "https:\/\/www.facebook.com\/greentop.farm",
     "social--twitter--url": "",
-    "social--instagram--url": "",
+    "social--instagram--url": "https:\/\/instagram.com\/greentopfarms",
     "social--vimeo--url": "",
     "social--pinterest--url": "",
     "social--youtube--url": "",
-    "popup--enabled": false,
+    "popup--enabled": true,
     "popup--test-mode": false,
-    "popup--image": "shopify:\/\/shop_images\/GTF_WFH-2885_d4478d69-090b-4299-afdb-4087c45c599f.jpg",
+    "popup--image": "shopify:\/\/shop_images\/GTF_WFH-2885_43329227-99bf-4de1-8896-9253f49277cb.jpg",
     "popup--image-url": "",
     "popup--page-content": "",
-    "popup--newsletter--enabled": false,
-    "popup--newsletter--heading": "LETTERS FROM THE SHOP",
+    "popup--newsletter--enabled": true,
+    "popup--newsletter--heading": "Your Neighborhood Grocery. Delivered anywhere in NYC.",
     "popup--social-icons--enabled": false,
     "popup--seconds-range": 3,
     "popup--days-range": 7,
@@ -98,13 +98,13 @@
       "product": {
         "type": "product",
         "settings": {
-          "product-breadcrumbs-show": true,
+          "product-breadcrumbs-show": false,
           "smart_payment_button": false,
-          "product-unavailable-form-show": true,
+          "product-unavailable-form-show": false,
           "low-in-stock-amount": 0,
           "product-modal-enabled": false,
           "image-zoom-enabled": false,
-          "loop-enabled": true,
+          "loop-enabled": false,
           "cart-form-position": "left",
           "product-size-chart-enabled": false,
           "product-size-chart-option": "size",
@@ -118,79 +118,11 @@
       "collection": {
         "type": "collection",
         "settings": {
-          "collections-breadcrumbs-show": true,
+          "collections-breadcrumbs-show": false,
           "collections-tags-show": true,
           "show-title": false,
           "collections-products-per-row": "4",
           "mobile-items-per-row": "2"
-        }
-      },
-      "1519177052247": {
-        "type": "slideshow",
-        "blocks": {
-          "1589062670570": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/GTF-grocery01.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          },
-          "1519177052247-0": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Introducing_Green_Top_Grocery_2.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/home-delivery",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          },
-          "1519177052247-1": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/PROVIDING_CONTACTLESS_DELIVERY_2.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/home-delivery",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          },
-          "1588701184175": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/FEEDING_THOSE_IN_NEED.jpg",
-              "slide-title": "",
-              "slide-tagline": "",
-              "slide-link-url": "shopify:\/\/collections\/home-delivery",
-              "slide-link-title": "",
-              "slide-y-pos": "middle",
-              "slide-x-pos": "left",
-              "slide-text-pos": "text-left"
-            }
-          }
-        },
-        "block_order": [
-          "1589062670570",
-          "1519177052247-0",
-          "1519177052247-1",
-          "1588701184175"
-        ],
-        "settings": {
-          "autoplay": false,
-          "transition_style": "fade",
-          "rotate-frequency-range": 7
         }
       },
       "1519177108222": {
@@ -204,100 +136,11 @@
           "overlap": false,
           "transparent-overlap": false,
           "alternative-color": false,
-          "image": "",
+          "image": "shopify:\/\/shop_images\/GTF-grocery01.jpg",
           "title": "Image with text",
           "description": "<p>Use a combination of image and text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store<\/p>",
           "link-url": "",
           "link-text": ""
-        }
-      },
-      "1519177136360": {
-        "type": "framework--featured-grid",
-        "disabled": true,
-        "blocks": {
-          "1519177136360-0": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          },
-          "1519177136360-1": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          },
-          "1519177136360-2": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          },
-          "1519177136360-3": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          },
-          "1521155794713": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          },
-          "1521155797117": {
-            "type": "image",
-            "settings": {
-              "image": "",
-              "title": "Grid image",
-              "link-url": "",
-              "link-text": "View more"
-            }
-          }
-        },
-        "block_order": [
-          "1519177136360-0",
-          "1519177136360-1",
-          "1519177136360-2",
-          "1519177136360-3",
-          "1521155794713",
-          "1521155797117"
-        ],
-        "settings": {
-          "background-color": "none",
-          "full-width": false,
-          "spacing": true,
-          "alternative-color": false,
-          "text-position": "center",
-          "width": 3,
-          "mobile-width": "2",
-          "title": "Featured grid",
-          "subtitle": "",
-          "link-url": "",
-          "link-text": ""
-        }
-      },
-      "1519177181912": {
-        "type": "featured-collection",
-        "settings": {
-          "background-color": "none",
-          "home-product-slider-collection": "home-delivery",
-          "max_products": 12
         }
       },
       "1519177213210": {
@@ -305,13 +148,13 @@
         "disabled": true,
         "settings": {
           "full-width": true,
-          "background-color": "light",
+          "background-color": "none",
           "text-position": "center",
           "text-width": "large",
           "overlap": true,
-          "transparent-overlap": true,
+          "transparent-overlap": false,
           "alternative-color": false,
-          "image": "",
+          "image": "shopify:\/\/shop_images\/GTF-grocery01.jpg",
           "title": "Image with text",
           "description": "<p>Use a combination of image and text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store<\/p>",
           "link-url": "",
@@ -320,6 +163,7 @@
       },
       "1519177316120": {
         "type": "framework--newsletter",
+        "disabled": true,
         "settings": {
           "background-color": "none",
           "heading": "LETTERS FROM THE SHOP",
@@ -337,6 +181,7 @@
       },
       "1521155972652": {
         "type": "framework--featured-video",
+        "disabled": true,
         "settings": {
           "video-url": "https:\/\/youtu.be\/6uE9s1Keo0s",
           "image": "",
@@ -369,17 +214,17 @@
         "type": "framework--featured-content",
         "disabled": true,
         "settings": {
-          "full-width": false,
+          "full-width": true,
           "background-color": "light",
           "text-position": "left",
-          "text-width": "small",
+          "text-width": "large",
           "overlap": true,
           "transparent-overlap": false,
           "alternative-color": false,
-          "image": "",
-          "title": "Image with text",
-          "description": "<p>Use a combination of image and text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store<\/p>",
-          "link-url": "",
+          "image": "shopify:\/\/shop_images\/Untitled-1.png",
+          "title": "FARMERS MARKET PRODUCE",
+          "description": "<p>We source seasonal vegetables from family farms. <br>We'll reach outside of our region when it makes sense, but the majority comes from NY State.<\/p>",
+          "link-url": "shopify:\/\/collections\/produce",
           "link-text": ""
         }
       },
@@ -388,26 +233,35 @@
         "settings": {
           "enabled": true,
           "home-page-only": false,
-          "background-color": "light",
+          "background-color": "none",
           "alternative-color": false,
           "icon": "",
-          "text": "🌱 ORDER TODAY FOR DELIVERY BY THURSDAY, MAY 7TH! 🌱",
-          "link": "shopify:\/\/collections\/home-delivery"
+          "text": "48 HOUR DELIVERY — EVERY ORDER SUPPORTS MEALS FOR OUR FOOD INSECURE NEIGHBORS",
+          "link": "shopify:\/\/collections\/green-top-grocery"
         }
       },
       "framework--footer": {
         "type": "framework--footer",
         "blocks": {
-          "1588701605699": {
+          "1589160057128": {
+            "type": "subscribe",
+            "settings": {
+              "newsletter--heading": "LETTERS FROM THE SHOP",
+              "newsletter--info": "<p>Tune in for updates on our menus &amp; mission<\/p>",
+              "subscribe--show-newsletter": true
+            }
+          },
+          "1589160458012": {
             "type": "menu",
             "settings": {
-              "menu-title": "",
+              "menu-title": "Info",
               "menu": "footer"
             }
           }
         },
         "block_order": [
-          "1588701605699"
+          "1589160057128",
+          "1589160458012"
         ],
         "settings": {
           "show-currency-selector": false,
@@ -419,37 +273,257 @@
         "type": "framework--product-recommendations",
         "settings": {
           "product-similar-products-show": true,
-          "product-similar-products-heading": "YOU MAY ALSO ENJOY"
+          "product-similar-products-heading": "You may also like"
         }
       },
-      "framework--blog": {
-        "type": "framework--blog",
+      "1589146302376": {
+        "type": "featured-collection",
         "settings": {
-          "show-title": true,
-          "show-tag-filter": true,
-          "show-excerpt": true,
-          "show-rss": true,
-          "columns": 2,
-          "show-featured": true,
-          "tag": "featured",
-          "image-height": "medium",
-          "alt-color": true,
-          "apply-overlay": true
+          "background-color": "none",
+          "home-product-slider-collection": "new-arrivals",
+          "max_products": 12
         }
       },
-      "framework--article": {
-        "type": "framework--article",
+      "1589210563852": {
+        "type": "slideshow",
+        "blocks": {
+          "1589210563852-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/GTF-homepage2x-fullcolor.jpg",
+              "slide-title": "",
+              "slide-tagline": "",
+              "slide-link-url": "shopify:\/\/collections\/green-top-grocery",
+              "slide-link-title": "",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "left",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1589210563852-0"
+        ],
         "settings": {
-          "show-featured": true,
-          "title-position": "below",
-          "show-date": true,
-          "show-author": true,
-          "show-share": true,
-          "show-tags": true,
-          "show-recent": true,
-          "show-comments": false,
-          "enable-disqus": false,
-          "disqus-shortname": ""
+          "autoplay": true,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
+      },
+      "1589210942495": {
+        "type": "framework--featured-content",
+        "disabled": true,
+        "settings": {
+          "full-width": false,
+          "background-color": "light",
+          "text-position": "left",
+          "text-width": "large",
+          "overlap": true,
+          "transparent-overlap": false,
+          "alternative-color": false,
+          "image": "shopify:\/\/shop_images\/GTF_WFH-2882.jpg",
+          "title": "Chef's Bundle",
+          "description": "<p>One week of meals and snacks, designed by Chef Anup Joshi. Eat like a restaurant chef at home this&nbsp;week!<\/p>",
+          "link-url": "",
+          "link-text": ""
+        }
+      },
+      "1589211658972": {
+        "type": "slideshow",
+        "blocks": {
+          "1589211658972-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Best_Sellers_Super_Wide_346841df-5f8d-4a6d-ab6a-37aea5c963ef.png",
+              "slide-title": "PREPARED BUNDLES",
+              "slide-tagline": "Take the week off from cooking with farm-to-table prepared meal kits designed for quarantine living.",
+              "slide-link-url": "shopify:\/\/collections\/bundles",
+              "slide-link-title": "Shop Bundles",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "left",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1589211658972-0"
+        ],
+        "settings": {
+          "autoplay": true,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
+      },
+      "1589212200991": {
+        "type": "framework--featured-grid",
+        "blocks": {
+          "1589212200991-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/poster-sides.png",
+              "title": "Made from Scratch",
+              "link-url": "shopify:\/\/collections\/prepared-foods",
+              "link-text": "SHOP"
+            }
+          },
+          "1589212200991-2": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/poster-herbs.png",
+              "title": "Long Island Fresh",
+              "link-url": "shopify:\/\/collections\/fresh-herbs",
+              "link-text": "SHOP"
+            }
+          },
+          "1589298643178": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/poster-produce01.png",
+              "title": "From Family Farms",
+              "link-url": "shopify:\/\/collections\/produce",
+              "link-text": "SHOP"
+            }
+          },
+          "1589212200991-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/poster-granola.png",
+              "title": "Earthy and Sweet",
+              "link-url": "shopify:\/\/products\/granola",
+              "link-text": "SHOP"
+            }
+          }
+        },
+        "block_order": [
+          "1589212200991-0",
+          "1589212200991-2",
+          "1589298643178",
+          "1589212200991-1"
+        ],
+        "settings": {
+          "background-color": "none",
+          "full-width": false,
+          "spacing": true,
+          "alternative-color": false,
+          "text-position": "center",
+          "width": 4,
+          "mobile-width": "2",
+          "title": "",
+          "subtitle": "",
+          "link-url": "",
+          "link-text": ""
+        }
+      },
+      "1589212290106": {
+        "type": "slideshow",
+        "blocks": {
+          "1589212290106-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Stock_Your_Fridge_Super_Wide.png",
+              "slide-title": "FRESH, QUALITY GROCERIES.",
+              "slide-tagline": "",
+              "slide-link-url": "shopify:\/\/collections\/green-top-grocery",
+              "slide-link-title": "SHOP NOW",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "center",
+              "slide-text-pos": "text-center"
+            }
+          }
+        },
+        "block_order": [
+          "1589212290106-0"
+        ],
+        "settings": {
+          "autoplay": false,
+          "transition_style": "default",
+          "rotate-frequency-range": 8
+        }
+      },
+      "1519177136360": {
+        "type": "framework--featured-grid",
+        "disabled": true,
+        "blocks": {
+          "1519177136360-3": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Balsamic_Vinegar.jpg",
+              "title": "Balsamic Vinegar",
+              "link-url": "shopify:\/\/products\/balsamic-vinegar",
+              "link-text": "$12.99"
+            }
+          },
+          "1589831034379": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Chocolate_Milk.png",
+              "title": "Whole Chocolate Milk",
+              "link-url": "shopify:\/\/products\/whole-chocolate-milk",
+              "link-text": "$3.99"
+            }
+          },
+          "1589831120680": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Chorizo_Iberico_de_Bellota.jpg",
+              "title": "Chorizo Iberico de Bellota",
+              "link-url": "shopify:\/\/products\/chorizo-iberico-de-bellota",
+              "link-text": "$12.99"
+            }
+          },
+          "1519177136360-1": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Manchego_3_Months.jpg",
+              "title": "Manchego 3 Months",
+              "link-url": "shopify:\/\/products\/manchego-3-months",
+              "link-text": "$13.99"
+            }
+          }
+        },
+        "block_order": [
+          "1519177136360-3",
+          "1589831034379",
+          "1589831120680",
+          "1519177136360-1"
+        ],
+        "settings": {
+          "background-color": "none",
+          "full-width": true,
+          "spacing": true,
+          "alternative-color": false,
+          "text-position": "center",
+          "width": 4,
+          "mobile-width": "2",
+          "title": "NEW ARRIVALS",
+          "subtitle": "",
+          "link-url": "shopify:\/\/collections\/green-top-grocery",
+          "link-text": ""
+        }
+      },
+      "1589236243503": {
+        "type": "framework--featured-content",
+        "settings": {
+          "full-width": false,
+          "background-color": "light",
+          "text-position": "right",
+          "text-width": "large",
+          "overlap": true,
+          "transparent-overlap": false,
+          "alternative-color": false,
+          "image": "shopify:\/\/shop_images\/000078890017.jpg",
+          "title": "FOLLOW US ON INSTA",
+          "description": "<p>Follow us on IG&nbsp;for recipe tips and updates on our work in the community.<\/p>",
+          "link-url": "http:\/\/www.instagram.com\/greentopfarms",
+          "link-text": "@greentopfarms"
+        }
+      },
+      "1589238631281": {
+        "type": "featured-collection",
+        "settings": {
+          "background-color": "none",
+          "home-product-slider-collection": "best-sellers",
+          "max_products": 12
         }
       },
       "pages": {
@@ -457,19 +531,52 @@
         "settings": {
           "center-content--enabled": true
         }
+      },
+      "1589304743530": {
+        "type": "slideshow",
+        "blocks": {
+          "1589304743530-0": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Produce_Superwide.png",
+              "slide-title": "BETTER PRODUCE",
+              "slide-tagline": "Seasonal vegetables from family farms.  We'll reach outside of our region when it makes sense, but the majority comes from NY State.",
+              "slide-link-url": "shopify:\/\/collections\/produce",
+              "slide-link-title": "SHOP PRODUCE",
+              "slide-y-pos": "middle",
+              "slide-x-pos": "right",
+              "slide-text-pos": "text-left"
+            }
+          }
+        },
+        "block_order": [
+          "1589304743530-0"
+        ],
+        "settings": {
+          "autoplay": true,
+          "transition_style": "default",
+          "rotate-frequency-range": 7
+        }
       }
     },
     "content_for_index": [
-      "1519177052247",
-      "1519177181912",
-      "1519177108222",
+      "1589210563852",
       "1519177136360",
+      "1589146302376",
+      "1589211658972",
+      "1589212200991",
+      "1521156071253",
+      "1589304743530",
+      "1589238631281",
+      "1589210942495",
       "1519177213210",
+      "1519177108222",
       "1521155965634",
       "1521155972652",
-      "1521156071253",
       "1519177316120",
-      "1521155992953"
+      "1521155992953",
+      "1589236243503",
+      "1589212290106"
     ]
   },
   "presets": {
@@ -526,53 +633,9 @@
             "logo-height": 35
           }
         },
-        "framework--footer": {
-          "type": "framework--footer",
-          "blocks": {
-            "footer--about": {
-              "type": "about",
-              "settings": {
-                "about-title": "Store"
-              }
-            },
-            "footer--menu": {
-              "type": "menu",
-              "settings": {
-                "menu-title": "Info",
-                "menu": "footer"
-              }
-            },
-            "footer--subscribe": {
-              "type": "subscribe",
-              "settings": {
-                "newsletter--heading": "Subscribe",
-                "subscribe--show-newsletter": true
-              }
-            }
-          },
-          "block_order": [
-            "footer--about",
-            "footer--menu",
-            "footer--subscribe"
-          ],
-          "settings": {}
-        },
         "product": {
           "type": "product",
-          "settings": {
-            "product-breadcrumbs-show": true,
-            "product-unavailable-form-show": true,
-            "low-in-stock-amount": 0,
-            "product-modal-enabled": true,
-            "cart-form-position": "left",
-            "product-size-chart-enabled": false,
-            "product-size-chart-option": "size",
-            "product-size-chart-page-content": "",
-            "product-share-this-show": true,
-            "product-share-twitter": true,
-            "product-share-facebook": true,
-            "product-share-pinterest": true
-          }
+          "settings": {}
         },
         "collection": {
           "type": "collection",
@@ -714,14 +777,6 @@
             "link-text": ""
           }
         },
-        "1519177181912": {
-          "type": "featured-collection",
-          "settings": {
-            "background-color": "none",
-            "home-product-slider-collection": "",
-            "max_products": 12
-          }
-        },
         "1519177213210": {
           "type": "framework--featured-content",
           "settings": {
@@ -795,7 +850,6 @@
       },
       "content_for_index": [
         "1519177052247",
-        "1519177181912",
         "1519177108222",
         "1519177136360",
         "1519177213210",
@@ -852,20 +906,7 @@
         },
         "product": {
           "type": "product",
-          "settings": {
-            "product-breadcrumbs-show": true,
-            "product-unavailable-form-show": true,
-            "low-in-stock-amount": 0,
-            "product-modal-enabled": true,
-            "cart-form-position": "left",
-            "product-size-chart-enabled": false,
-            "product-size-chart-option": "size",
-            "product-size-chart-page-content": "",
-            "product-share-this-show": true,
-            "product-share-twitter": true,
-            "product-share-facebook": true,
-            "product-share-pinterest": true
-          }
+          "settings": {}
         },
         "collection": {
           "type": "collection",
@@ -1007,14 +1048,6 @@
             "link-text": ""
           }
         },
-        "1519177181912": {
-          "type": "featured-collection",
-          "settings": {
-            "background-color": "none",
-            "home-product-slider-collection": "",
-            "max_products": 12
-          }
-        },
         "1519177213210": {
           "type": "framework--featured-content",
           "settings": {
@@ -1088,7 +1121,6 @@
       },
       "content_for_index": [
         "1519177052247",
-        "1519177181912",
         "1519177108222",
         "1519177136360",
         "1519177213210",
@@ -1157,20 +1189,7 @@
         },
         "product": {
           "type": "product",
-          "settings": {
-            "product-breadcrumbs-show": true,
-            "product-unavailable-form-show": true,
-            "low-in-stock-amount": 0,
-            "product-modal-enabled": true,
-            "cart-form-position": "left",
-            "product-size-chart-enabled": false,
-            "product-size-chart-option": "size",
-            "product-size-chart-page-content": "",
-            "product-share-this-show": true,
-            "product-share-twitter": true,
-            "product-share-facebook": true,
-            "product-share-pinterest": true
-          }
+          "settings": {}
         },
         "collection": {
           "type": "collection",
@@ -1312,14 +1331,6 @@
             "link-text": ""
           }
         },
-        "1519177181912": {
-          "type": "featured-collection",
-          "settings": {
-            "background-color": "none",
-            "home-product-slider-collection": "",
-            "max_products": 12
-          }
-        },
         "1519177213210": {
           "type": "framework--featured-content",
           "settings": {
@@ -1393,7 +1404,6 @@
       },
       "content_for_index": [
         "1519177052247",
-        "1519177181912",
         "1519177108222",
         "1519177136360",
         "1519177213210",
@@ -1459,20 +1469,7 @@
         },
         "product": {
           "type": "product",
-          "settings": {
-            "product-breadcrumbs-show": true,
-            "product-unavailable-form-show": true,
-            "low-in-stock-amount": 0,
-            "product-modal-enabled": true,
-            "cart-form-position": "left",
-            "product-size-chart-enabled": false,
-            "product-size-chart-option": "size",
-            "product-size-chart-page-content": "",
-            "product-share-this-show": true,
-            "product-share-twitter": true,
-            "product-share-facebook": true,
-            "product-share-pinterest": true
-          }
+          "settings": {}
         },
         "collection": {
           "type": "collection",
@@ -1614,14 +1611,6 @@
             "link-text": ""
           }
         },
-        "1519177181912": {
-          "type": "featured-collection",
-          "settings": {
-            "background-color": "none",
-            "home-product-slider-collection": "",
-            "max_products": 12
-          }
-        },
         "1519177213210": {
           "type": "framework--featured-content",
           "settings": {
@@ -1695,7 +1684,6 @@
       },
       "content_for_index": [
         "1519177052247",
-        "1519177181912",
         "1519177108222",
         "1519177136360",
         "1519177213210",

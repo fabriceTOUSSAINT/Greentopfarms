@@ -24,6 +24,9 @@
     {% comment %} Level 1 {% endcomment %}
     {% assign list_lvl_1 = handle %}
     {% for link in linklists[list_lvl_1].links %}
+      {%- comment %}<locksmith:f6da>{% endcomment -%}
+        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[list_lvl_1], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+      {%- comment %}</locksmith:f6da>{% endcomment -%}
       <li
         class="x-menu--level-1--link"
         data-x-menu--depth="{{ link.levels | plus: 1 }}"
@@ -61,6 +64,10 @@
                 {% assign list_lvl_2 = link.handle %}
                 {% for link in linklists[list_lvl_2].links %}
 
+                  {%- comment %}<locksmith:b837>{% endcomment -%}
+                    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[list_lvl_2], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                  {%- comment %}</locksmith:b837>{% endcomment -%}
+
                   <li
                     class="x-menu--level-2--link"
                     data-link-id="{{ list_lvl_2 }}--{{ link.handle }}"
@@ -75,6 +82,9 @@
 
                         {% assign list_lvl_3 = link.handle %}
                         {% for link in linklists[list_lvl_3].links %}
+                          {%- comment %}<locksmith:4f13>{% endcomment -%}
+                            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[list_lvl_3], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                          {%- comment %}</locksmith:4f13>{% endcomment -%}
                           <li
                             class="x-menu--level-3--link"
                             data-link-id="{{ list_lvl_2 }}--{{ list_lvl_3 }}--{{ link.handle }}"

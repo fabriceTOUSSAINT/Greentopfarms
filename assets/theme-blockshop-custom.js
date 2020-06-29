@@ -1,12 +1,14 @@
 $(document).ready(function ($) {
-  const pagesAttr = document.querySelectorAll("[data-link-id='contact-us']");
-  const hasContactUs = pagesAttr && pagesAttr.length > 0;
+  const desktopCheckout = document.querySelector(".desktop-jawn");
+  const mobileDestination = document.querySelector(
+    ".mobileCheckoutDestination"
+  );
 
-  if (hasContactUs) {
-    pagesAttr.forEach((page) => {
-      page.classList.add("is-contact-button");
-    });
-  }
+  // if (window.location.pathname === "/cart" && window.innerWidth < 764) {
+  //   const drawerCart = document.querySelector(".off-canvas--right-sidebar");
+  //   drawerCart.parentNode.removeChild(drawerCart);
+  //   mobileDestination.appendChild(desktopCheckout);
+  // }
 
   // Zipcodes
   const nyc_zipcodes = [
@@ -297,9 +299,12 @@ $(document).ready(function ($) {
     11373,
     11377,
     11378,
+    10512,
+    11249,
   ];
 
   const zipcode_btn = document.getElementById("zipcode");
+  const zipcode_btn__MOBILE = document.getElementById("zipcode--MOBILE");
 
   document
     .getElementById("delivery-radius")
@@ -310,31 +315,48 @@ $(document).ready(function ($) {
       }
     });
 
-  // Listen to button click, to check user submission if zipcode is in NYC
-  zipcode_btn.addEventListener("click", (event) => checkZipCode(event));
+  document
+    .getElementById("delivery-radius--MOBILE")
+    .addEventListener("keypress", function (event) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        checkZipCode(event);
+      }
+    });
 
-  console.log({ zipcode_btn });
-  const checkZipCode = (event) => {
-    const zipcodeEl = document.getElementById("delivery-radius");
+  // Listen to button click, to check user submission if zipcode is in NYC
+  zipcode_btn.addEventListener("click", (event) => checkZipCode(event, false));
+  zipcode_btn__MOBILE.addEventListener("click", (event) =>
+    checkZipCode(event, true)
+  );
+
+  const checkZipCode = (event, isMobile = false) => {
+    const element = isMobile ? "delivery-radius--MOBILE" : "delivery-radius";
+    const zipcodeEl = document.getElementById(element);
     const zipcodeEntered = parseInt(zipcodeEl.value);
     const inRadius = zipcodeEntered
       ? nyc_zipcodes.includes(zipcodeEntered)
       : false;
     const checkoutBtns = document.querySelectorAll(".disabled--checkout");
 
-    console.log("here,", event);
+    console.log({ inRadius, zipcodeEntered });
     disableCheckout(!inRadius);
 
     if (!inRadius) {
       zipcodeEl.classList.add("delivery-radius-fail");
       zipcodeEl.classList.remove("delivery-radius-success");
       zipcode_btn.textContent = " Outside our delivery radius";
+      zipcode_btn__MOBILE.textContent = " Outside our delivery radius";
     } else {
       zipcodeEl.classList.remove("delivery-radius-fail");
       zipcodeEl.classList.add("delivery-radius-success");
       zipcode_btn.textContent = " You're in our radius";
+      zipcode_btn__MOBILE.textContent = " You're in our radius";
     }
   };
+
+  checkForTip();
+  initDonate();
 });
 
 function disableCheckout(toDisable) {
@@ -349,4 +371,117 @@ function disableCheckout(toDisable) {
       button.classList.add("successful--checkout");
     });
   }
+}
+
+function initDonate() {
+  const isShoppingCartPage = document.body.classList.contains(
+    "page-your-shopping-cart"
+  );
+  if (isShoppingCartPage) {
+    document
+      .getElementById("donate")
+      .addEventListener("keypress", function (event) {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+        }
+      });
+
+    document
+      .getElementById("donate--MOBILE")
+      .addEventListener("keypress", function (event) {
+        if (event.keyCode == 13) {
+          event.preventDefault();
+        }
+      });
+
+    // checkForTip();
+
+    function addDonation(amount) {
+      if (!amount) return;
+
+      if ($(".tip-block-header--tip-added")[0]) {
+        // Update tip if already in cart
+
+        var params = {
+          type: "POST",
+          url: "/cart/update.js",
+          data: "updates[" + id + "]=" + amount,
+          dataType: "json",
+          success: function (line_item) {
+            document.location.href = window.location.href;
+          },
+          error: function (e) {
+            console.log("fail", e);
+          },
+        };
+        $.ajax(params);
+      } else {
+        // Do something if class does not exist
+
+        var params = {
+          type: "POST",
+          url: "/cart/add.js",
+          data: "quantity=" + amount + "&id=" + id,
+          dataType: "json",
+          success: function (line_item) {
+            document.location.href = window.location.href;
+          },
+          error: function (e) {
+            console.log("fail", e);
+          },
+        };
+        $.ajax(params);
+      }
+    }
+
+    $('button.addTip--MOBILE, input[name="addTip--MOBILE"]').click(function (
+      e
+    ) {
+      e.preventDefault();
+      var amount = $("#donate--MOBILE").val();
+      amount = amount * 100;
+      amount = parseInt(amount);
+
+      // {% comment %} TODO: DELETE BELOW< NO MORE TIPS NEEDED {% endcomment %}
+
+      addDonation(amount);
+    });
+
+    $('button.addTip, input[name="addTip"]').click(function (e) {
+      e.preventDefault();
+      var amount = $("#donate").val();
+      amount = amount * 100;
+      amount = parseInt(amount);
+
+      addDonation(amount);
+    });
+  }
+}
+
+function checkForTip() {
+  const cartItems = document.querySelectorAll(".cart--item");
+
+  cartItems.forEach((item, index) => {
+    if (item.dataset.variantId == "17822881185849") {
+      // If item is a tip, add note
+      let tipValue = $("#updates_17822881185849").val();
+      tipValue = parseInt(tipValue) * 0.01;
+      $(".tip-block-header").addClass("tip-block-header--tip-added");
+
+      const alreadyAdded = document.querySelector(
+        ".tip-block-header--tip-added-value"
+      );
+
+      if (!alreadyAdded) {
+        $(".tip-block-header").after(
+          "<span class='tip-block-header--tip-added-value'>Thank you for your tip of $" +
+            tipValue +
+            "</span>"
+        );
+      }
+    }
+
+    // If item is neither a tip or has no date or time return
+    return;
+  });
 }

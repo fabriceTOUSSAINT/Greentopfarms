@@ -80,6 +80,9 @@
                     aria-label="{{ 'layout.footer.navigation' | t }}"
                   >
                     {% for link in linklists[footer_nav].links %}
+                      {%- comment %}<locksmith:e988>{% endcomment -%}
+                        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[footer_nav], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                      {%- comment %}</locksmith:e988>{% endcomment -%}
                       <li>
                         <a href="{{ link.url }}" title="{{ link.title }}">
                           {{ link.title }}
@@ -191,11 +194,7 @@
 
     {% assign powered_check = powered_by_link | split: '>' %}
     {% if powered_check[1] != ' </a' %}
-      <div class="footer--sub--block" data-type="powered-by">
-        <div class="footer--sub--container font--paragraph">
-          {{ powered_by_link }}
-        </div>
-      </div>
+
     {% endif %}
 
     {% unless shop.enabled_payment_types == empty %}

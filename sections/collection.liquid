@@ -78,6 +78,9 @@
           data-js-class="ProductGrid"
         >
           {% for product in collection.products %}
+            {%- comment %}<locksmith:cd89>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:cd89>{% endcomment -%}
             {% comment %} BOLD SPECIFIC {% endcomment %}
             {%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
             {% comment %} END BOLD SPECIFIC {% endcomment %}

@@ -3,6 +3,9 @@
   collections[section.settings.home-product-slider-collection].handle != section.settings.home-product-slider-collection
 %}
   {% for c in collections %}
+    {%- comment %}<locksmith:06b8>{% endcomment -%}
+      {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: c, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+    {%- comment %}</locksmith:06b8>{% endcomment -%}
     {% if c.products-count > 0 %}
       {% assign collection = c %}
     {% endif %}
@@ -37,6 +40,9 @@
     >
       {% if collection.products.size and collection.products.size > 0 %}
         {% for product in collection.products limit: slider_limit %}
+          {%- comment %}<locksmith:6bb4>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:6bb4>{% endcomment -%}
           {% include 'partial--product', view: 'product-slider' %}
         {% endfor %}
       {% else %}

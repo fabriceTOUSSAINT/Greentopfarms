@@ -1,3 +1,7 @@
+{%- comment %}<locksmith:69dc>{% endcomment -%}
+  {%- if search.results %}{% paginate search.results by 50 %}{% assign locksmith_search__results_count = 0 %}{% for result in search.results %}{% capture var %}{% render 'locksmith-variables', scope: 'subject', subject: result, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif %}{% assign locksmith_search__results_count = locksmith_search__results_count | plus: 1 %}{% endfor %}{% endpaginate %}{% endif -%}
+{%- comment %}</locksmith:69dc>{% endcomment -%}
+
 {% comment %} Translations {% endcomment %}
 {% assign articles_t = 'general.search.articles' | t %}
 {% assign no_results_t = 'general.search.no_results' | t %}
@@ -13,6 +17,9 @@
 
     {% assign type = '' %}
     {% for item in search.results limit: 1 %}
+      {%- comment %}<locksmith:dedd>{% endcomment -%}
+        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: item, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+      {%- comment %}</locksmith:dedd>{% endcomment -%}
       {% if item.object_type == 'product' %}
         {% assign type = 'product' %}
       {% else %}
@@ -23,7 +30,7 @@
     <div class="search--root" data-js-class="FrameworkSearch" data-view="{{ view }}">
       <div class="search--header hover-links">
         <div class="search--results-summary font--heading-1">
-          {{ search.results_count }} {{ results_for_t }} "{{ search.terms | replace: '*', '' }}"
+          {{ locksmith_search__results_count }} {{ results_for_t }} "{{ search.terms | replace: '*', '' }}"
         </div>
       </div>
 
@@ -32,6 +39,9 @@
           <div class="search--products">
             <div class="search--products-container">
               {% for product in search.results %}
+                {%- comment %}<locksmith:3f66>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                {%- comment %}</locksmith:3f66>{% endcomment -%}
                 <div class="search--product">
                   {% include 'partial--product', view: 'grid' %}
                 </div>
@@ -42,6 +52,9 @@
           <div class="search--articles">
             <div class="search--articles-container">
               {% for item in search.results %}
+                {%- comment %}<locksmith:75e5>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: item, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                {%- comment %}</locksmith:75e5>{% endcomment -%}
                 {% comment %} BOLD ONLY {% endcomment %}
                 {%- if item.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
                 {% comment %} END BOLD ONLY {% endcomment %}
@@ -115,8 +128,8 @@
     {% endif %}
 
     {% capture count_string %}
-      {% if search.results_count > 0 %}
-        ({{ search.results_count }})
+      {% if locksmith_search__results_count > 0 %}
+        ({{ locksmith_search__results_count }})
       {% endif %}
     {% endcapture %}
 
@@ -125,7 +138,7 @@
         <a href="{{ routes.search_url }}?type={{ article_page_combination }}&q={{ search.terms }}">{{ articles_t }} {{ count_string }}</a>
       </div>
 
-      {% if search.results_count > 0 %}
+      {% if locksmith_search__results_count > 0 %}
         <div class="search--view-more font--block-link">
           <a href="{{ routes.search_url }}?type={{ article_page_combination }}&q={{ search.terms }}">{{ view_all_t }}</a>
         </div>
@@ -134,12 +147,15 @@
 
     <div class="search--articles-container font--paragraph">
       {% for item in search.results limit: 20 %}
+        {%- comment %}<locksmith:a328>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: item, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:a328>{% endcomment -%}
         <div class="search--article hover-links">
           <a href="{{ item.url }}">{{ item.title }}</a>
         </div>
       {% endfor %}
 
-      {% if search.results_count == 0 %}
+      {% if locksmith_search__results_count == 0 %}
         <div class="search--no-results">{{ no_results_t }}</div>
       {% endif %}
     </div>
@@ -147,8 +163,8 @@
   {% comment %} Ajax - Product {% endcomment %}
   {% when 'ajax--product' %}
     {% capture count_string %}
-      {% if search.results_count > 0 %}
-        ({{ search.results_count }})
+      {% if locksmith_search__results_count > 0 %}
+        ({{ locksmith_search__results_count }})
       {% endif %}
     {% endcapture %}
 
@@ -156,7 +172,7 @@
       <div class="search--count">
         <a href="{{ routes.search_url }}?type=product&q={{ search.terms }}">{{ products_t }} {{ count_string }}</a>
       </div>
-      {% if search.results_count > 0 %}
+      {% if locksmith_search__results_count > 0 %}
         <div class="search--view-more font--block-link">
           <a href="{{ routes.search_url }}?type=product&q={{ search.terms }}">{{ view_all_t }}</a>
         </div>
@@ -165,12 +181,15 @@
 
     <div class="search--products-container">
       {% for product in search.results limit: 12 %}
+        {%- comment %}<locksmith:26f6>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:26f6>{% endcomment -%}
         <div class="search--product">
           {% include 'partial--product', view: 'grid' %}
         </div>
       {% endfor %}
 
-      {% if search.results_count == 0 %}
+      {% if locksmith_search__results_count == 0 %}
         <div class="search--no-results">{{ no_results_t }}</div>
       {% endif %}
     </div>

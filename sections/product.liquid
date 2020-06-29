@@ -127,7 +127,10 @@
   <article class="row" itemscope itemtype="http://schema.org/Product">
     <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
     {% for media in product.media limit:3 %}
-      <meta property="og:image" content="http:{{ media | img_url: '1200x' }}">
+      {%- comment %}<locksmith:a384>{% endcomment -%}
+        {%- capture var %}{% render 'locksmith-variables', variable: 'transparent', hiding_scope: 'resource' %}{% endcapture %}{% if var == 'true' %}<meta property="og:image" content="http:{{ media | img_url: '1200x' }}">{% endif -%}
+        {%- comment %}original: <meta property="og:image" content="http:{{ media | img_url: '1200x' }}">{%- endcomment %}
+      {%- comment %}</locksmith:a384>{% endcomment -%}
     {% endfor %}
 
     <div class="product-page--main-content">

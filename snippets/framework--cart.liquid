@@ -12,6 +12,7 @@
 {% assign continue_t = 'cart.continue' | t %}
 {% assign checkout_t = 'cart.checkout' | t %}
 {% assign empty_html_t = 'cart.empty_html' | t: collections_url: routes.all_products_collection_url %}
+{% include 'donation-snippet' %}
 
 {% assign has_items = false %}
 {% if cart.item_count > 0 %}
@@ -31,7 +32,7 @@
 
     {% case view %}
       {% when 'desktop' %}
-        <div class="cart--body">
+        <div class="cart--body desktop-=jawn">
           <div class="cart--headings font--accent">
             <div class="cart--heading--image"></div>
             <div class="cart--heading--title"></div>
@@ -75,7 +76,7 @@
                 {% endunless %}
 
                 {% assign property_size = item.properties | size %}
-<!--                 {% if property_size > 0 %}
+              <!--  {% if property_size > 0 %}
                   {% for property in item.properties %}
                     {% unless property.last == blank %}
                       <br>
@@ -168,6 +169,16 @@
 
         </div>
 
+      <div class='desktop-jawn'>
+        <span class="delivery-radius-wrapper">
+          <span class="block tip-block">
+            <label class="tip-block-header">Add Tip: </label>
+            <input type="number" id="donate" min="1" step="any" />
+            <button id="addTip" class="addTip font--accent button" type="button" name="addTip">Add Tip
+            </button>
+          </span>
+        </span>
+
           <span class="delivery-radius-wrapper">
             <label required for="delivery-radius">Check if you're in our delivery radius</label>
             <span class="delivery-input-wrapper">
@@ -180,9 +191,120 @@
           <div class="identixweb-order-delivery__wrapper">
             <div class="identixweb-order-delivery"></div>
           </div>
+        </div>
+
+
+       
+       
+
+{% when 'drawer' %}
+        <div class="cart--body">
+          {% for item in cart.items %}
+            {% if item.variant.featured_media.preview_image %}
+              {% assign preview_image = item.variant.featured_media.preview_image %}
+            {% else %}
+              {% assign preview_image = item.product.featured_media.preview_image %}
+            {% endif %}
+
+            {% capture item_image %}
+              {% include "framework--image", image: preview_image %}
+            {% endcapture %}
+
+            <div
+              class="cart--item"
+              data-variant-id="{{ item.variant_id }}"
+              data-item-key="{{ item.key }}"
+            >
+              <div class="cart--item--title">
+                <div class="font--block-heading">
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                </div>
+              </div>
+
+              <div class="cart--item--image">
+                <a href="{{ item.url }}">
+                  {{ item_image }}
+                </a>
+              </div>
+
+              <div class="cart--item--info">
+                {% unless item.variant.title contains 'Default' %}
+                  <div class="font--paragraph">
+                    <a href="{{ item.url }}">{{ item.variant.title }}</a>
+                  </div>
+                {% endunless %}
+
+                <div class="cart--item--price">
+                  {% if item.original_line_price > item.final_line_price %}
+                    <div class="cart--item--orig-price font--light-accent">
+                      <s class="money">{{ item.original_line_price | money }}</s>
+                    </div>
+                  {% endif %}
+
+                  <div class="cart--item--total font--accent money">
+                    {{ item.final_line_price | money }}
+                  </div>
+
+                  {% if item.line_level_discount_allocations.size > 0 %}
+                    <div class="cart--item--discounts font--light-accent">
+                      {% for discount_allocation in item.line_level_discount_allocations %}
+                        {{ discount_allocation.discount_application.title }}&nbsp;
+                        (–<span class="money">{{ discount_allocation.amount | money }}</span>)
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="cart--item--quantity">
+                  <div class="cart--quantity--container input--number">
+                    <a
+                      tabindex="0"
+                      aria-label="{{ minus_t }}"
+                      class="minus"
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1}}"
+                    >
+                      {% include 'framework--icons', icon: 'minus' %}
+                    </a>
+                    <label for="updates_{{ item.id }}" class="hidden">{{ quantity_t }}</label>
+                    <input
+                      class="cart--quantity--input"
+                      type="text"
+                      name="updates[]"
+                      id="updates_{{ item.id }}"
+                      value="{{ item.quantity }}"
+                      min="1"
+                      pattern="[1-9]*"
+                      data-loading="false"
+                    />
+                    <a
+                      class="plus"
+                      tabindex="0"
+                      aria-label="{{ plus_t }}"
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1}}"
+                    >
+                      {% include 'framework--icons', icon: 'plus' %}
+                    </a>
+                  </div>
+
+                  <div class="cart--item--remove font--block-link drawer-jawn">
+                    <a
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+                      class="remove"
+                      aria-label="{{ remove_t }}"
+                      title="{{ remove_t }}"
+                    >
+                      {{ remove_t }}
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
 
       {% when 'mobile' %}
-        <div class="cart--body">
+        <div class="cart--body mobile-jawn">
           {% comment %} <div class="cart--items"> {% endcomment %}
           {% for item in cart.items %}
             {% if item.variant.featured_media.preview_image %}
@@ -305,6 +427,30 @@
             </div>
           {% endfor %}
         </div>
+
+      <div class="only-show-on-cart-page">
+        <span class="delivery-radius-wrapper --Mobile-version">
+          <span class="block tip-block">
+            <label class="tip-block-header">Add Tip: </label>
+            <input type="number" id="donate--MOBILE" min="1" step="any" />
+            <button id="addTip--MOBILE" class="addTip--MOBILE font--accent button" type="button" name="addTip--MOBILE">Add Tip
+            </button>
+          </span>
+        </span>
+
+          <span class="delivery-radius-wrapper --Mobile-version">
+            <label required for="delivery-radius--MOBILE">Check if you're in our delivery radius</label>
+            <span class="delivery-input-wrapper">
+                <input required class="required" id="delivery-radius--MOBILE" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
+                <button id='zipcode--MOBILE' class="zipcode--MOBILE font--accent button" type="button" name="zipcode--MOBILE">Check</button>
+            </span>
+
+          </span>
+
+          <div class="identixweb-order-delivery__wrapper">
+            <div class="identixweb-order-delivery"></div>
+          </div>
+      </div> 
     {% endcase %}
 
     <div class="cart--footer">
@@ -358,26 +504,27 @@
 
 
           <a class="cart--checkout-button font--button" href="/cart">
-            Select delivery date & checkout. 
+            Select delivery date & checkout 
           </a>
 
         </div>
 
 
 
-             {% comment %} <span class="delivery-radius-wrapper">
+        <div class='mobileCheckoutDestination'>
+            {% comment %} <span class="delivery-radius-wrapper">
             <label required for="delivery-radius">Check if you're in our delivery radius</label>
             <span class="delivery-input-wrapper">
                 <input required class="required" id="delivery-radius" type="number" name="attributes[Delivery Radius]" value="{{ cart.attributes["Delivery Radius"] }}" placeholder="Zip code">
                 <button id='zipcode' class="zipcode font--accent button" type="button" name="zipcode">Check</button>
             </span>
 
-          </span> {% endcomment %}
+          </span> 
 
-          {% comment %} <div class="identixweb-order-delivery__wrapper">
+          <div class="identixweb-order-delivery__wrapper">
             <div class="identixweb-order-delivery"></div>
           </div> {% endcomment %}
-
+      </div>
           
       <span class="cart--only-show-on-non-drawer">
         <div class="cart--nav">

@@ -672,6 +672,7 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
       var _this;
       _this = this;
       if (window.location.pathname === theme.urls.cart) {
+        console.log({theme},' jawn')
         $('.off-canvas--right-sidebar .cart--additional-buttons').remove();
         if (theme.utils.mqs.current_window === 'small') {
           return $('[data-view="desktop"] .cart--additional-buttons').remove();
@@ -5044,7 +5045,9 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
           theme.partials.Cart.addItem($(this), function(success, error) {
             if (success) {
               return theme.partials.Cart.updateAllHtml(function() {
-                return _this.addProductComplete();
+                console.warn('completed');
+                _this.add_button.text('added to cart');
+                // return _this.addProductComplete();
               });
             } else {
               _this.form.append("<p class='error'>" + error + "</p>");

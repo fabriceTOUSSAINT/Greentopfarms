@@ -17,6 +17,7 @@
   }
 {% endcomment %}
 
+
 /* Add your theme customizations below */
 @media screen and (min-width: 767px) {
   .header--menu {
@@ -393,7 +394,61 @@ header.collection--header {
   margin-top: 15px;
 }
 
-button.disabled--checkout,
+.only-show-on-cart-page,
+.desktop-jawn {
+  display: none;
+}
+
+.page-your-shopping-cart .only-show-on-cart-page,
+.page-your-shopping-cart .desktop-jawn {
+  display: initial;
+}
+
+
+/* TIP BUTTON */
+button#addTip,
+ button#addTip--MOBILE {
+  float: right;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.tip-block-header--tip-added:after {
+content: '* Tip added to cart';
+text-transform: capitalize;
+color: grey;
+font-size: 12px;
+}
+
+.tip-block-header--tip-added-value {
+  color: grey;
+  font-size: 12px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.tip-block.block:after {
+  content: "$";
+  position: absolute;
+  bottom: 88px;
+  left: 10px;
+}
+
+.tip-block.block input {
+padding-left: 23px;
+}
+
+{% comment %} DISABLED CART BUTTON TO OPEN DRAWER ON CART PAGE {% endcomment %}
+.page-your-shopping-cart .header--cart {
+  pointer-events: none;
+}
+
+/* END TIP BUTTON */
+
+
+{% comment %} @media screen and (min-width: 767px) { 
+
+  button.disabled--checkout,
 .disabled--checkout .paypal-button {
     cursor: not-allowed;
     background-color: #8080802e;
@@ -401,8 +456,16 @@ button.disabled--checkout,
     pointer-events: none;
     opacity: .4;
 }
+} {% endcomment %}
 
-
+  button.disabled--checkout,
+.disabled--checkout .paypal-button {
+    cursor: not-allowed;
+    background-color: #8080802e;
+    color: #838282;
+    pointer-events: none;
+    opacity: .4;
+}
 button.successful--checkout,
 .successful--checkout .paypal-button {
     cursor: pointer;

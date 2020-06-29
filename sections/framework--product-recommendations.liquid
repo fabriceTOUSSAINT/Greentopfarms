@@ -24,6 +24,9 @@
       <div class="product-recommendations--body">
         <div class="product-recommendations--body--container">
           {% for product in recommendations.products limit: max_products %}
+            {%- comment %}<locksmith:9f28>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: recommendations, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:9f28>{% endcomment -%}
             <div class="product-recommendations--item">
               {% include 'partial--product', view: 'grid' %}
             </div>
