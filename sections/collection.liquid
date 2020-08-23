@@ -1,167 +1,180 @@
-{% assign is_vendor_page = false %}
-{% if collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}
-{% assign is_vendor_page = true %}
-{% endif %}
+{% assign products_per_row = section.settings.collections-products-per-row | to_number %}
+{% assign products_per_page =  products_per_row | to_number | times: 10 %}
 
-{% assign collection_tags_exist = false %}
-
-{% if collection.tags.size > 0 and section.settings.show-tag-filters %}
-  {% assign collection_tags_exist = true %}
-{% endif %}
-
-{% paginate collection.products by 24 %}
+{% paginate collection.products by products_per_page %}
 
 <div
   class="collection"
   data-section-id="{{ section.id }}"
-  data-section-type="collection_page"
-  data-collection--tags-exist="{{ collection_tags_exist }}"
-  data-collection--is-vendor-page="{{ is_vendor_page }}"
-  data-js-class="CollectionPage"
+  data-js-class="Collection"
+  data-section-type="collection"
 >
 
-  <header class="collection--header">
-    <div class="collection--title">
-      <h2>{{ collection.title }}</h2>
-      {% unless collection.description == blank %}
-        <h3>{{ collection.description }}</h3>
-      {% endunless %}
+  <header class="row collection--top-row">
+    <div class="left columns large-6">
+      {% if section.settings.collections-breadcrumbs-show %}
+        {% include 'framework--breadcrumbs' %}
+      {% endif %}
     </div>
+    <div class="right columns large-6">
+      <div class="tag-filter font--accent">
+        {% if collection.all_tags.size > 0 and section.settings.collections-tags-show %}
 
-    {% if collection.image %}
-      <div class="collection--image">
-        {%
-          include "framework--image",
-          image: collection.image
-        %}
-      </div>
-    {% endif %}
-  </header>
+            <span class="title">{{ 'collections.tags_title' | t }}</span>
 
-  {% if collection_tags_exist %}
-    <select class="collection--filter--select">
-      <option value="/collections/{{ collection.handle }}">
-        {{ 'collections.filter' | t | upcase }}
-        ({{ collections[collection.handle].products_count }})
-      </option>
-      {% for tag in collections[collection.handle].tags %}
-        <option value="/collections/{{ collection.handle }}/{{ tag | handleize }}"
-          {% if current_tags contains tag %}selected{% endif %}>{{ tag }}
+            <form class="custom">
+              <label for="collection-filter" class="hidden">
+                {{ 'collections.tags_title' | t }}
+              </label>
+              <select class="small tags-listbox" id="collection-filter" name="coll-filter" size="1">
+                <option value="">{{ 'collections.tags_show_all' | t }}</option>
+                {% for tag in collection.all_tags %}
+                  {% if current_tags contains tag %}
+                    <option value="{{ tag | handleize }}" selected>{{ tag }}</option>
+                  {% else %}
+                    <option value="{{ tag | handleize }}">{{ tag }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </form>
 
-          {% assign tag_count = 0 %}
-          {% for product in collections[collection.handle].products  %}
-{%- include 'bold-product' with product, hide_action: 'skip' -%}
-            {% if product.tags contains tag %}
-              {% assign tag_count = tag_count | plus: 1 %}
-            {% endif %}
-          {% endfor %}
-
-          ({{ tag_count }})
-        </option>
-      {% endfor %}
-    </select>
-  {% endif %}
-
-  {% if collection.products.size < 1  %}
-    <div class="collection--no-products colored-links">
-      {{ 'collections.no_products_feedback_html' | t }}
-    </div>
-  {% endif %}
-
-  <div class="collection--column-wrapper">
-    {% if collection_tags_exist and is_vendor_page == false %}
-      <div class="collection--left-column">
-        <nav class="collection--filters">
-          <ul class="collection--filter-tags">
-            <li class="collection--filter-tag">
-              <a
-                class="
-                  collection--filter-tag--anchor
-                  {% if current_tags == blank %}collection--filter-tag--selected{% endif %}"
-                href="/collections/{{ collection.handle}}">{{ 'collections.all' | t }}
-                <span class="collection--number-of-items">
-                  ({{ collections[collection.handle].products_count }})
-                </span>
-              </a>
-            </li>
-
-            {% for tag in collections[collection.handle].tags %}
-              <li class="collection--filter-tag">
-                <a
-                  class="
-                    collection--filter-tag--anchor
-                    {% if current_tags contains tag %}collection--filter-tag--selected{% endif %}"
-                  href="/collections/{{ collection.handle }}/{{ tag | handleize }}">
-                  {{ tag | handleize }}
-                  <span class="collection--number-of-items">
-
-                    {% assign tag_count = 0 %}
-                    {% for product in collections[collection.handle].products  %}
-{%- include 'bold-product' with product, hide_action: 'skip' -%}
-                      {% if product.tags contains tag %}
-                        {% assign tag_count = tag_count | plus: 1 %}
-                      {% endif %}
-                    {% endfor %}
-
-                    ({{ tag_count }})
-                  </span>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </nav> <!-- .collection--filters -->
-      </div> <!-- .collection--left-column -->
-    {% endif %}
-
-    <div class="collection--right-column">
-      <div class="collection--products">
-        {% if current_tags.size > 0 %}
-          {% for product in collection.products %}
-{%- include 'bold-product' with product, hide_action: 'skip' -%}
-            {% for tag in product.tags %}
-              {% if current_tags contains tag %}
-                <div class="collection--product">
-                  {% include 'partial--product', view: 'list' %}
-                </div>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        {% else %}
-          {% for product in collection.products %}
-{%- include 'bold-product' with product, hide_action: 'skip' -%}
-            <div class="collection--product">
-              {% include 'partial--product', view: 'list' %}
-            </div>
-          {% endfor %}
         {% endif %}
       </div>
+    </div>
+  </header>
+
+  <div class="row">
+    <div class="columns">
+      <div class="divider"></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    {% if section.settings.show-title or collection.description.size > 0 %}
+      <div class="collection--header">
+        {% if section.settings.show-title %}
+          <h1 class="collection--title font--section-heading">{{ collection.title }}</h1>
+        {% endif %}
+
+        {% if collection.description.size > 0 %}
+          <article class="collection--description font--paragraph">
+            {{ collection.description }}
+          </article>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if shop.products_count == 0 %}
+
+      {% include 'snippet-default-products' %}
+
+    {% else %}
+      <section class="row">
+        <div
+          class="product-grid--root"
+          data-items-per-row="{{ section.settings.collections-products-per-row }}"
+          data-mobile-items-per-row="{{ section.settings.mobile-items-per-row }}"
+          data-js-class="ProductGrid"
+        >
+          {% for product in collection.products %}
+            {%- comment %}<locksmith:cd89>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:cd89>{% endcomment -%}
+            {% comment %} BOLD SPECIFIC {% endcomment %}
+            {%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+            {% comment %} END BOLD SPECIFIC {% endcomment %}
+            {% include 'partial--product' %}
+          {% endfor %}
+
+        </div>
+      </section>
+
+    {% endif %}
+  </div>
+
+  <div class="row">
+    <div class="columns">
+      <div class="divider bottom-margin"></div>
+    </div>
+  </div>
 
 
-      {% if paginate.pages > 1 %}
-        <footer class="collection--pagination">
-          <div class="width--12 text-align--center">
-            {% include 'framework--pagination' %}
-          </div>
-        </footer>
-        <div class="spacing--3y"></div>
+  <footer class="row collection--bottom-row">
+    <div class="left columns large-6">
+      {% if section.settings.collections-breadcrumbs-show %}
+        {% include 'framework--breadcrumbs' %}
       {% endif %}
+    </div>
+    <div class="right columns large-6">
+      <div class="collection--pagination">
+        {% include 'framework--pagination' %}
+      </div>
+    </div>
 
-    </div> <!-- .collection--right-column -->
-  </div> <!-- .collection--column-wrapper -->
+  </footer>
+
 </div>
-
 
 {% endpaginate %}
 
+<script>
+  theme.collection = {
+    title: '{{ collection.title | escape }}',
+    url_for_type: '{{ collection.title | url_for_type }}',
+    url_for_handle: '{{ collection.title | url_for_vendor }}',
+    handle: '{{ collection.handle }}',
+    tag: '{{ "tag" | link_to_tag: "tag" }}'
+  };
+
+  theme.collection.products = {
+    first_type: '{{ collection.products.first.type | escape }}',
+    first_vendor: '{{ collection.products.first.vendor | escape }}'
+  };
+</script>
+
 {% schema %}
 {
-  "name": "Collection page",
+  "name": "Collection",
+  "class": "section--collection",
   "settings": [
     {
       "type": "checkbox",
-      "id": "show-tag-filters",
-      "label": "Show tag filters",
+      "id": "collections-breadcrumbs-show",
+      "label": "Show breadcrumbs",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "collections-tags-show",
+      "label": "Show tag filter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show-title",
+      "label": "Show title",
+      "default": false
+    },
+    {
+      "id": "collections-products-per-row",
+      "label": "Products per row",
+      "type": "radio",
+      "options": [
+        { "value": "3", "label": "3"},
+        { "value": "4", "label": "4"}
+      ],
+      "default": "4"
+    },
+    {
+      "id": "mobile-items-per-row",
+      "label": "Products per row for small devices",
+      "type": "radio",
+      "options": [
+        { "value": "1", "label": "1"},
+        { "value": "2", "label": "2"}
+      ],
+      "default": "2"
     }
   ]
 }

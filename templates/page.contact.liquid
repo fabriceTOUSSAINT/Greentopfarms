@@ -1,107 +1,100 @@
-{% assign facebook_url = settings.social--facebook--url %}
-{% assign twitter_url = settings.social--twitter--url %}
-{% assign google_plus_url = settings.social--google-plus--url %}
-{% assign pinterest_url = settings.social--pinterest--url %}
-{% assign instagram_url = settings.social--instagram--url %}
-{% assign vimeo_url = settings.social--vimeo--url %}
-{% assign youtube_url = settings.social--youtube--url %}
-{% assign tumblr_url = settings.social--tumblr--url %}
+<div class="row{% if settings.pages--center-content--enabled %} center{% endif %}">
 
-{% if facebook_url.size > 0 or twitter_url.size > 0 or google_plus_url.size > 0 or pinterest_url.size > 0 or instagram_url.size > 0 or vimeo_url.size > 0 or youtube_url.size > 0 or tumblr_url.size > 0 %}
-  {% assign show-social = true  %}
-{% endif %}
-{% assign physical_store_details = true %}
-{% if settings.store--address == blank and settings.store--hours == blank %}
-  {% assign physical_store_details = false %}
-{% endif %}
-
-<div
-  class="contact-page"
-  data-js-class="Page"
-  data-contact-page--physical-store-details="{{ physical_store_details }}"
->
-  <div class="contact-page--content">
-    <div class="contact-page--wrapper">
-      <div class="contact-page--header">
-        <h1 class="page-title font--heading text-align--center">{{ page.title }}</h1>
-      </div>
-
-      <div class="contact-page--text rte-content">
-        <div class="contact-page--text-container">
-          {{ page.content }}
-        </div>
-      </div>
-
-      {% unless settings.store--address == blank and settings.store--hours == blank %}
-        <div class="contact-page--left-column">
-          {% unless settings.store--address == blank %}
-            <div class="contact-page--address">
-              <h3 class="contact-page--address-title">{{ 'home.map.address' | t }}</h3>
-              <div class="contact-page--address-text">
-                {{ settings.store--address | newline_to_br }}
-              </div>
-              <div class="contact-page--address-link">
-                <a
-                  href="https://www.google.ca/maps/place/{{ settings.store--address }}"
-                  target="_blank"
-                >
-                  {{ 'home.map.open_in_maps' | t }}
-                </a>
-              </div>
-            </div>
-          {% endunless %}
-
-          {% unless settings.store--hours == blank %}
-            <div class="contact-page--hours">
-              <h3 class="contact-page--hours-title">{{ 'home.map.hours' | t }}</h3>
-              <div class="contact-page--hours-text">{{ settings.store--hours }}</div>
-            </div>
-          {% endunless %}
-        </div>
-      {% endunless %}
-
-      <div class="contact-page--right-column">
-        <div class="contact-page--form">
-
-          <div class="contact-page--form-error"></div>
-
-          <h3 class="contact-page--form-title">{{ 'layout.header.contact-us' | t }}</h3>
-
-          {% form 'contact' %}
-
-            <p>
-              <input type="text" name="contact[name]" class="styled-input{% if form.errors contains 'name' %} error{% endif %}" value="{{ contact.fields.name }}" aria-label="{{ 'contact_page.name' | t }}" placeholder="{{ 'contact_page.name' | t }}" />
-            </p>
-            <p>
-              <input required="required" type="email" name="contact[email]" class="styled-input{% if form.errors contains 'email' %} error{% endif %}" value="{{ contact.fields.email }}" aria-label="{{ 'contact_page.email' | t }}" placeholder="{{ 'contact_page.email' | t }}"/>
-            </p>
-            <p>
-              <textarea required="required" rows="10" cols="60" name="contact[body]" class="styled-input{% if form.errors contains 'body' %} error{% endif %}" aria-label="{{ 'contact_page.message' | t }}" placeholder="{{ 'contact_page.message' | t }}">{{  contact.fields.body }}</textarea>
-            </p>
-            <p>
-              <input class="button styled-submit" type="submit" value="{{ 'contact_page.button' | t }}" />
-            </p>
-
-            {% if form.posted_successfully? or form.errors %}
-              <script>
-                window.location.hash = '#feedback-bar--contact-modal';
-              </script>
-            {% endif %}
-
-          {% endform %}
-        </div>
-
-
-        {% if show-social %}
-          <div class="contact-page--social">
-            <h3 class="contact-page--social-title">{{ 'layout.header.follow' | t }}</h3>
-            {% include 'partial--social-media' with 'modal' %}
-          </div>
-        {% endif %}
-      </div>
+  <div class="row">
+    <div class="columns">
+      {% include 'framework--breadcrumbs' %}
+      <h1 class="page-title">{{ page.title }}</h1>
     </div>
   </div>
+
+  <div class="row">
+    <div class="columns large-6">
+      <div class="page-content rte-content">
+
+        {{ page.content }}
+      </div>
+    </div>
+
+    <div class="columns large-6 push-1  ">
+      {% form 'contact', id: 'contact_page_form' %}
+
+        {% if form.posted_successfully? %}
+        <div class="success feedback accent-text">
+          <p>{{ 'contact_page.success_feedback' | t }}</p>
+        </div>
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="error feedback accent-text">
+          <p>{{ 'contact_page.error_feedback' | t }}:</p>
+          <ul>
+          {% for field in form.errors %}
+            <li>
+              {{ field | capitalize | replace: 'Body', 'Message' }} {{ form.errors.messages[field] }}
+            </li>
+          {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% unless form.posted_successfully? %}
+
+          <label for="contactFormName">{{ 'contact_page.name' | t }}:</label>
+          <input
+            class="styled-input{% if form.errors contains 'name' %} error{% endif %}"
+            type="text"
+            id="contactFormName"
+            name="contact[name]"
+            value="{{ contact.fields.name }}"
+          />
+
+          <label for="contactFormEmail">{{ 'contact_page.email' | t }}:</label>
+          <input
+            class="styled-input{% if form.errors contains 'email' %} error{% endif %}"
+            type="email"
+            id="contactFormEmail"
+            name="contact[email]"
+            value="{{ contact.fields.email }}"
+            required
+          />
+          <label for="contactFormTelephone">{{ 'contact_page.phone' | t }}:</label>
+          <input
+            class="styled-input{% if form.errors contains 'phone' %} error{% endif %}"
+            type="tel"
+            id="contactFormTelephone"
+            name="contact[phone]"
+            value="{{ contact.fields.phone }}"
+          />
+          <label for="contactFormMessage">{{ 'contact_page.message' | t }}:</label>
+          <textarea
+            class="styled-input{% if form.errors contains 'body' %} error{% endif %}"
+            rows="10"
+            cols="60"
+            id="contactFormMessage"
+            name="contact[body]"
+            required
+          >{{ contact.fields.body }}</textarea>
+          <div class="contact-page--submit-button">
+            <input
+              class="font--button"
+              type="submit"
+              id="contactFormSubmit"
+              value="{{ 'contact_page.button' | t }}"
+            />
+          </div>
+
+        {% endunless %}
+
+        {% if form.posted_successfully? or form.errors %}
+          <script>
+            window.location.hash = '#page-content';
+          </script>
+        {% endif %}
+
+      {% endform %}
+
+    </div>
+  </div>
+
 </div>
-
-
 

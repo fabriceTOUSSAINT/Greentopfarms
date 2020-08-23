@@ -1,79 +1,60 @@
-{% assign custom_ordering = false %}
-{% assign collection_list = collections %}
+{% paginate collections by 36 %}
 
-{% if linklists.all-collections.links.size > 0 %}
-  {% assign custom_ordering = true %}
-  {% assign collection_list = linklists.all-collections.links %}
-{% endif %}
-
-{% paginate collections by 12 %}
-
-{% for item in collection_list %}
-{%- include 'bold-product' with item, hide_action: 'skip' -%}
-  {% if custom_ordering %}
-    {% assign collection = item.object %}
-  {% else %}
-    {% assign collection = item %}
-  {% endif %}
-
-  {% if
-    collection.handle == 'all' or
-    collection.handle == 'all-products' or
-    collection.handle == 'frontpage'
-  %}
-    {% continue %}
-  {% endif %}
-
-  {% comment %} Get number of items with singular/plural noun {% endcomment %}
-  {% assign products_in_collection = collection.products.size %}
-  {% if products_in_collection > 0 %}
-    {% if products_in_collection == 1 %}
-      {% assign number_of_items = 'collections.number_of_items' | t: count: 1 %}
-    {% else %}
-      {% assign number_of_items = 'collections.number_of_items' | t: count: products_in_collection %}
-    {% endif %}
-  {% endif %}
-
-  <div class="collection-listing--collection" data-js-class="CollectionListingPage">
-    <div class="collection-listing--left-column">
-      <h3 class="collection-listing--collection-title" title="{{ number_of_items }}">
-        <a href="{{ collection.url }}">{{ collection.title }}
-          <span class="collection-listing--number-of-items">{{ number_of_items }}</span>
-        </a>
-      </h3>
-      {% if collection.products_count > 6 %}
-        <a class="collection-listing--view-more" href="{{ collection.url }}">
-          {{ 'collections.view_more' | t }}
-        </a>
+  <header class="row">
+    <div class="left columns large-6">
+      {% if snippet-collection-listing == '' or template == 'list-collections' %}
+        <h1 class="font--section-heading">{{ 'collections.page_title' | t }}</h1>
+      {% else %}
+        <h1 class="font--section-heading">{{ linklists[snippet-collection-listing].title }}</h1>
       {% endif %}
     </div>
+  </header>
 
-    <div class="collection-listing--right-column">
+  <div class="row">
+    <div class="collections-grid">
+      {% if linklists.all-collections.links.size > 0 %}
+        {% assign collection_list = linklists.all-collections.links %}
+        {% for link in collection_list %}
+          {%- comment %}<locksmith:3d40>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:3d40>{% endcomment -%}
+          {% assign collection = link.object %}
+          {% unless
+            collection.handle == 'all' or
+            collection.handle == 'all-products' or
+            collection.handle == 'frontpage'
+          %}
+            {% include 'snippet-collection-item' %}
+          {% endunless %}
+        {% endfor %}
 
-      {% for product in collection.products limit: 6 %}
-{%- include 'bold-product' with product, hide_action: 'skip' -%}
-        <div class="collection-listing--product">
-          {% include 'partial--product', view: 'list' %}
-        </div>
-      {% endfor %}
-
-      {% if collection.products_count > 6 %}
-        <div class="collection-listing--view-more--mq-small">
-          <a href="{{ collection.url }}">{{ 'collections.view_more' | t }}</a>
-        </div>
+      {% elsif collections.size > 0 %}
+        {% for collection in collections %}
+          {%- comment %}<locksmith:a7f7>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:a7f7>{% endcomment -%}
+          {% unless
+            collection.handle == 'all' or
+            collection.handle == 'all-products' or
+            collection.handle == 'frontpage'
+          %}
+            {% include 'snippet-collection-item' %}
+          {% endunless %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..6) %}
+          {% include 'snippet-collection-placeholder-item' with i %}
+        {% endfor %}
       {% endif %}
     </div>
   </div>
-{% endfor %}
 
-{% if paginate.pages > 1 and custom_ordering == false %}
-  <footer class="collection-listing--pagination">
-    <div class="spacing--3y"></div>
-    <div class="width--12 text-align--center">
-      {% include 'framework--pagination' %}
-    </div>
-  </footer>
-{% endif %}
-
+  {% if paginate.pages > 1 %}
+    <footer class="row">
+      <div class="right columns large-6">
+        {% include 'snippet-pagination' %}
+      </div>
+    </footer>
+  {% endif %}
 
 {% endpaginate %}

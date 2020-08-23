@@ -1,0 +1,100 @@
+{% comment %} position = 'footer' or 'header' {% endcomment %}
+
+<div class="localization--container">
+  {% form 'localization' %}
+    {% if locale_enable %}
+      <div
+        class="localization--root font--accent"
+        data-js-class="Localization"
+        data-position="{{ position }}"
+      >
+        <label class="hidden" id="lang-heading">
+          {{ 'general.language.dropdown_label' | t }}
+        </label>
+
+        <div class="localization--main">
+          <div
+            class="localization--toggle"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="lang-list"
+            aria-describedby="lang-heading"
+            data-form-toggle
+          >
+            {{ form.current_locale.endonym_name }}
+          </div>
+          <ul class="localization--items" id="lang-list" data-form-item>
+            {% for locale in form.available_locales %}
+              <li class="localization--item">
+                <a
+                  class="localization--item--link"
+                  href="#"
+                  lang="{{ locale.iso_code }}"
+                  {% if locale.iso_code == form.current_locale.iso_code %}aria-current="true"{% endif %}
+                  data-value="{{ locale.iso_code }}"
+                  data-form-item-link
+                >
+                  {{ locale.endonym_name }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <input
+            type="hidden"
+            name="locale_code"
+            id="LocaleSelector"
+            value="{{ form.current_locale.iso_code }}"
+            data-form-input
+          />
+        </div>
+      </div>
+    {% endif %}
+
+    {% if currency_enable %}
+      <div
+        class="localization--root font--accent"
+        data-js-class="Localization"
+        data-position="{{ position }}"
+      >
+        <label class="hidden" id="currency-heading">
+          {{ 'general.currency.dropdown_label' | t }}
+        </label>
+
+        <div class="localization--main">
+          <div
+            class="localization--toggle"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="currency-list"
+            aria-describedby="currency-heading"
+            data-form-toggle
+          >
+            {{ form.current_currency.iso_code }} {% if form.current_currency.symbol %}{{ form.current_currency.symbol }}{% endif %}
+          </div>
+          <ul id="currency-list" class="localization--items" data-form-item>
+            {% for currency in form.available_currencies %}
+              <li class="localization--item">
+                <a
+                  class="localization--item--link"
+                  href="#"
+                  {% if currency.iso_code == form.current_currency.iso_code %}aria-current="true"{% endif %}
+                  data-value="{{ currency.iso_code }}"
+                  data-form-item-link
+                >
+                  {{ currency.iso_code }} {% if currency.symbol %}{{ currency.symbol }}{% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <input
+            type="hidden"
+            name="currency_code"
+            id="CurrencySelector"
+            value="{{ form.current_currency.iso_code }}"
+            data-form-input
+          />
+        </div>
+      </div>
+    {% endif %}
+  {% endform %}
+</div>

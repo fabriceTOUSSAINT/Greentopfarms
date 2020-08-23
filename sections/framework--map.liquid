@@ -1,6 +1,3 @@
-{% comment %} Translations {% endcomment %}
-
-
 {% comment %} Variables {% endcomment %}
 {% include 'framework--background-colors', bg_color: section.settings.background-color %}
 {% assign api_key = section.settings.api-key %}
@@ -10,6 +7,7 @@
 {% assign hours = section.settings.hours %}
 {% assign map_address = section.settings.map-address %}
 {% assign map_link = "https://www.google.ca/maps/place/" | append: map_address %}
+{% assign open_map_t = 'home.map.open_in_maps' | t %}
 
 {% if section.settings.image != blank %}
   {% capture image %}
@@ -47,29 +45,34 @@
     <div class="map--body">
       <div class="map--info">
         {% if heading != blank %}
-          <h2 class="map--heading" data-font-type="heading--2">{{ heading }}</h2>
+          <h2 class="map--heading font--section-heading">{{ heading }}</h2>
         {% endif %}
 
         {% if address != blank %}
           <div class="map--address">
-            {{ address }}
+            <div class="map--address-content rte-content font--paragraph">
+              {{ address }}
+            </div>
 
             {% if map_address != blank %}
-              <a
-                class="map--open-maps-link"
-                href="{{ map_link }}"
-                target="_blank"
-              >
-                {{ 'home.map.open_in_maps' | t }}
-              </a>
+              <div class="map--open-maps-link font--block-link">
+                <a
+                  href="{{ map_link }}"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="{{ open_map_t }}"
+                >
+                  {{ open_map_t }}
+                </a>
+              </div>
             {% endif %}
+
           </div>
         {% endif %}
 
         {% if hours != blank %}
-          <div class="map--hours">{{ hours }}</div>
+          <div class="map--hours rte-content font--paragraph">{{ hours }}</div>
         {% endif %}
-
 
       </div>
 
@@ -80,7 +83,12 @@
 
         {% if section.settings.api-key == blank %}
           {% if map_address != blank %}
-            <a href="{{ map_link }}">
+            <a
+              href="{{ map_link }}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="{{ open_map_t }}"
+            >
           {% endif %}
 
             <div class="map--image">{{ image }}</div>
@@ -94,7 +102,6 @@
   </div>
 
 </div>
-
 
 {% schema %}
   {
@@ -160,7 +167,7 @@
         "type": "richtext",
         "id": "hours",
         "label": "Hours",
-        "default": "<p><strong>Monday - Friday</strong><br>12pm - 8pm<br><br><strong>Saturday - Sunday</strong><br>12pm - 5pm</p>"
+        "default": "<p>Monday - Friday<br>10am - 6pm<br><br>Saturday - Sunday<br>12pm - 5pm</p>"
       },
       {
         "type": "image_picker",

@@ -5,9 +5,10 @@
 {% endif %}
 
 <div class="fw--logo {% if logo_type == 'image' %}height-{{ section.settings.logo-height-range }}{% endif %} type--{{ logo_type }}">
-  <h1 class="item font--heading" itemscope itemtype="http://schema.org/Organization">
+  <div class="item" itemscope itemtype="http://schema.org/Organization">
+
     {% if logo_type == 'image' %}
-      <a href="{{ shop.url }}" title="{{ shop.name }}" itemprop="url">
+      <a href="{{ routes.root_url }}" title="{{ routes.root_url }}" itemprop="url">
         {% if image_type == 'inverted' %}
           <img
             src="{{ section.settings.inverted-logo | img_url: image_size }}"
@@ -23,7 +24,10 @@
         {% endif %}
       </a>
     {% else %}
-      <a title="{{ shop.url }}" href="{{ shop.url }}">{{ shop.name }}</a>
+      <a href="{{ routes.root_url }}" title="{{ routes.root_url }}">
+        <div class="logo--text font--section-heading">{{ shop.name }}</div>
+      </a>
     {% endif %}
-  </h1>
+
+  </div>
 </div>

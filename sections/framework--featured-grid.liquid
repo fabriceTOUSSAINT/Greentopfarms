@@ -37,7 +37,9 @@
   {% if header_text_exists %}
     <div class="featured-grid--header">
       {% if section.settings.title != blank %}
-        <h2 class="featured-grid--title">{{ section.settings.title | escape }}</h2>
+        <h2 class="featured-grid--title font--section-heading">
+          {{ section.settings.title | escape }}
+        </h2>
       {% endif %}
 
       {% if section.settings.subtitle != blank %}
@@ -58,7 +60,13 @@
         style="width: {{ width }}%;"
         {{ block.shopify_attributes }}
       >
-        {% if link != blank %}<a href="{{ link }}">{% endif %}
+        {% if link != blank %}
+          <a
+            href="{{ link }}"
+            aria-label="{% if block.settings.title != blank %}{{ block.settings.title }}{% else %}{{ section.settings.title }}{% endif %}"
+          >
+        {% endif %}
+
         <div class="featured-grid--item--container">
           {% if block.settings.image %}
             <div class="featured-grid--item--image">
@@ -76,25 +84,33 @@
             %}
           {% endif %}
 
-          {% if block.settings.title != blank or block.settings.subtitle != blank %}
+          {% if
+            block.settings.title != blank or
+            block.settings.link-text != blank
+          %}
             <div class="featured-grid--item--overlay-background"></div>
-            <div class="featured-grid--item--text">
+            <div class="featured-grid--item--text-container">
               {% if block.settings.title != blank %}
-                <h4 class="featured-grid--item--title">
+                <h4 class="featured-grid--item--title font--block-heading">
                   {{ block.settings.title | escape }}
                 </h4>
               {% endif %}
 
-              {% if block.settings.subtitle != blank %}
-                <p class="featured-grid--item--subtitle">
-                  {{ block.settings.subtitle | escape }}
-                </p>
+              {% if block.settings.link-text != blank %}
+                <div class="featured-grid--item--link font--block-link">
+                  <div class="featured-grid--item--link-container">
+                    {{ block.settings.link-text }}
+                  </div>
+                </div>
               {% endif %}
             </div>
           {% endif %}
 
           </div>
-        {% if link != blank %}</a>{% endif %}
+
+        {% if link != blank %}
+          </a>
+        {% endif %}
       </div>
 
     {% endfor %}
@@ -102,7 +118,7 @@
 
   {% if footer_text_exists %}
     <div class="featured-grid--footer">
-      <a class="featured-grid--call-to-action" href="{{ section.settings.link-url }}">
+      <a class="font--button" href="{{ section.settings.link-url }}">
         {{ section.settings.link-text }}
       </a>
     </div>
@@ -189,9 +205,9 @@
       "default": "Featured grid"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "subtitle",
-      "label": "Subtitle"
+      "label": "Subheading"
     },
     {
       "type": "url",
@@ -222,15 +238,15 @@
           "default": "Grid image"
         },
         {
-          "type": "textarea",
-          "id": "subtitle",
-          "label": "Subtitle",
-          "default": "View more"
-        },
-        {
           "type": "url",
           "id": "link-url",
-          "label": "Link to"
+          "label": "Link"
+        },
+        {
+          "id": "link-text",
+          "label": "Link text",
+          "type": "text",
+          "default": "View more"
         }
       ]
     }

@@ -1,0 +1,326 @@
+{% assign block_count = section.blocks.size %}
+
+{% assign locale_enable = false %}
+{% assign currency_enable = false %}
+
+{% if section.settings.show-currency-selector and shop.enabled_currencies.size > 1 %}
+  {% assign currency_enable = true %}
+{% endif %}
+
+{% if section.settings.show-locale-selector and shop.published_locales.size > 1 %}
+  {% assign locale_enable = true %}
+{% endif %}
+
+<footer
+  class="footer--root"
+  data-js-class="Footer"
+  data-section-id="{{ section.id }}"
+  data-section-type="footer"
+>
+  <div class="footer--blocks">
+    {% for block in section.blocks limit: block_count %}
+
+      {% case block.type %}
+        {% when 'about' %}
+          {% assign show_social = false %}
+          {% if
+            settings.social--facebook--url.size > 0 or
+            settings.social--twitter--url.size > 0  or
+            settings.social--instagram--url.size > 0 or
+            settings.social--pinterest--url.size > 0 or
+            settings.social--vimeo--url.size > 0 or
+            settings.social--youtube--url.size > 0
+          %}
+            {% assign show_social = true %}
+          {% endif %}
+
+          {% if block.settings.subscribe--show-social-icons == false %}
+            {% assign show_social = false %}
+          {% endif %}
+
+          <div class="footer--block" data-block-type="about">
+            <div class="footer--block--container">
+              {% if block.settings.about-title != blank %}
+                <div class="footer--block--heading font--block-heading">
+                  {{ block.settings.about-title | escape }}
+                </div>
+              {% endif %}
+
+              <div class="footer--block--body">
+                {% if block.settings.text != blank %}
+                  <div class="footer--about-text font--paragraph rte-content">
+                    {{ block.settings.text }}
+                  </div>
+                {% endif %}
+
+                {% if show_social %}
+                  <div class="footer--social-icons social-follow">
+                    {% include 'framework--social-follow' %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+        {% when 'menu' %}
+          <div class="footer--block" data-block-type="menu">
+            <div class="footer--block--container">
+              {% if block.settings.menu-title != blank %}
+                <div class="footer--block--heading font--block-heading">
+                  {{ block.settings.menu-title | escape }}
+                </div>
+              {% endif %}
+
+              <div class="footer--block--body font--paragraph" role="navigation">
+                {% if linklists[block.settings.menu].links.size > 0 %}
+                  {% assign footer_nav = block.settings.menu %}
+
+                  <ul
+                    class="footer--menu"
+                    aria-label="{{ 'layout.footer.navigation' | t }}"
+                  >
+                    {% for link in linklists[footer_nav].links %}
+                      {%- comment %}<locksmith:e988>{% endcomment -%}
+                        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[footer_nav], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                      {%- comment %}</locksmith:e988>{% endcomment -%}
+                      <li>
+                        <a href="{{ link.url }}" title="{{ link.title }}">
+                          {{ link.title }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+        {% when 'subscribe' %}
+          <div class="footer--block" data-block-type="subscribe">
+            <div class="footer--block--container">
+              <div class="footer--subscribe">
+
+                {% if block.settings.subscribe--show-newsletter or show_social %}
+                  {% if block.settings.newsletter--heading != blank %}
+                    <div class="footer--block--heading font--block-heading">
+                      {{ block.settings.newsletter--heading }}
+                    </div>
+                  {% endif %}
+                {% endif %}
+
+                <div class="footer--block--body">
+                  {% if
+                    block.settings.subscribe--show-newsletter or
+                    settings.popup--newsletter--enabled
+                  %}
+                    <div
+                      id="mailing-list-module"
+                      {% if block.settings.subscribe--show-newsletter == false and settings.popup--newsletter--enabled %}style="display:none;"{% endif %}
+                    >
+                      {% if block.settings.newsletter--info != blank %}
+                        <div class="footer--subscribe--info font--paragraph rte-content">
+                          {{ block.settings.newsletter--info }}
+                        </div>
+                      {% endif %}
+
+                      {% form 'customer', id: 'footer_form' %}
+                        {% if form.errors %}
+                          <p class="error feedback">
+                            {% for field in form.errors %}
+                              {{ field }} {{ form.errors.messages[field] }}
+                            {% endfor %}
+                          </p>
+                        {% endif %}
+
+                        <input type="hidden" name="contact[tags]" value="newsletter" />
+                        <input
+                          type="hidden"
+                          name="contact[first_name]"
+                          value="Newsletter"
+                        />
+                        <input
+                          type="hidden"
+                          name="contact[last_name]"
+                          value="Subscriber"
+                        />
+                        <label for="footer-email" class="hidden">
+                          {{ 'layout.footer.newsletter_placeholder' | t }}
+                        </label>
+                        <input
+                          class="small"
+                          id="footer-email"
+                          type="email"
+                          placeholder="{{ 'layout.footer.newsletter_placeholder' | t }}"
+                          name="contact[email]"
+                        />
+                        <input
+                          type="submit"
+                          class="font--button prefix"
+                          value="{{ 'layout.footer.newsletter_button' | t }}"
+                          name="subscribe"
+                        />
+
+                        {% if form.posted_successfully? or form.errors %}
+                          <script>window.location.hash = '#feedback-bar--newsletter';</script>
+                        {% endif %}
+                      {% endform %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+
+    {% if section.blocks.size == 0 %}
+      {% include 'framework--no-blocks' %}
+    {% endif %}
+  </div>
+
+  <div class="footer--sub">
+    {% if locale_enable or currency_enable %}
+      <div class="footer--sub--block" data-type="localization">
+        <div class="footer--sub--container">
+          {%
+            include 'framework--localization',
+            position: 'footer',
+            locale_enable: locale_enable,
+            currency_enable: currency_enable
+          %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% assign powered_check = powered_by_link | split: '>' %}
+    {% if powered_check[1] != ' </a' %}
+
+    {% endif %}
+
+    {% unless shop.enabled_payment_types == empty %}
+      {% if section.settings.show-payment-icons %}
+        <div class="footer--sub--block" data-type="payment-icons">
+          <div class="footer--sub--container">
+            {% include 'framework--payment-icons' %}
+          </div>
+        </div>
+      {% endif %}
+    {% endunless %}
+  </div>
+
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section--footer",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Currency Selector",
+      "info": "To add a currency, go to your [payment settings](/admin/settings/payments)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-currency-selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "To offer multiple currencies on your online store, you must first [edit your store's currency formatting](https://docs.shopify.com/support/settings/general/tell-my-script-where-to-find-money-formats)."
+    },
+    {
+      "type": "header",
+      "content": "Language Selector",
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-locale-selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Payment logos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-payment-icons",
+      "label": "Enable",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "about",
+      "name": "About store",
+      "settings": [
+        {
+          "type": "text",
+          "id": "about-title",
+          "label": "Title",
+          "default": "Store"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>© Your brand name here<p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "subscribe--show-social-icons",
+          "label": "Show social icons",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu-title",
+          "label": "Title",
+          "default": "Info"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer",
+          "info": "This menu won't show submenu items."
+        }
+      ]
+    },
+    {
+      "type": "subscribe",
+      "name": "Subscribe",
+      "settings": [
+        {
+          "id": "newsletter--heading",
+          "label": "Newsletter heading",
+          "type": "text",
+          "default": "Subscribe"
+        },
+        {
+          "id": "newsletter--info",
+          "label": "Newsletter information",
+          "type": "richtext",
+          "default": "<p>Sign up to our mailing list</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "subscribe--show-newsletter",
+          "label": "Show newsletter",
+          "default": true
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

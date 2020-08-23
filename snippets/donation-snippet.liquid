@@ -1,10 +1,10 @@
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[
 // Including jQuery conditionnally.
-if (typeof jQuery === 'undefined') {
-    document.write({{ "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" | script_tag | json }});
-  document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
-}
+// if (typeof jQuery === 'undefined') {
+//     document.write({{ "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" | script_tag | json }});
+//   document.write('<script type="text/javascript">jQuery.noConflict();<\/script>');
+// }
 //]]>
 </script>
 
@@ -22,14 +22,17 @@ const isShoppingCartPage = document.body.classList.contains('page--your-shopping
         }
     });
 
+console.warn('-------------- ya -------------')
+
    $('button.addTip, input[name="addTip"]').click(function(e) {
     e.preventDefault();
     var amount = $('#donate').val();
 	
+  console.log('here', {amount})
     amount = amount * 100;
     amount = parseInt(amount);
 
-    
+    {% comment %} TODO: DELETE BELOW< NO MORE TIPS NEEDED {% endcomment %}
     function addDonation(){
       if ($(".tip-block-header--tip-added")[0]){
         // Update tip if already in cart

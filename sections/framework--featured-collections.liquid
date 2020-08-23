@@ -15,7 +15,7 @@
 >
   {% if heading != blank %}
     <div class="featured-collections--header">
-      <h2 class="featured-collections--heading">{{ heading }}</h2>
+      <h2 class="featured-collections--heading font--section-heading">{{ heading }}</h2>
     </div>
   {% endif %}
 
@@ -40,7 +40,7 @@
           {% capture image %}
             {%
               include "framework--image",
-              image: collection.products.first.featured_image,
+              image: collection.products.first.featured_media.preview_image,
               full_width: true
             %}
           {% endcapture %}
@@ -62,7 +62,6 @@
         {% assign title = collection_title_t %}
       {% endunless %}
 
-
       {% comment %} View {% endcomment %}
       <div
         class="featured-collections--item"
@@ -72,13 +71,12 @@
       >
         <a href="{{ link }}">
           <div class="featured-collections--image">{{ image }}</div>
-          <h3 class="featured-collections--title">{{ title }}</h3>
+          <h3 class="featured-collections--title font--block-heading">{{ title }}</h3>
         </a>
       </div>
     {% endfor %}
   </div>
 </div>
-
 
 {% schema %}
   {

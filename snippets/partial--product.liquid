@@ -1,151 +1,142 @@
-{% comment %} Defaults {% endcomment %}
-{% assign view = 'grid' %}
-{% assign onboarding = false %}
-{% assign show-vendor = true  %}
-{% if settings.product--show-vendor == false %}
-  {% assign show-vendor = false %}
-{% endif %}
-{% assign cart-button = 'products.cart_button_text' | t %}
+{% comment %} BOLD CODE {% endcomment %}
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- break -%}{%- endif -%}
+{% comment %}  END BOLD CODE {% endcomment %}
 
+{% comment %} Attributes {% endcomment %}
+{% assign onboarding = false %}
+{% assign view = '' %}
+
+{% comment %} Settings {% endcomment %}
+{% assign show_vendor = settings.brand-show %}
+{% assign hover_image_enabled = settings.hover-image-enabled %}
+
+{% comment %} Translations {% endcomment %}
+{% assign sold_out_t = 'collections.sold_out_html' | t %}
+{% assign sale_t = 'collections.sale' | t %}
+{% assign from_t = 'collections.from' | t %}
+
+{% comment %} Variables {% endcomment %}
+{% assign available = product.available %}
+{% assign url = product.url | within: collection %}
+{% assign title = product.title %}
+{% assign vendor = product.vendor %}
+{% assign vendor_url = product.vendor | url_for_vendor %}
+{% assign price = product.price | money %}
+{% assign price_varies = product.price_varies %}
+
+{% if product.compare_at_price > product.price and product.available %}
+  {% assign compare_price = product.compare_at_price | money %}
+{% else %}
+  {% assign compare_price = false %}
+{% endif %}
+
+{% assign image_preload = false %}
+{% if view == 'product-slider' %}
+  {% assign image_preload = true %}
+{% endif %}
+
+{% capture image %}
+  {%
+    include 'framework--image',
+    image: product.featured_media.preview_image,
+    preload: image_preload
+    quickview: true,
+  %}
+{% endcapture %}
+
+{% if product.media.size > 1 %}
+  {% capture hover_image %}
+    {%
+      include 'framework--image',
+      image: product.media[1].preview_image,
+      preload: true
+      quickview: true,
+    %}
+  {% endcapture %}
+
+{% else %}
+  {% assign hover_image = false %}
+{% endif %}
+
+{% comment %} Onboarding {% endcomment %}
 {% if onboarding %}
+  {% assign available = true %}
+  {% assign url = product.url | within: collection %}
+  {% assign title = 'home.onboarding.product_title' | t %}
+  {% assign vendor = 'home.onboarding.vendor' | t %}
+  {% assign price = 'home.onboarding.price' | t %}
+
   {% capture image %}
     {%
       include "framework--placeholder",
-      type: "image",
-      aspect_ratio: 1
+      type: "product",
+      aspect_ratio: 0.75,
+      placeholder_index: index
     %}
   {% endcapture %}
-  {% assign vendor = 'products.placeholder.vendor' | t %}
-  {% assign vendor-url = "#" %}
-  {% assign compare-price = 'products.placeholder.compare_price' | t %}
-  {% assign price = 'products.placeholder.actual_price' | t %}
-  {% assign title = 'products.placeholder.name' | t %}
-  {% assign url = product.url | within: collection %}
-  {% assign excerpt = 'products.description' | t %}
-{% else %}
-  {% capture image %}
-    {%
-      include 'framework--image',
-      image: product.featured_image,
-      full_width: true
-    %}
-  {% endcapture %}
-
-  {% assign vendor = product.vendor %}
-  {% assign vendor-url = product.vendor | url_for_vendor %}
-  {% if product.compare_at_price > product.price and product.available %}
-    {% assign compare-price = product.compare_at_price | money %}
-  {% else %}
-    {% assign compare-price = false %}
-  {% endif %}
-  {% assign price = product.price | money %}
-  {% assign title = product.title %}
-  {% assign url = product.url | within: collection %}
-  {% assign excerpt = product.metafields.global.description_tag | newline_to_br %}
-  {% if excerpt == blank %}
-    {% assign excerpt = product.description | strip_html | truncate: 100 | newline_to_br %}
-  {% endif %}
-
-  {% if product.available %}
-    {% assign product-sold-out = false %}
-  {% else %}
-    {% assign product-sold-out = true %}
-  {% endif %}
 {% endif %}
 
-<div class="product" data-product--view="{{ view }}">
-  {% case view %}
+{% comment %} View {% endcomment %}
+<div
+  class="product--root"
+  {% if hover_image_enabled and hover_image %}
+    data-hover-image="true"
+  {% endif %}
+>
 
-    {% when 'grid' %}
-      <div class="product--image"><a href="{{ url }}">{{ image }}</a></div>
-      <div class="product--details">
-        {% if product-sold-out %}
-          <div class="product--sold-out">{{ 'collections.sold_out_html' | t }}</div>
-        {% endif %}
+  {% if available == false %}
+    <a href="{{ url }}">
+      <div class="product--sold-out font--accent"><span>{{ sold_out_t }}</span></div>
+    </a>
+  {% elsif compare_price %}
+    <a href="{{ url }}">
+      <div class="product--sale font--accent" href="{{ product.url | within: collection }}">
+        <span>{{ sale_t }}</span>
+      </div>
+    </a>
+  {% endif %}
 
-        <div class="product--details--title-row">
+  <a href="{{ url }}" aria-label="{{ product.title }}">
+    <div class="product--image-wrapper">
+      <div class="product--image">{{ image }}</div>
+      {% if hover_image_enabled and hover_image %}
+        <div class="product--hover-image">
+          {{ hover_image }}
+        </div>
+      {% endif %}
+    </div>
+  </a>
 
-          <span class="product--price-wrapper">
-            {% if compare-price %}
-              <span class="product--compare-price">{{ compare-price }}</span>
-              <span class="product--price">{{ price }}</span>
-            {% else %}
-              {% if product.price_varies %}
-                <span class="product--from">{{ 'collections.from' | t }}</span>
-              {% endif %}
-              <span class="product--price">{{ price }}</span>
-            {% endif %}
+  <div class="product--details">
+    <a href="{{ url }}">
+      <div class="product--title font--block-heading">{{ title }}</div>
+    </a>
 
-            {% if product.tags contains HalfTray %}
-              <span class="product--price-sub-head">per half tray</span>
-            {% endif %}
-            {% if product.tags contains Tray %}
-              <span class="product--price-sub-head">per tray</span>
-            {% endif %}
-            {% if product.tags contains Headcount %}
-              <span class="product--price-sub-head">per person</span>
-            {% endif %}
-            {% if product.tags contains Jug %}
-              <span class="product--price-sub-head">per jug</span>
-            {% endif %}
+    {% if show_vendor %}
+      <a href="{{ vendor_url }}">
+        <div class="product--vendor font--light-accent">{{ vendor }}</div>
+      </a>
+    {% endif %}
+
+    <a href="{{ url }}">
+      <div class="product--price-wrapper">
+        {% if compare_price %}
+          <span class="product--compare-price font--light-accent">
+            <span class="money">{{ compare_price }}</span>
           </span>
-
-          <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
-        </div> <!-- .product--details--title-row -->
-
-        {% if show-vendor %}
-          <div class="product--vendor"><a href="{{ vendor-url }}">{{ vendor }}</a></div>
+          <span class="product--price font--accent">
+            <span class="money">{{ price }}</span>
+          </span>
+        {% else %}
+          {% if price_varies %}
+            <span class="product--from font--accent">{{ from_t }}</span>
+          {% endif %}
+          <span class="product--price font--accent">
+            <span class="money">{{ price }}</span>
+          </span>
         {% endif %}
       </div>
+    </a>
+  </div>
 
-    {% when 'list' %}
-      <div class="product--image"><a href="{{ url }}">{{ image }}</a></div>
-      <div class="product--details">
-        {% if product-sold-out %}
-          <div class="product--sold-out">{{ 'collections.sold_out_html' | t }}</div>
-        {% endif %}
-
-        <div class="product--details--title-row">
-          <div class="product--price-wrapper">
-            {% if compare-price %}
-              <span class="product--compare-price">{{ compare-price }}</span>
-              <span class="product--price">{{ price }}</span>
-            {% else %}
-              {% if product.price_varies %}
-                <span class="product--from">{{ 'collections.from' | t }}</span>
-              {% endif %}
-              <span class="product--price">{{ price }}</span>
-            {% endif %}
-
-            {% if product.tags contains 'HalfTray' %}
-              <span class="product--price-sub-head">per half tray</span>
-            {% endif %}
-            {% if product.tags contains 'Tray' %}
-              <span class="product--price-sub-head">per tray</span>
-            {% endif %}
-             {% if product.tags contains 'Headcount' %}
-              <span class="product--price-sub-head">per person</span>
-            {% endif %}
-            {% if product.tags contains 'Jug' %}
-              <span class="product--price-sub-head">per jug</span>
-            {% endif %}
-          </div>
-          <h3 class="product--title"><a href="{{ url }}">{{ title }}</a></h3>
-        </div> <!-- .product--details--title-row -->
-
-        {% if show-vendor %}
-          <div class="product--vendor"><a href="{{ vendor-url }}">{{ vendor }}</a></div>
-        {% endif %}
-
-        {% if excerpt.size > 0 %}
-          <div class="product--excerpt">{{ excerpt }}</div>
-        {% endif %}
-
-        {% if settings.product--show-quick-add-buttons and product-sold-out == false %}
-          {% include 'partial--quick-add' %}
-        {% endif %}
-
-      </div>
-
-  {% endcase %}
 </div>

@@ -1,3 +1,10 @@
+{% capture general_settings %}
+  {{ settings.color--alternative }}
+  {{ settings.color--accent }}
+{% endcapture %}
+
+{% include 'framework--background-colors', bg_color: section.settings.background-color %}
+
 {% assign show_on_page = true %}
 {% if section.settings.home-page-only and template != 'index' or template == 'password' %}
   {% assign show_on_page = false %}
@@ -8,11 +15,13 @@
   data-section-id="{{ section.id }}"
   data-section-type="announcement"
   data-js-class="IndexAnnouncement"
+  data-alternative-color="{{ section.settings.alternative-color }}"
+  style="{% if bg_color %}background-color: {{ bg_color }};{% endif %}"
 >
 {% if section.settings.enabled and show_on_page %}
 
-  {% if section.settings.link != empty %}
-    <a class="announcement--link--full-width" href="{{section.settings.link}}">
+  {% if section.settings.link != blank %}
+    <a class="announcement--link" href="{{ section.settings.link }}">
   {% endif %}
 
   <div class="announcement--wrapper">
@@ -23,13 +32,13 @@
     {% endif %}
 
     {% if section.settings.text != blank %}
-      <div class="announcement--text">
-        {{ section.settings.text | escape }}
+      <div class="announcement--text font--accent">
+      {{ section.settings.text | escape }}
       </div>
     {% endif %}
   </div>
 
-  {% if section.settings.link != empty %}
+  {% if section.settings.link != blank %}
     </a>
   {% endif %}
 
@@ -38,7 +47,7 @@
 
 {% schema %}
 {
-  "name": "Announcement",
+  "name": "Announcement bar",
   "settings": [
     {
       "type": "checkbox",
@@ -51,6 +60,25 @@
       "id": "home-page-only",
       "label": "Home page only",
       "default": true
+    },
+    {
+      "id": "background-color",
+      "label": "Background color",
+      "type": "select",
+      "options": [
+        { "label": "None", "value": "none" },
+        { "label": "Light grey", "value": "light" },
+        { "label": "Dark", "value": "dark" },
+        { "label": "Accent", "value": "accent" }
+      ],
+      "default": "dark"
+    },
+    {
+      "id": "alternative-color",
+      "label": "Use alternative text color",
+      "type": "checkbox",
+      "default": true,
+      "info": "This can found under theme settings below."
     },
     {
       "type": "image_picker",

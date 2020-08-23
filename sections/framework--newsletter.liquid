@@ -3,12 +3,10 @@
 {% assign email_placeholder_t = 'home.newsletter.email_placeholder' | t %}
 {% assign button_t = 'home.newsletter.button' | t %}
 
-
 {% comment %} Variables {% endcomment %}
 {% include 'framework--background-colors', bg_color: section.settings.background-color %}
 {% assign heading = section.settings.heading | escape %}
-{% assign subheading = section.settings.subheading | escape %}
-
+{% assign subheading = section.settings.newsletter--subheading %}
 
 {% comment %} View {% endcomment %}
 <div
@@ -21,17 +19,17 @@
     {% if heading != blank or subheading != blank %}
       <div class="newsletter--header">
         {% if heading != blank %}
-          <h2 class="newsletter--heading">{{ heading }}</h2>
+          <h2 class="newsletter--heading font--section-heading">{{ heading }}</h2>
         {% endif %}
 
         {% if subheading != blank %}
-          <p class="newsletter--subheading">{{ subheading }}</p>
+          <div class="newsletter--subheading font--paragraph rte-content">{{ subheading }}</div>
         {% endif %}
       </div>
     {% endif %}
 
     <div class="newsletter--body">
-      {% form 'customer' %}
+      {% form 'customer', id: 'newsletter_form' %}
         {% if form.errors %}
           <p class="newsletter--failure">
           {% for field in form.errors %}
@@ -40,6 +38,7 @@
           </p>
         {% endif %}
         <input type="hidden" name="contact[tags]" value="newsletter" />
+        <label for="newsletter-email" class="hidden">{{ email_placeholder_t }}</label>
         <input
           class="newsletter--email"
           id="newsletter-email"
@@ -49,7 +48,7 @@
           placeholder="{{ email_placeholder_t }}"
           required
         />
-        <button class="newsletter--button button" id="newsletter--button" name="subscribe">
+        <button class="font--button" id="newsletter--button" name="subscribe">
           {{ button_t }}
         </button>
 
@@ -85,10 +84,10 @@
         "default": "Subscribe to our newsletter"
       },
       {
-        "type": "text",
-        "id": "subheading",
+        "type": "richtext",
+        "id": "newsletter--subheading",
         "label": "Subheading",
-        "default": "A short sentence describing what someone will receive by subscribing"
+        "default": "<p>A short sentence describing what someone will receive by subscribing</p>"
       },
       {
         "type": "paragraph",

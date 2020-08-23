@@ -11,16 +11,15 @@
   <div class="featured-text--container">
     {% if heading != blank %}
       <div class="featured-text--header">
-        <h2 class="featured-text--heading">{{ heading }}</h2>
+        <h2 class="featured-text--heading font--section-heading">{{ heading }}</h2>
       </div>
     {% endif %}
-    <div class="featured-text--body rte-content">
+    <div class="featured-text--body font--paragraph rte-content">
       {{ section.settings.text }}
     </div>
   </div>
 
 </div>
-
 
 {% schema %}
   {

@@ -1,5 +1,3 @@
-
-
 {% comment %} Variables {% endcomment %}
 {% capture general_settings %}
   {{ settings.color--alternative }}
@@ -28,9 +26,6 @@
 {% if section.settings.link-text == blank and section.settings.link-url != blank %}
   {% assign cover_link = true %}
 {% endif %}
-
-{% comment %} Onboarding {% endcomment %}
-
 
 {% comment %} View {% endcomment %}
 <div
@@ -65,23 +60,27 @@
       {% endif %}
     </div>
 
-    {% if section.settings.title != blank or section.settings.description != blank %}
+    {% if
+      section.settings.title != blank or
+      section.settings.description != blank or
+      section.settings.link-text != blank
+    %}
       <div class="featured-content--text">
         <div class="featured-content--text-container">
           {% if section.settings.title != blank %}
-            <h2 class="featured-content--title">
+            <h2 class="featured-content--title font--section-heading">
               {{ section.settings.title | escape }}
             </h2>
           {% endif %}
 
           {% if section.settings.description != blank %}
-            <div class="featured-content--description rte-content">
+            <div class="featured-content--description rte-content font--paragraph">
               {{ section.settings.description }}
             </div>
           {% endif %}
 
           {% if section.settings.link-text != blank %}
-            <div class="featured-content--call-to-action">
+            <div class="featured-content--link font--block-link">
               <a href="{{ section.settings.link-url }}">
                 {{ section.settings.link-text }}
               </a>
